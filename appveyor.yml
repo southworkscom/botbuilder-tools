@@ -1,0 +1,35 @@
+# AppVeyor build configuration for JavaScript project
+version: 1.0.{build}
+
+image: Visual Studio 2017
+environment:
+  nodejs_version: "Stable"
+platform: Any CPU
+configuration: Release
+
+init:
+- tzutil /s "UTC"
+
+# Install Node 8
+install:
+  - ps: Install-Product node $env:nodejs_version
+
+# Projects
+clone_depth: 1
+branches:
+  only:
+  - master
+
+build:
+  parallel: true
+
+build_script:
+- cmd: >-
+    build.ci.cmd
+
+# disable automatic tests
+test: off
+
+artifacts:
+    - path: '**\*.tgz'
+      name: NPMPackages
