@@ -1,34 +1,58 @@
-cd Chatdown\
-call npm install
-call npm test
-call npm pack
+PUSHD Chatdown\
+CALL npm install
+CALL npm run test-ci
+POPD
 
-cd ..\Dispatch\
-call npm install
-REM call npm test # No tests found for this tool
-call npm pack
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
-cd ..\Ludown\
-call npm install
-call npm test
-call npm pack
+PUSHD Dispatch\
+CALL npm install
+REM CALL npm test # No tests found for this tool
+POPD
 
-cd ..\LUIS\
-call npm install
-call npm test
-call npm pack
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
-cd ..\LUISGen\
-call npm install
-REM call npm test # No tests found for this tool
-call npm pack
+PUSHD Ludown\
+CALL npm install
+CALL npm run test-ci
+POPD
 
-cd ..\MSBot\
-call npm install
-REM call npm test # No tests found for this tool
-call npm pack
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
-cd ..\QnAMaker\
-call npm install
-call npm test
-call npm pack
+PUSHD LUIS\
+CALL npm install
+CALL npm run test-ci
+CALL npm pack
+
+PUSHD LUISGen\
+CALL npm install
+REM CALL npm test # No tests found for this tool
+POPD
+
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+
+PUSHD MSBot\
+CALL npm install
+REM CALL npm test # No tests found for this tool
+POPD
+
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+
+PUSHD QnAMaker\
+CALL npm install
+CALL npm run test-ci
+POPD
+
+IF %ERRORLEVEL% NEQ 0 GOTO ERROR
+
+FOR /D %%i in ("Chatdown", "Dispatch", "Ludown", "LUIS", "LUISGen", "MSBot", "QnAMaker") do (
+    PUSHD %%i
+    CALL npm pack
+    POPD
+)
+
+EXIT /b 0
+
+:ERROR
+ECHO ERRORLEVEL %ERRORLEVEL%
+EXIT /b %ERRORLEVEL%

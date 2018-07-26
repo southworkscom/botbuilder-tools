@@ -10,7 +10,7 @@ configuration: Release
 init:
 - tzutil /s "UTC"
 
-# Install Node 8
+# Install Node
 install:
   - ps: Install-Product node $env:nodejs_version
 
