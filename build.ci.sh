@@ -17,6 +17,8 @@ function install() {
     install QnAMaker with_test
 )
 
-if [ $? -ne 0 ]; then
-  exit $?
+errorcode=$?
+if [ $errorcode -ne 0 ]; then
+  echo exiting with errorcode $errorcode
+  exit $errorcode
 fi
