@@ -38,7 +38,6 @@ if [[ "${TRAVIS_EVENT_TYPE}" = "cron" ]]; then
     publish LUISGen
     publish MSBot
     publish QnAMaker
-    errorcode=$?
 else
     (
         set -e
@@ -50,8 +49,8 @@ else
         install MSBot
         install QnAMaker with_test
     )
-    errorcode=$?
 fi
+errorcode=$?
 
 if [ $errorcode -ne 0 ]; then
   echo exiting with errorcode $errorcode
