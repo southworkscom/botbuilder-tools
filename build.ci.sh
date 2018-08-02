@@ -12,6 +12,11 @@ function coveralls() {
     npm run test:travis
 }
 
+function eslint() {
+    echo Run ESLint for all packages
+    npm run eslint:travis
+}
+
 function create_npmrc() {
     cat > .npmrc << EOF
 registry=https:\${NPM_REGISTRY}
@@ -57,6 +62,7 @@ else
         install QnAMaker with_test
 
         coveralls
+        eslint
     )
 fi
 errorcode=$?

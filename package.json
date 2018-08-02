@@ -1,10 +1,17 @@
 {
     "name": "botbuilder-tools",
     "scripts": {
-        "test:travis": "nyc mocha \"@(Chatdown|LUIS|QnAMaker)*/test/*.test.suite.js\" --timeout 10000 && nyc report --reporter=text-lcov | coveralls"
+        "test:travis": "nyc mocha \"@(Chatdown|LUIS|QnAMaker)*/test/*.test.suite.js\" --timeout 10000 && nyc report --reporter=text-lcov | coveralls",
+        "eslint:travis": "eslint \"./**/*.js\""
     },
     "devDependencies": {
         "coveralls": "^3.0.2",
+        "eslint": "^5.2.0",
+        "eslint-config-standard": "^11.0.0",
+        "eslint-plugin-import": "^2.13.0",
+        "eslint-plugin-node": "^7.0.1",
+        "eslint-plugin-promise": "^3.8.0",
+        "eslint-plugin-standard": "^3.1.0",
         "mocha": "^5.2.0",
         "nyc": "^12.0.2"
     }
