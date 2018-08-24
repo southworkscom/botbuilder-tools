@@ -7,11 +7,11 @@ import { IQnAService, ServiceType } from '../schema';
 import { ConnectedService } from './connectedService';
 
 export class QnaMakerService extends ConnectedService implements IQnAService {
-    public readonly type = ServiceType.QnA;
-    public kbId = '';
-    public subscriptionKey = '';
-    public hostname = '';
-    public endpointKey = '';
+    public readonly type: ServiceType = ServiceType.QnA;
+    public kbId: string = '';
+    public subscriptionKey: string = '';
+    public hostname: string = '';
+    public endpointKey: string = '';
 
     constructor(source: IQnAService = {} as IQnAService) {
         super(source);

@@ -6,8 +6,8 @@ import { IFileService, ServiceType } from '../schema';
 import { ConnectedService } from './connectedService';
 
 export class FileService extends ConnectedService implements IFileService {
-    public readonly type = ServiceType.File;
-    public filePath = '';
+    public readonly type: ServiceType = ServiceType.File;
+    public filePath: string = '';
 
     constructor(source: IFileService = {} as IFileService) {
         super(source);
