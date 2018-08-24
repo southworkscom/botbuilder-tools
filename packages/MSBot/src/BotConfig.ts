@@ -143,7 +143,7 @@ export class BotConfig extends BotConfigModel {
     public disconnectServiceByNameOrId(nameOrId: string): IConnectedService {
         const svs: List<IConnectedService> = new List<IConnectedService>(this.services);
 
-        for (let i = 0; i < svs.count(); i++) {
+        for (let i: number = 0; i < svs.count(); i++) {
             const service: IConnectedService = svs.elementAt(i);
             if (service.id == nameOrId || service.name == nameOrId) {
                 svs.removeAt(i);
@@ -158,7 +158,7 @@ export class BotConfig extends BotConfigModel {
     public disconnectService(type: string, id: string): void {
         const svs: List<IConnectedService> = new List<IConnectedService>(this.services);
 
-        for (let i = 0; i < svs.count(); i++) {
+        for (let i: number = 0; i < svs.count(); i++) {
             const service: IConnectedService = svs.elementAt(i);
             if (service.type == type && service.id == id) {
                 svs.removeAt(i);
@@ -227,7 +227,7 @@ export class BotConfig extends BotConfigModel {
     // encrypt just a service
     private encryptService(service: IConnectedService): IConnectedService {
         const encryptedProperties: string[] = this.getEncryptedProperties(<ServiceType>service.type);
-        for (let i = 0; i < encryptedProperties.length; i++) {
+        for (let i: number = 0; i < encryptedProperties.length; i++) {
             const prop: string = encryptedProperties[i];
             const val: string = <string>(<any>service)[prop];
             (<any>service)[prop] = this.encryptValue(val);
@@ -238,7 +238,7 @@ export class BotConfig extends BotConfigModel {
     // decrypt just a service
     private decryptService(service: IConnectedService): IConnectedService {
         const encryptedProperties: string[] = this.getEncryptedProperties(<ServiceType>service.type);
-        for (let i = 0; i < encryptedProperties.length; i++) {
+        for (let i: number = 0; i < encryptedProperties.length; i++) {
             const prop: string = encryptedProperties[i];
             const val: string = <string>(<any>service)[prop];
             (<any>service)[prop] = this.decryptValue(val);
