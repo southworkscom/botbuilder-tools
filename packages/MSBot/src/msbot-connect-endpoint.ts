@@ -11,10 +11,10 @@ import * as txtfile from 'read-text-file';
 import * as validurl from 'valid-url';
 import { BotConfig } from './BotConfig';
 import { EndpointService } from './models';
-import { IEndpointService, ServiceType } from './schema';
+import { IEndpointService, ServiceType, IConnectedService } from './schema';
 import { uuidValidate } from './utils';
 
-program.Command.prototype.unknownOption = function (flag: any) {
+program.Command.prototype.unknownOption = function (flag: any): void {
     console.error(chalk.default.redBright(`Unknown arguments: ${flag}`));
     showErrorHelp();
 };
@@ -42,7 +42,7 @@ program
 
     });
 
-const args = <ConnectEndpointArgs><any>program.parse(process.argv);
+const args: ConnectEndpointArgs = <ConnectEndpointArgs><any>program.parse(process.argv);
 
 if (process.argv.length < 3) {
     showErrorHelp();
@@ -51,14 +51,14 @@ if (process.argv.length < 3) {
     if (!args.bot) {
         BotConfig.LoadBotFromFolder(process.cwd(), args.secret)
             .then(processConnectEndpointArgs)
-            .catch((reason) => {
+            .catch((reason: Error) => {
                 console.error(chalk.default.redBright(reason.toString().split('\n')[0]));
                 showErrorHelp();
             });
     } else {
         BotConfig.Load(args.bot, args.secret)
             .then(processConnectEndpointArgs)
-            .catch((reason) => {
+            .catch((reason: Error) => {
                 console.error(chalk.default.redBright(reason.toString().split('\n')[0]));
                 showErrorHelp();
             });
@@ -96,20 +96,20 @@ async function processConnectEndpointArgs(config: BotConfig): Promise<BotConfig>
         }
     }
 
-    let idCount = 1;
+    let idCount: number = 1;
     let id: string;
     while (true) {
         id = `${idCount}`;
 
         if (Enumerable.fromSource(config.services)
-            .where(s => s.type == ServiceType.Endpoint && s.id == id)
+            .where((s: IConnectedService) => s.type == ServiceType.Endpoint && s.id == id)
             .any() == false) {
             break;
         }
 
         idCount++;
     }
-    const newService = new EndpointService({
+    const newService: EndpointService = new EndpointService({
         id,
         name: args.name,
         appId: (args.appId && args.appId.length > 0) ? args.appId : '',
@@ -123,8 +123,8 @@ async function processConnectEndpointArgs(config: BotConfig): Promise<BotConfig>
     return config;
 }
 
-function showErrorHelp() {
-    program.outputHelp((str) => {
+function showErrorHelp(): void {
+    program.outputHelp((str: string) => {
         console.error(str);
         return '';
     });
