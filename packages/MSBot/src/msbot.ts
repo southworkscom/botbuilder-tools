@@ -15,9 +15,9 @@ if (!semver.satisfies(process.version, requiredVersion)) {
     process.exit(1);
 }
 
-program.Command.prototype.unknownOption = function (flag: any) {
+program.Command.prototype.unknownOption = function (flag: any): void {
     console.error(chalk.default.redBright(`Unknown arguments: ${process.argv.slice(2).join(' ')}`));
-    program.outputHelp((str) => {
+    program.outputHelp((str: string) => {
         console.error(str);
         return '';
     });
@@ -49,13 +49,13 @@ program
 program
     .command('list', 'list all connected services');
 
-const args = program.parse(process.argv);
+const args: program.Command = program.parse(process.argv);
 
 // args should be undefined is subcommand is executed
 if (args) {
-    const a = process.argv.slice(2);
+    const a: string[] = process.argv.slice(2);
     console.error(chalk.default.redBright(`Unknown arguments: ${a.join(' ')}`));
-    program.outputHelp((str) => {
+    program.outputHelp((str: string) => {
         console.error(str);
         return '';
     });
