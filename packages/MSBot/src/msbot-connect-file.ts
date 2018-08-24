@@ -2,14 +2,15 @@
  * Copyright(c) Microsoft Corporation.All rights reserved.
  * Licensed under the MIT License.
  */
-import * as chalk from 'chalk';
+// tslint:disable:no-console
+ import * as chalk from 'chalk';
 import * as program from 'commander';
 import * as path from 'path';
 import { BotConfig } from './BotConfig';
 import { FileService } from './models/fileService';
 import { IFileService, ServiceType } from './schema';
 
-program.Command.prototype.unknownOption = function (flag: any) {
+program.Command.prototype.unknownOption = function (flag: any): void {
     console.error(chalk.default.redBright(`Unknown arguments: ${flag}`));
     showErrorHelp();
 };
@@ -30,7 +31,7 @@ program
         }
     });
 
-const args = <ConnectFileArgs><any>program.parse(process.argv);
+const args: ConnectFileArgs = <ConnectFileArgs><any>program.parse(process.argv);
 
 if (process.argv.length < 3) {
     program.help();
@@ -38,14 +39,14 @@ if (process.argv.length < 3) {
     if (!args.bot) {
         BotConfig.LoadBotFromFolder(process.cwd(), args.secret)
             .then(processConnectFile)
-            .catch((reason) => {
+            .catch((reason: Error) => {
                 console.error(chalk.default.redBright(reason.toString().split('\n')[0]));
                 showErrorHelp();
             });
     } else {
         BotConfig.Load(args.bot, args.secret)
             .then(processConnectFile)
-            .catch((reason) => {
+            .catch((reason: Error) => {
                 console.error(chalk.default.redBright(reason.toString().split('\n')[0]));
                 showErrorHelp();
             });
@@ -60,7 +61,7 @@ async function processConnectFile(config: BotConfig): Promise<BotConfig> {
     }
 
     // add the service
-    const newService = new FileService({
+    const newService: FileService = new FileService({
         id: args.filePath,
         name: path.basename(args.filePath),
         filePath: args.filePath
@@ -71,8 +72,8 @@ async function processConnectFile(config: BotConfig): Promise<BotConfig> {
     return config;
 }
 
-function showErrorHelp() {
-    program.outputHelp((str) => {
+function showErrorHelp(): void {
+    program.outputHelp((str: string) => {
         console.error(str);
         return '';
     });
