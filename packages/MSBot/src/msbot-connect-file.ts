@@ -10,7 +10,7 @@ import { BotConfig } from './BotConfig';
 import { FileService } from './models/fileService';
 import { IFileService, ServiceType } from './schema';
 
-program.Command.prototype.unknownOption = function (flag: any): void {
+program.Command.prototype.unknownOption = function (flag: any) {
     console.error(chalk.default.redBright(`Unknown arguments: ${flag}`));
     showErrorHelp();
 };
