@@ -6,10 +6,10 @@ import { IAzureBotService, ServiceType } from '../schema';
 import { ConnectedService } from './connectedService';
 
 export class AzureBotService extends ConnectedService implements IAzureBotService {
-    public readonly type = ServiceType.AzureBotService;
-    public tenantId = '';
-    public subscriptionId = '';
-    public resourceGroup = '';
+    public readonly type: ServiceType = ServiceType.AzureBotService;
+    public tenantId: string = '';
+    public subscriptionId: string = '';
+    public resourceGroup: string = '';
 
     constructor(source: IAzureBotService = {} as IAzureBotService) {
         super(source);

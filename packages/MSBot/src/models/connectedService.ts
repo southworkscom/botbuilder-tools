@@ -5,8 +5,8 @@
 import { IConnectedService, ServiceType } from '../schema';
 
 export abstract class ConnectedService implements IConnectedService {
-    public id = '';
-    public name = '';
+    public id: string = '';
+    public name: string = '';
     public abstract readonly type: ServiceType;
 
     protected constructor(source: IConnectedService = {} as IConnectedService) {

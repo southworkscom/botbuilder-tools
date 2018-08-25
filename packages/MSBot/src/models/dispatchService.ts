@@ -6,12 +6,12 @@ import { IDispatchService, ServiceType } from '../schema';
 import { ConnectedService } from './connectedService';
 
 export class DispatchService extends ConnectedService implements IDispatchService {
-    public readonly type = ServiceType.Dispatch;
-    public appId = '';
-    public authoringKey = '';
+    public readonly type: ServiceType = ServiceType.Dispatch;
+    public appId: string = '';
+    public authoringKey: string = '';
     public serviceIds: string[] = [];
-    public subscriptionKey = '';
-    public version = '';
+    public subscriptionKey: string = '';
+    public version: string = '';
 
     constructor(source: IDispatchService = {} as IDispatchService) {
         super(source);
