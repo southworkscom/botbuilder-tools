@@ -4,13 +4,14 @@
  */
 import * as crypto from 'crypto';
 import * as fsx from 'fs-extra';
-import { Enumerable, List } from 'linq-collections';
+import { Enumerable, List, IEnumerable } from 'linq-collections';
 import * as path from 'path';
 import * as process from 'process';
 import * as txtfile from 'read-text-file';
 import * as uuid from 'uuid';
 import { BotConfigModel } from './models';
-import { IBotConfig, IConnectedService, IDispatchService, ServiceType } from './schema';
+import { IBotConfig, IConnectedService, IDispatchService, ServiceType, IEndpointService } from './schema';
+import { ConnectedService } from './models/connectedService';
 
 interface internalBotConfig {
     location?: string;
@@ -38,8 +39,8 @@ export class BotConfig extends BotConfigModel {
     }
 
     public static async LoadBotFromFolder(folder?: string, secret?: string): Promise<BotConfig> {
-        const files = Enumerable.fromSource(await fsx.readdir(folder || process.cwd()))
-            .where(file => path.extname(<string>file) == '.bot');
+        const files: IEnumerable<string> = Enumerable.fromSource(await fsx.readdir(folder || process.cwd()))
+            .where((file: string) => path.extname(<string>file) == '.bot');
 
         if (files.any()) {
             return BotConfig.Load(<string>files.first(), secret);
@@ -49,11 +50,11 @@ export class BotConfig extends BotConfigModel {
 
     // load the config file
     public static async Load(botpath: string, secret?: string): Promise<BotConfig> {
-        const bot = new BotConfig(secret);
+        const bot: BotConfig = new BotConfig(secret);
         Object.assign(bot, JSON.parse(await txtfile.read(botpath)));
         bot.internal.location = botpath;
 
-        const hasSecret = (secret && bot.secretKey && bot.secretKey.length > 0);
+        const hasSecret: boolean = !!(secret && bot.secretKey && bot.secretKey.length > 0);
         if (hasSecret) {
             bot.decryptAll();
         }
@@ -63,14 +64,14 @@ export class BotConfig extends BotConfigModel {
 
     // save the config file
     public async save(botpath?: string): Promise<void> {
-        const hasSecret = (this.secretKey && this.secretKey.length > 0);
+        const hasSecret: boolean = !!(this.secretKey && this.secretKey.length > 0);
 
         // make sure that all dispatch serviceIds still match services that are in the bot
         for (const service of this.services) {
             if (service.type == ServiceType.Dispatch) {
-                const dispatchService = <IDispatchService>service;
+                const dispatchService: IDispatchService = <IDispatchService>service;
                 dispatchService.serviceIds = Enumerable.fromSource(dispatchService.serviceIds)
-                    .where(serviceId => Enumerable.fromSource(this.services).any(s => s.id == serviceId))
+                    .where((serviceId: string) => Enumerable.fromSource(this.services).any((s: IConnectedService) => s.id == serviceId))
                     .toArray();
             }
         }
@@ -91,7 +92,7 @@ export class BotConfig extends BotConfigModel {
         }
     }
 
-    public clearSecret() {
+    public clearSecret(): void {
         this.validateSecretKey();
         this.secretKey = '';
     }
@@ -99,21 +100,21 @@ export class BotConfig extends BotConfigModel {
     // connect to a service
     public connectService(newService: IConnectedService): void {
         if (Enumerable.fromSource(this.services)
-            .where(s => s.type == newService.type)
-            .where(s => s.id == newService.id)
+            .where((s: IConnectedService) => s.type == newService.type)
+            .where((s: IConnectedService) => s.id == newService.id)
             .any()) {
             throw Error(`service with ${newService.id} already connected`);
         } else {
             // give unique name
-            let nameCount = 1;
-            let name = newService.name;
+            let nameCount: number = 1;
+            let name: string = newService.name;
 
             while (true) {
                 if (nameCount > 1) {
                     name = `${newService.name} (${nameCount})`;
                 }
 
-                if (!Enumerable.fromSource(this.services).where(s => s.name == name).any()) {
+                if (!Enumerable.fromSource(this.services).where((s: IConnectedService) => s.name == name).any()) {
                     break;
                 }
                 nameCount++;
@@ -125,14 +126,14 @@ export class BotConfig extends BotConfigModel {
     }
 
     // encrypt all values in the config
-    public encryptAll() {
+    public encryptAll(): void {
         for (const service of this.services) {
             this.encryptService(service);
         }
     }
 
     // decrypt all values in the config
-    public decryptAll() {
+    public decryptAll(): void {
         for (const service of this.services) {
             this.decryptService(service);
         }
@@ -140,10 +141,10 @@ export class BotConfig extends BotConfigModel {
 
     // remove service by name or id
     public disconnectServiceByNameOrId(nameOrId: string): IConnectedService {
-        const svs = new List<IConnectedService>(this.services);
+        const svs: List<IConnectedService> = new List<IConnectedService>(this.services);
 
-        for (let i = 0; i < svs.count(); i++) {
-            const service = svs.elementAt(i);
+        for (let i: number = 0; i < svs.count(); i++) {
+            const service: IConnectedService = svs.elementAt(i);
             if (service.id == nameOrId || service.name == nameOrId) {
                 svs.removeAt(i);
                 this.services = svs.toArray();
@@ -155,10 +156,10 @@ export class BotConfig extends BotConfigModel {
 
     // remove a service
     public disconnectService(type: string, id: string): void {
-        const svs = new List<IConnectedService>(this.services);
+        const svs: List<IConnectedService> = new List<IConnectedService>(this.services);
 
-        for (let i = 0; i < svs.count(); i++) {
-            const service = svs.elementAt(i);
+        for (let i: number = 0; i < svs.count(); i++) {
+            const service: IConnectedService = svs.elementAt(i);
             if (service.type == type && service.id == id) {
                 svs.removeAt(i);
                 this.services = svs.toArray();
@@ -208,8 +209,8 @@ export class BotConfig extends BotConfigModel {
                 // if no key, create a guid and enrypt that to use as secret validator
                 this.secretKey = this.internalEncrypt(uuid());
             } else {
-                const decipher = crypto.createDecipher('aes192', this.internal.secret);
-                let value = decipher.update(this.secretKey, 'hex', 'utf8');
+                const decipher: crypto.Decipher = crypto.createDecipher('aes192', this.internal.secret);
+                let value: string = decipher.update(this.secretKey, 'hex', 'utf8');
                 value += decipher.final('utf8');
             }
 
@@ -225,10 +226,10 @@ export class BotConfig extends BotConfigModel {
 
     // encrypt just a service
     private encryptService(service: IConnectedService): IConnectedService {
-        const encryptedProperties = this.getEncryptedProperties(<ServiceType>service.type);
-        for (let i = 0; i < encryptedProperties.length; i++) {
-            const prop = encryptedProperties[i];
-            const val = <string>(<any>service)[prop];
+        const encryptedProperties: string[] = this.getEncryptedProperties(<ServiceType>service.type);
+        for (let i: number = 0; i < encryptedProperties.length; i++) {
+            const prop: string = encryptedProperties[i];
+            const val: string = <string>(<any>service)[prop];
             (<any>service)[prop] = this.encryptValue(val);
         }
         return service;
@@ -236,27 +237,27 @@ export class BotConfig extends BotConfigModel {
 
     // decrypt just a service
     private decryptService(service: IConnectedService): IConnectedService {
-        const encryptedProperties = this.getEncryptedProperties(<ServiceType>service.type);
-        for (let i = 0; i < encryptedProperties.length; i++) {
-            const prop = encryptedProperties[i];
-            const val = <string>(<any>service)[prop];
+        const encryptedProperties: string[] = this.getEncryptedProperties(<ServiceType>service.type);
+        for (let i: number = 0; i < encryptedProperties.length; i++) {
+            const prop: string = encryptedProperties[i];
+            const val: string = <string>(<any>service)[prop];
             (<any>service)[prop] = this.decryptValue(val);
         }
         return service;
     }
 
     private internalEncrypt(value: string): string {
-        const cipher = crypto.createCipher('aes192', this.internal.secret);
-        let encryptedValue = cipher.update(value, 'utf8', 'hex');
+        const cipher: crypto.Cipher = crypto.createCipher('aes192', this.internal.secret);
+        let encryptedValue: string = cipher.update(value, 'utf8', 'hex');
         encryptedValue += cipher.final('hex');
         return encryptedValue;
     }
 
     private internalDecrypt(encryptedValue: string): string {
-        const decipher = crypto.createDecipher('aes192', this.internal.secret);
-        let value = decipher.update(encryptedValue, 'hex', 'utf8');
+        const decipher: crypto.Decipher = crypto.createDecipher('aes192', this.internal.secret);
+        let value: string = decipher.update(encryptedValue, 'hex', 'utf8');
         value += decipher.final('utf8');
         return value;
     }
 }
-
+
