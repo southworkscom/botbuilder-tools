@@ -12,7 +12,7 @@ import { LuisService } from './models';
 import { ILuisService, ServiceType } from './schema';
 import { uuidValidate } from './utils';
 
-program.Command.prototype.unknownOption = function (flag: any) {
+program.Command.prototype.unknownOption = function (flag: any): void {
     console.error(chalk.default.redBright(`Unknown arguments: ${flag}`));
     showErrorHelp();
 };
@@ -41,7 +41,7 @@ program
 
     });
 
-const args = <ConnectLuisArgs><any>program.parse(process.argv);
+const args: ConnectLuisArgs = <ConnectLuisArgs><any>program.parse(process.argv);
 
 if (process.argv.length < 3) {
     program.help();
@@ -49,14 +49,14 @@ if (process.argv.length < 3) {
     if (!args.bot) {
         BotConfig.LoadBotFromFolder(process.cwd(), args.secret)
             .then(processConnectLuisArgs)
-            .catch((reason) => {
+            .catch((reason: Error) => {
                 console.error(chalk.default.redBright(reason.toString().split('\n')[0]));
                 showErrorHelp();
             });
     } else {
         BotConfig.Load(args.bot, args.secret)
             .then(processConnectLuisArgs)
-            .catch((reason) => {
+            .catch((reason: Error) => {
                 console.error(chalk.default.redBright(reason.toString().split('\n')[0]));
                 showErrorHelp();
             });
@@ -97,15 +97,15 @@ async function processConnectLuisArgs(config: BotConfig): Promise<BotConfig> {
     //    throw new Error("bad or missing --subscriptionKey");
 
     // add the service
-    const newService = new LuisService(args);
+    const newService: LuisService = new LuisService(args);
     config.connectService(newService);
     await config.save();
     process.stdout.write(JSON.stringify(newService, null, 2));
     return config;
 }
 
-function showErrorHelp() {
-    program.outputHelp((str) => {
+function showErrorHelp(): void {
+    program.outputHelp((str: string) => {
         console.error(str);
         return '';
     });
