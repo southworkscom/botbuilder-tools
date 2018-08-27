@@ -31,7 +31,7 @@ program
         }
     });
 
-const args: ConnectFileArgs = <ConnectFileArgs><any>program.parse(process.argv);
+const args = <ConnectFileArgs><any>program.parse(process.argv);
 
 if (process.argv.length < 3) {
     program.help();
@@ -39,14 +39,14 @@ if (process.argv.length < 3) {
     if (!args.bot) {
         BotConfig.LoadBotFromFolder(process.cwd(), args.secret)
             .then(processConnectFile)
-            .catch((reason: Error) => {
+            .catch((reason) => {
                 console.error(chalk.default.redBright(reason.toString().split('\n')[0]));
                 showErrorHelp();
             });
     } else {
         BotConfig.Load(args.bot, args.secret)
             .then(processConnectFile)
-            .catch((reason: Error) => {
+            .catch((reason) => {
                 console.error(chalk.default.redBright(reason.toString().split('\n')[0]));
                 showErrorHelp();
             });
@@ -61,7 +61,7 @@ async function processConnectFile(config: BotConfig): Promise<BotConfig> {
     }
 
     // add the service
-    const newService: FileService = new FileService({
+    const newService = new FileService({
         id: args.filePath,
         name: path.basename(args.filePath),
         filePath: args.filePath
@@ -72,8 +72,8 @@ async function processConnectFile(config: BotConfig): Promise<BotConfig> {
     return config;
 }
 
-function showErrorHelp(): void {
-    program.outputHelp((str: string) => {
+function showErrorHelp() {
+    program.outputHelp((str) => {
         console.error(str);
         return '';
     });

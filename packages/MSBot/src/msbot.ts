@@ -4,7 +4,7 @@
  * Licensed under the MIT License.
  */
 // tslint:disable:no-console
- import * as chalk from 'chalk';
+import * as chalk from 'chalk';
 import * as program from 'commander';
 import * as process from 'process';
 

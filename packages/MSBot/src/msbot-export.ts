@@ -3,7 +3,7 @@
  * Licensed under the MIT License.
  */
 // tslint:disable:no-console
- import * as chalk from 'chalk';
+import * as chalk from 'chalk';
 import * as program from 'commander';
 
 program.Command.prototype.unknownOption = function (flag: any) {

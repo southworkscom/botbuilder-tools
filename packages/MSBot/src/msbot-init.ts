@@ -3,7 +3,7 @@
  * Licensed under the MIT License.
  */
 // tslint:disable:no-console
- import * as chalk from 'chalk';
+import * as chalk from 'chalk';
 import * as program from 'commander';
 import * as fsx from 'fs-extra';
 import * as readline from 'readline-sync';
