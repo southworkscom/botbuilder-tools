@@ -51,8 +51,10 @@ export class BotConfigModel implements Partial<IBotConfig> {
     }
 
     public toJSON(): Partial<IBotConfig> {
-        const { name, description, services, secretKey } = this;
-        return { name, description, services, secretKey };
+        return {
+            name: this.name,
+            description: this.description,
+            services: this.services,
+            secretKey: this.secretKey };
     }
 }
-
