@@ -13,7 +13,7 @@ import { DispatchService } from './models';
 import { IConnectedService, IDispatchService, ILuisService, ServiceType } from './schema';
 import { uuidValidate } from './utils';
 
-program.Command.prototype.unknownOption = function (flag: any) {
+program.Command.prototype.unknownOption = function (flag: any): void {
     console.error(chalk.default.redBright(`Unknown arguments: ${flag}`));
     showErrorHelp();
 };
@@ -38,11 +38,11 @@ program
     .option('--input <jsonfile>', 'path to arguments in JSON format { id:\'\',name:\'\', ... }')
     .option('--secret <secret>', 'bot file secret password for encrypting service secrets')
     .option('--stdin', 'arguments are passed in as JSON object via stdin')
-    .action((cmd, actions) => {
+    .action((cmd: program.Command, actions: program.Command) => {
 
     });
 
-const args = <ConnectLuisArgs><any>program.parse(process.argv);
+const args: ConnectLuisArgs = <ConnectLuisArgs><any>program.parse(process.argv);
 
 if (process.argv.length < 3) {
     program.help();
@@ -50,14 +50,14 @@ if (process.argv.length < 3) {
     if (!args.bot) {
         BotConfig.LoadBotFromFolder(process.cwd(), args.secret)
             .then(processConnectDispatch)
-            .catch((reason) => {
+            .catch((reason: Error) => {
                 console.error(chalk.default.redBright(reason.toString().split('\n')[0]));
                 showErrorHelp();
             });
     } else {
         BotConfig.Load(args.bot, args.secret)
             .then(processConnectDispatch)
-            .catch((reason) => {
+            .catch((reason: Error) => {
                 console.error(chalk.default.redBright(reason.toString().split('\n')[0]));
                 showErrorHelp();
             });
@@ -97,14 +97,14 @@ async function processConnectDispatch(config: BotConfig): Promise<BotConfig> {
         args.id = args.appId;
     }
 
-    const newService = new DispatchService(<IDispatchService><any>args);
+    const newService: DispatchService = new DispatchService(<IDispatchService><any>args);
 
-    const dispatchServices = <IConnectedService[]>(<any>args).services;
+    const dispatchServices: IConnectedService[] = <IConnectedService[]>(<any>args).services;
 
     if (<IConnectedService[]>dispatchServices) {
         for (const service of dispatchServices) {
             newService.serviceIds.push(service.id || '');
-            if (!Enumerable.fromSource(config.services).any(s => s.id == service.id)) {
+            if (!Enumerable.fromSource(config.services).any((s: IConnectedService) => s.id == service.id)) {
                 switch (service.type) {
                     case ServiceType.File:
                     case ServiceType.Luis:
@@ -121,8 +121,8 @@ async function processConnectDispatch(config: BotConfig): Promise<BotConfig> {
     return config;
 }
 
-function showErrorHelp() {
-    program.outputHelp((str) => {
+function showErrorHelp(): void {
+    program.outputHelp((str: string) => {
         console.error(str);
         return '';
     });

@@ -10,10 +10,11 @@ import * as txtfile from 'read-text-file';
 import * as validurl from 'valid-url';
 import { BotConfig } from './BotConfig';
 import { AzureBotService, EndpointService } from './models';
-import { IAzureBotService, ServiceType } from './schema';
+import { IAzureBotService, ServiceType, IEndpointService, IConnectedService } from './schema';
 import { uuidValidate } from './utils';
+import { ConnectedService } from './models/connectedService';
 
-program.Command.prototype.unknownOption = function (flag: any) {
+program.Command.prototype.unknownOption = function (flag: any): void {
     console.error(chalk.default.redBright(`Unknown arguments: ${flag}`));
     showErrorHelp();
 };
@@ -44,11 +45,11 @@ program
     .option('--input <jsonfile>', 'path to arguments in JSON format { id:\'\',name:\'\', ... }')
     .option('--secret <secret>', 'bot file secret password for encrypting service secrets')
     .option('--stdin', 'arguments are passed in as JSON object via stdin')
-    .action((cmd, actions) => {
+    .action((cmd: program.Command, actions: program.Command) => {
 
     });
 
-const args = <ConnectAzureArgs><any>program.parse(process.argv);
+const args: ConnectAzureArgs = <ConnectAzureArgs><any>program.parse(process.argv);
 
 if (process.argv.length < 3) {
     program.help();
@@ -56,14 +57,14 @@ if (process.argv.length < 3) {
     if (!args.bot) {
         BotConfig.LoadBotFromFolder(process.cwd(), args.secret)
             .then(processConnectAzureArgs)
-            .catch((reason) => {
+            .catch((reason: Error) => {
                 console.error(chalk.default.redBright(reason.toString().split('\n')[0]));
                 showErrorHelp();
             });
     } else {
         BotConfig.Load(args.bot, args.secret)
             .then(processConnectAzureArgs)
-            .catch((reason) => {
+            .catch((reason: Error) => {
                 console.error(chalk.default.redBright(reason.toString().split('\n')[0]));
                 showErrorHelp();
             });
@@ -92,8 +93,8 @@ async function processConnectAzureArgs(config: BotConfig): Promise<BotConfig> {
     if (!args.resourceGroup || args.resourceGroup.length == 0) {
         throw new Error('Bad or missing --resourceGroup for registered bot');
     }
-    const services = [];
-    const service = new AzureBotService({
+    const services: IConnectedService[] = [];
+    const service: AzureBotService = new AzureBotService({
         type: ServiceType.AzureBotService,
         id: args.id, // bot id
         name: args.hasOwnProperty('name') ? args.name : args.id,
@@ -116,7 +117,7 @@ async function processConnectAzureArgs(config: BotConfig): Promise<BotConfig> {
             throw new Error('Bad or missing --appPassword');
         }
 
-        const endpointService = new EndpointService({
+        const endpointService: EndpointService = new EndpointService({
             type: ServiceType.Endpoint,
             id: args.endpoint,
             name: args.name || args.endpoint,
@@ -132,8 +133,8 @@ async function processConnectAzureArgs(config: BotConfig): Promise<BotConfig> {
     return config;
 }
 
-function showErrorHelp() {
-    program.outputHelp((str) => {
+function showErrorHelp(): void {
+    program.outputHelp((str: string) => {
         console.error(str);
         return '';
     });
