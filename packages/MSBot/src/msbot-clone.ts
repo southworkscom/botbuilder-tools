@@ -14,7 +14,7 @@ program
     .name('msbot clone')
     .option('-bot, -b', 'path to bot file.  If omitted, local folder will look for a .bot file')
     .description('allows you to clone a bot with a new configuration')
-    .action((cmd: undefined, actions: undefined) => {
+    .action((cmd: program.Command, actions: program.Command) => {
 
     });
 program.parse(process.argv);
