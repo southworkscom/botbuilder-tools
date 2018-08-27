@@ -22,7 +22,7 @@ program
     .arguments('<service_id_or_Name>')
     .description('disconnect a connected service by id or name')
     .option('-b, --bot <path>', 'path to bot file.  If omitted, local folder will look for a .bot file')
-    .action((idOrName, actions) => {
+    .action((idOrName: program.Command, actions: program.Command) => {
         actions.idOrName = idOrName;
     });
 

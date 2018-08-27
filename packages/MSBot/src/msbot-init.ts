@@ -33,7 +33,7 @@ program
     .option('-p, --appPassword <password>', 'Microsoft app password used for auth with the endpoint')
     .option('-e, --endpoint <endpoint>', 'local endpoint for the bot')
     .option('-q, --quiet', 'do not prompt')
-    .action((name, x) => {
+    .action((name: program.Command, x: program.Command) => {
         console.log(name);
     });
 

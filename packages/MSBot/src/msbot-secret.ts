@@ -23,7 +23,7 @@ program
     .option('-b, --bot <path>', 'path to bot file.  If omitted, local folder will look for a .bot file')
     .option('--secret <secret>', 'secret used to encrypt service keys')
     .option('-c, --clear', 'clear the secret and store keys unencrypted')
-    .action((name, x) => {
+    .action((name: program.Command, x: program.Command) => {
         console.log(name);
     });
 
