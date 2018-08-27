@@ -14,7 +14,7 @@ program.Command.prototype.unknownOption = function (flag: any) {
     showErrorHelp();
 };
 
-interface ConnectFileArgs extends IFileService {
+interface IConnectFileArgs extends IFileService {
     bot: string;
     secret: string;
 }
@@ -30,7 +30,7 @@ program
         }
     });
 
-const args = <ConnectFileArgs><any>program.parse(process.argv);
+const args = <IConnectFileArgs><any>program.parse(process.argv);
 
 if (process.argv.length < 3) {
     program.help();

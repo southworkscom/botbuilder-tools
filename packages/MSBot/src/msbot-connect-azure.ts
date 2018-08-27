@@ -18,7 +18,7 @@ program.Command.prototype.unknownOption = function (flag: any) {
     showErrorHelp();
 };
 
-interface ConnectAzureArgs extends IAzureBotService {
+interface IConnectAzureArgs extends IAzureBotService {
     bot: string;
     secret: string;
     stdin: boolean;
@@ -48,7 +48,7 @@ program
 
     });
 
-const args = <ConnectAzureArgs><any>program.parse(process.argv);
+const args = <IConnectAzureArgs><any>program.parse(process.argv);
 
 if (process.argv.length < 3) {
     program.help();

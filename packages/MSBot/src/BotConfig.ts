@@ -12,7 +12,7 @@ import * as uuid from 'uuid';
 import { BotConfigModel } from './models';
 import { IBotConfig, IConnectedService, IDispatchService, ServiceType } from './schema';
 
-interface internalBotConfig {
+interface IinternalBotConfig {
     location?: string;
     secret?: string;
     secretValidated: boolean;
@@ -28,7 +28,7 @@ export class BotConfig extends BotConfigModel {
         dispatch: ['authoringKey', 'subscriptionKey']
     };
     // internal is not serialized
-    private internal: internalBotConfig = {
+    private internal: IinternalBotConfig = {
         secretValidated: false
     };
 
@@ -259,4 +259,3 @@ export class BotConfig extends BotConfigModel {
         return value;
     }
 }
-

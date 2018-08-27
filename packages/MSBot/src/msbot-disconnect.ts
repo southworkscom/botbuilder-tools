@@ -11,7 +11,7 @@ program.Command.prototype.unknownOption = function (flag: any) {
     showErrorHelp();
 };
 
-interface DisconnectServiceArgs {
+interface IDisconnectServiceArgs {
     bot: string;
     idOrName: string;
 }
@@ -25,7 +25,7 @@ program
         actions.idOrName = idOrName;
     });
 
-const args = <DisconnectServiceArgs><any>program.parse(process.argv);
+const args = <IDisconnectServiceArgs><any>program.parse(process.argv);
 
 if (process.argv.length < 3) {
     program.help();

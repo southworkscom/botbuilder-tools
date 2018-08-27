@@ -19,7 +19,7 @@ program.Command.prototype.unknownOption = function (flag: any) {
     showErrorHelp();
 };
 
-interface ConnectEndpointArgs extends IEndpointService {
+interface IConnectEndpointArgs extends IEndpointService {
     bot: string;
     secret: string;
     stdin: boolean;
@@ -42,7 +42,7 @@ program
 
     });
 
-const args = <ConnectEndpointArgs><any>program.parse(process.argv);
+const args = <IConnectEndpointArgs><any>program.parse(process.argv);
 
 if (process.argv.length < 3) {
     showErrorHelp();
