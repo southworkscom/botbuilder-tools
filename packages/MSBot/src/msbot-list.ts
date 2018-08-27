@@ -13,7 +13,7 @@ program.Command.prototype.unknownOption = function (flag: any) {
     showErrorHelp();
 };
 
-interface ListArgs {
+interface IListArgs {
     bot: string;
     secret: string;
 }
@@ -25,7 +25,7 @@ program
     .action((cmd, actions) => {
     });
 
-const parsed = <ListArgs><any>program.parse(process.argv);
+const parsed = <IListArgs><any>program.parse(process.argv);
 
 if (!parsed.bot) {
     BotConfig.LoadBotFromFolder(process.cwd(), parsed.secret)

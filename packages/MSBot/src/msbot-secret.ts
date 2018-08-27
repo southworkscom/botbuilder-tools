@@ -11,7 +11,7 @@ program.Command.prototype.unknownOption = function (flag: any) {
     showErrorHelp();
 };
 
-interface SecretArgs {
+interface ISecretArgs {
     bot: string;
     secret: string;
     endpoint: string;
@@ -27,7 +27,7 @@ program
         console.log(name);
     });
 
-const args: SecretArgs = <SecretArgs><any>program.parse(process.argv);
+const args: ISecretArgs = <ISecretArgs><any>program.parse(process.argv);
 let path: string;
 
 if (process.argv.length < 3) {

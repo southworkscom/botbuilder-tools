@@ -17,7 +17,7 @@ program.Command.prototype.unknownOption = function (flag: any) {
     showErrorHelp();
 };
 
-interface ConnectLuisArgs extends ILuisService {
+interface IConnectLuisArgs extends ILuisService {
     bot: string;
     secret: string;
     stdin: boolean;
@@ -41,7 +41,7 @@ program
 
     });
 
-const args = <ConnectLuisArgs><any>program.parse(process.argv);
+const args = <IConnectLuisArgs><any>program.parse(process.argv);
 
 if (process.argv.length < 3) {
     program.help();

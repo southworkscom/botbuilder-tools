@@ -18,7 +18,7 @@ program.Command.prototype.unknownOption = function (flag: any) {
     showErrorHelp();
 };
 
-interface ConnectQnaArgs extends IQnAService {
+interface IConnectQnaArgs extends IQnAService {
     bot: string;
     secret: string;
     stdin: boolean;
@@ -44,7 +44,7 @@ program
 
 program.parse(process.argv);
 
-const args = <ConnectQnaArgs><any>program.parse(process.argv);
+const args = <IConnectQnaArgs><any>program.parse(process.argv);
 
 if (process.argv.length < 3) {
     program.help();
