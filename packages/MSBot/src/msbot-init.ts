@@ -9,7 +9,7 @@ import * as readline from 'readline-sync';
 import { BotConfig } from './BotConfig';
 import { IEndpointService, ServiceType } from './schema';
 
-program.Command.prototype.unknownOption = function (flag: any) {
+program.Command.prototype.unknownOption = function (flag: any): void {
     console.error(chalk.default.redBright(`Unknown arguments: ${flag}`));
     program.help();
 };
@@ -33,7 +33,7 @@ program
     .option('-p, --appPassword <password>', 'Microsoft app password used for auth with the endpoint')
     .option('-e, --endpoint <endpoint>', 'local endpoint for the bot')
     .option('-q, --quiet', 'do not prompt')
-    .action((name, x) => {
+    .action((name: program.Command, x: program.Command) => {
         console.log(name);
     });
 
@@ -41,7 +41,7 @@ const args: InitArgs = <InitArgs><any>program.parse(process.argv);
 
 if (!args.quiet) {
 
-    let exists = fsx.existsSync(`${args.name}.bot`);
+    let exists: boolean = fsx.existsSync(`${args.name}.bot`);
     while (((!args.hasOwnProperty('name') || args.name.length == 0)) || exists) {
         if (exists) {
             console.log(`${args.name}.bot already exists`);
@@ -51,7 +51,7 @@ if (!args.quiet) {
     }
 
     if (!args.secret || args.secret.length == 0) {
-        const answer = readline.question(`Would you to secure your bot keys with a secret? [no]`);
+        const answer: string = readline.question(`Would you to secure your bot keys with a secret? [no]`);
         if (answer == 'y' || answer == 'yes') {
             args.secret = readline.question(`What secret would you like to use? `);
         }
@@ -68,7 +68,7 @@ if (!args.quiet) {
     }
 
     if (!args.appId || args.appId.length == 0) {
-        const answer = readline.question(`Do you have an Application Id for this bot? [no] `, {
+        const answer: string = readline.question(`Do you have an Application Id for this bot? [no] `, {
             defaultInput: 'no'
         });
         if (answer == 'y' || answer == 'yes') {
@@ -88,7 +88,7 @@ if (!args.quiet) {
 if (!args.name) {
     console.error('missing --name argument');
 } else {
-    const bot = new BotConfig(args.secret);
+    const bot: BotConfig = new BotConfig(args.secret);
     bot.name = args.name;
     bot.description = args.description;
 
@@ -106,7 +106,7 @@ if (!args.name) {
         bot.validateSecretKey();
     }
 
-    const filename = bot.name + '.bot';
+    const filename: string = bot.name + '.bot';
     bot.save(filename);
     console.log(`${filename} created`);
 

@@ -6,9 +6,9 @@ import * as chalk from 'chalk';
 import * as program from 'commander';
 import * as process from 'process';
 import { BotConfig } from './BotConfig';
-import { IBotConfig } from './schema';
+import { IBotConfig, IConnectedService } from './schema';
 
-program.Command.prototype.unknownOption = function (flag: any) {
+program.Command.prototype.unknownOption = function (flag: any): void {
     console.error(chalk.default.redBright(`Unknown arguments: ${flag}`));
     showErrorHelp();
 };
@@ -22,29 +22,29 @@ program
     .name('msbot list')
     .option('-b, --bot <path>', 'path to bot file.  If omitted, local folder will look for a .bot file')
     .option('--secret <secret>', 'bot file secret password for encrypting service secrets')
-    .action((cmd, actions) => {
+    .action((cmd: program.Command, actions: program.Command) => {
     });
 
-const parsed = <ListArgs><any>program.parse(process.argv);
+const parsed: ListArgs = <ListArgs><any>program.parse(process.argv);
 
 if (!parsed.bot) {
     BotConfig.LoadBotFromFolder(process.cwd(), parsed.secret)
         .then(processListArgs)
-        .catch((reason) => {
+        .catch((reason: Error) => {
             console.error(chalk.default.redBright(reason.toString().split('\n')[0]));
             showErrorHelp();
         });
 } else {
     BotConfig.Load(parsed.bot, parsed.secret)
         .then(processListArgs)
-        .catch((reason) => {
+        .catch((reason: Error) => {
             console.error(chalk.default.redBright(reason.toString().split('\n')[0]));
             showErrorHelp();
         });
 }
 
 async function processListArgs(config: BotConfig): Promise<BotConfig> {
-    const services = config.services;
+    const services: IConnectedService[] = config.services;
 
     console.log(JSON.stringify(<IBotConfig>{
         name: config.name,
@@ -54,8 +54,8 @@ async function processListArgs(config: BotConfig): Promise<BotConfig> {
     return config;
 }
 
-function showErrorHelp() {
-    program.outputHelp((str) => {
+function showErrorHelp(): void {
+    program.outputHelp((str: string) => {
         console.error(str);
         return '';
     });

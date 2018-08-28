@@ -7,17 +7,17 @@ import * as chalk from 'chalk';
 import * as program from 'commander';
 import * as process from 'process';
 
-const pkg = require('../package.json');
+const pkg: IPackage = require('../package.json');
 const semver = require('semver');
-const requiredVersion = pkg.engines.node;
+const requiredVersion: string = pkg.engines.node;
 if (!semver.satisfies(process.version, requiredVersion)) {
     console.error(`Required node version ${requiredVersion} not satisfied with current version ${process.version}.`);
     process.exit(1);
 }
 
-program.Command.prototype.unknownOption = function (flag: any) {
+program.Command.prototype.unknownOption = function (flag: any): void {
     console.error(chalk.default.redBright(`Unknown arguments: ${process.argv.slice(2).join(' ')}`));
-    program.outputHelp((str) => {
+    program.outputHelp((str: string) => {
         console.error(str);
         return '';
     });
@@ -49,15 +49,20 @@ program
 program
     .command('list', 'list all connected services');
 
-const args = program.parse(process.argv);
+const args: program.Command = program.parse(process.argv);
 
 // args should be undefined is subcommand is executed
 if (args) {
-    const a = process.argv.slice(2);
+    const a: string[] = process.argv.slice(2);
     console.error(chalk.default.redBright(`Unknown arguments: ${a.join(' ')}`));
-    program.outputHelp((str) => {
+    program.outputHelp((str: string) => {
         console.error(str);
         return '';
     });
     process.exit(1);
+}
+
+interface IPackage {
+    engines: {node: string };
+    version: string;
 }
