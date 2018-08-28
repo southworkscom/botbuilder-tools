@@ -24,7 +24,7 @@ program
     .description('Connect a file to the bot')
     .option('-b, --bot <path>', 'path to bot file.  If omitted, local folder will look for a .bot file')
     .option('--secret <secret>', 'bot file secret password for encrypting service secrets')
-    .action((filePath, actions) => {
+    .action((filePath: program.Command, actions: program.Command) => {
         if (filePath) {
             actions.filePath = filePath;
         }
