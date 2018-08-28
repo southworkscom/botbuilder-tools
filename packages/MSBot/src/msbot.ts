@@ -7,9 +7,9 @@ import * as chalk from 'chalk';
 import * as program from 'commander';
 import * as process from 'process';
 
-const pkg = require('../package.json');
+const pkg: IPackage = require('../package.json');
 const semver = require('semver');
-const requiredVersion = pkg.engines.node;
+const requiredVersion: string = pkg.engines.node;
 if (!semver.satisfies(process.version, requiredVersion)) {
     console.error(`Required node version ${requiredVersion} not satisfied with current version ${process.version}.`);
     process.exit(1);
@@ -60,4 +60,9 @@ if (args) {
         return '';
     });
     process.exit(1);
+}
+
+interface IPackage {
+    engines: {node: string };
+    version: string;
 }
