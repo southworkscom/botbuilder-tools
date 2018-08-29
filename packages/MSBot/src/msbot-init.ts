@@ -99,7 +99,7 @@ if (!args.name) {
         id: args.endpoint,
         appId: args.appId || '',
         appPassword: args.appPassword || ''
-    }
+    };
 
     bot.connectService(connectedService);
 

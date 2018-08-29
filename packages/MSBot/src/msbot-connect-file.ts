@@ -65,7 +65,7 @@ async function processConnectFile(config: BotConfig): Promise<BotConfig> {
         name: path.basename(args.filePath),
         filePath: args.filePath,
         type: ServiceType.File
-    }
+    };
 
     const newService: FileService = new FileService(connectedService);
     config.connectService(newService);
