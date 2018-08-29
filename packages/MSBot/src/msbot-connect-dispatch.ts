@@ -42,7 +42,24 @@ program
 
     });
 
-const args = <ConnectLuisArgs><any>program.parse(process.argv);
+const args: ConnectLuisArgs = {
+    bot: '',
+    secret: '',
+    stdin: true,
+    appId: '',
+    authoringKey: '',
+    subscriptionKey: '',
+    version: '',
+    name: '',
+    type: ServiceType.Dispatch
+};
+
+const commands: program.Command = program.parse(process.argv);
+for (const i of commands.args) {
+    if (args.hasOwnProperty(i)) {
+        args[i] = commands[i];
+    }
+}
 
 if (process.argv.length < 3) {
     program.help();
@@ -97,9 +114,25 @@ async function processConnectDispatch(config: BotConfig): Promise<BotConfig> {
         args.id = args.appId;
     }
 
-    const newService = new DispatchService(<IDispatchService><any>args);
+    const dispatchService: IDispatchService = {
+        appId: '',
+        authoringKey: '',
+        subscriptionKey: '',
+        version: '',
+        serviceIds: [''],
+        type: ServiceType.Dispatch,
+        name: ''
+    };
 
-    const dispatchServices = <IConnectedService[]>(<any>args).services;
+    for (const i of commands.args) {
+        if (dispatchService.hasOwnProperty(i)) {
+            dispatchService[i] = args[i];
+        }
+    }
+
+    const newService = new DispatchService(dispatchService);
+
+    const dispatchServices = <IConnectedService[]>(args).services;
 
     if (<IConnectedService[]>dispatchServices) {
         for (const service of dispatchServices) {

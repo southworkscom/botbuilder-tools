@@ -41,7 +41,24 @@ program
 
     });
 
-const args = <ConnectLuisArgs><any>program.parse(process.argv);
+const args: ConnectLuisArgs = {
+    bot: '',
+    secret: '',
+    stdin: true,
+    appId: '',
+    authoringKey: '',
+    subscriptionKey: '',
+    version: '',
+    type: ServiceType.Luis,
+    name: ''
+};
+
+const commands: program.Command = program.parse(process.argv);
+for (const i of commands.args) {
+    if (args.hasOwnProperty(i)) {
+        args[i] = commands[i];
+    }
+}
 
 if (process.argv.length < 3) {
     program.help();

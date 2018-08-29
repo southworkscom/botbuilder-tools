@@ -16,6 +16,7 @@ interface SecretArgs {
     secret: string;
     endpoint: string;
     clear: boolean;
+    [key: string]: string | boolean;
 }
 
 program
@@ -27,7 +28,19 @@ program
         console.log(name);
     });
 
-const args: SecretArgs = <SecretArgs><any>program.parse(process.argv);
+const args: SecretArgs = {
+    bot: '',
+    secret: '',
+    endpoint: '',
+    clear: false
+};
+
+const commands: program.Command = program.parse(process.argv);
+for (const i of commands.args) {
+    if (args.hasOwnProperty(i)) {
+        args[i] = commands[i];
+    }
+}
 let path: string;
 
 if (process.argv.length < 3) {
