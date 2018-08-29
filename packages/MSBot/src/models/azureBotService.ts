@@ -18,7 +18,12 @@ export class AzureBotService extends ConnectedService implements IAzureBotServic
     }
 
     public toJSON(): IAzureBotService {
-        const { id, name, tenantId, subscriptionId, resourceGroup } = this;
-        return { type: ServiceType.AzureBotService, id, name, tenantId, subscriptionId, resourceGroup };
+        return {
+            type: ServiceType.AzureBotService,
+            id: this.id,
+            name: this.name,
+            tenantId: this.tenantId,
+            subscriptionId: this.subscriptionId,
+            resourceGroup: this.resourceGroup};
     }
 }

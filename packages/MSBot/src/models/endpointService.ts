@@ -20,7 +20,12 @@ export class EndpointService extends ConnectedService implements IEndpointServic
     }
 
     public toJSON(): IEndpointService {
-        const { appId = '', id = '', appPassword = '', endpoint = '', name = '' } = this;
-        return { type: ServiceType.Endpoint, name, id: endpoint, appId, appPassword, endpoint };
+        return {
+            type: ServiceType.Endpoint,
+            name: this.name,
+            id: this.endpoint,
+            appId: this.appId,
+            appPassword: this.appPassword,
+            endpoint: this.endpoint };
     }
 }
