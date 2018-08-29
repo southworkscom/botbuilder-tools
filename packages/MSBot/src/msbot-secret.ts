@@ -6,7 +6,7 @@ import * as chalk from 'chalk';
 import * as program from 'commander';
 import { BotConfig } from './BotConfig';
 
-program.Command.prototype.unknownOption = function (flag: any) {
+program.Command.prototype.unknownOption = (): void => {
     console.error(chalk.default.redBright(`Unknown arguments: ${process.argv.slice(2).join(' ')}`));
     showErrorHelp();
 };
