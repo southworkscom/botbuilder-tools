@@ -22,6 +22,7 @@ interface InitArgs {
     appId: string;
     appPassword: string;
     quiet: boolean;
+    [key: string]: string | boolean;
 }
 
 program
@@ -37,7 +38,22 @@ program
         console.log(name);
     });
 
-const args: InitArgs = <InitArgs><any>program.parse(process.argv);
+const args: InitArgs = {
+    name: '',
+    description: '',
+    secret: '',
+    endpoint: '',
+    appId: '',
+    appPassword: '',
+    quiet: false
+};
+
+const commands: program.Command = program.parse(process.argv);
+for (const i of commands.args) {
+    if (args.hasOwnProperty(i)) {
+        args[i] = commands[i];
+    }
+}
 
 if (!args.quiet) {
 

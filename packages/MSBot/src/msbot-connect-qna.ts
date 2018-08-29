@@ -44,7 +44,25 @@ program
 
 program.parse(process.argv);
 
-const args = <ConnectQnaArgs><any>program.parse(process.argv);
+const args: ConnectQnaArgs = {
+    bot: '',
+    secret: '',
+    stdin: true,
+    subscriptionId: '',
+    subscriptionKey: '',
+    kbId: '',
+    hostname: '',
+    endpointKey: '',
+    type: ServiceType.QnA,
+    name: ''
+};
+
+const commands: program.Command = program.parse(process.argv);
+for (const i of commands.args) {
+    if (args.hasOwnProperty(i)) {
+        args[i] = commands[i];
+    }
+}
 
 if (process.argv.length < 3) {
     program.help();

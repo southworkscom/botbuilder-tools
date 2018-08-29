@@ -48,7 +48,23 @@ program
 
     });
 
-const args = <ConnectAzureArgs><any>program.parse(process.argv);
+const args: ConnectAzureArgs = {
+    bot: '',
+    secret: '',
+    stdin: true,
+    tenantId: '',
+    subscriptionId: '',
+    resourceGroup: '',
+    type: ServiceType.AzureBotService,
+    name: ''
+};
+
+const commands: program.Command = program.parse(process.argv);
+for (const i of commands.args) {
+    if (args.hasOwnProperty(i)) {
+        args[i] = commands[i];
+    }
+}
 
 if (process.argv.length < 3) {
     program.help();

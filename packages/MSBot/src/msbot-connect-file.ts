@@ -30,7 +30,20 @@ program
         }
     });
 
-const args = <ConnectFileArgs><any>program.parse(process.argv);
+const args: ConnectFileArgs = {
+    bot: '',
+    secret: '',
+    type: ServiceType.File,
+    name: '',
+    filePath: ''
+};
+
+const commands: program.Command = program.parse(process.argv);
+for (const i of commands.args) {
+    if (args.hasOwnProperty(i)) {
+        args[i] = commands[i];
+    }
+}
 
 if (process.argv.length < 3) {
     program.help();

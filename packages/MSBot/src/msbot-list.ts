@@ -16,6 +16,7 @@ program.Command.prototype.unknownOption = function (flag: any) {
 interface ListArgs {
     bot: string;
     secret: string;
+    [key: string]: string;
 }
 
 program
@@ -25,17 +26,27 @@ program
     .action((cmd, actions) => {
     });
 
-const parsed = <ListArgs><any>program.parse(process.argv);
+const args: ListArgs = {
+    bot: '',
+    secret: ''
+};
 
-if (!parsed.bot) {
-    BotConfig.LoadBotFromFolder(process.cwd(), parsed.secret)
+const commands: program.Command = program.parse(process.argv);
+for (const i of commands.args) {
+    if (args.hasOwnProperty(i)) {
+        args[i] = commands[i];
+    }
+}
+
+if (!args.bot) {
+    BotConfig.LoadBotFromFolder(process.cwd(), args.secret)
         .then(processListArgs)
         .catch((reason) => {
             console.error(chalk.default.redBright(reason.toString().split('\n')[0]));
             showErrorHelp();
         });
 } else {
-    BotConfig.Load(parsed.bot, parsed.secret)
+    BotConfig.Load(args.bot, args.secret)
         .then(processListArgs)
         .catch((reason) => {
             console.error(chalk.default.redBright(reason.toString().split('\n')[0]));

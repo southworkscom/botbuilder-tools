@@ -14,6 +14,7 @@ program.Command.prototype.unknownOption = function (flag: any) {
 interface DisconnectServiceArgs {
     bot: string;
     idOrName: string;
+    [key: string]: string;
 }
 
 program
@@ -25,7 +26,17 @@ program
         actions.idOrName = idOrName;
     });
 
-const args = <DisconnectServiceArgs><any>program.parse(process.argv);
+const args: DisconnectServiceArgs = {
+    bot: '',
+    idOrName: ''
+};
+
+const commands: program.Command = program.parse(process.argv);
+for (const i of commands.args) {
+    if (args.hasOwnProperty(i)) {
+        args[i] = commands[i];
+    }
+}
 
 if (process.argv.length < 3) {
     program.help();
