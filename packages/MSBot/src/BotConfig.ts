@@ -228,8 +228,8 @@ export class BotConfig extends BotConfigModel {
         const encryptedProperties = this.getEncryptedProperties(<ServiceType>service.type);
         for (let i = 0; i < encryptedProperties.length; i++) {
             const prop = encryptedProperties[i];
-            const val = <string>(<any>service)[prop];
-            (<any>service)[prop] = this.encryptValue(val);
+            const val = <string>(<IConnectedService>service)[prop];
+            (<IConnectedService>service)[prop] = this.encryptValue(val);
         }
         return service;
     }
@@ -239,8 +239,8 @@ export class BotConfig extends BotConfigModel {
         const encryptedProperties = this.getEncryptedProperties(<ServiceType>service.type);
         for (let i = 0; i < encryptedProperties.length; i++) {
             const prop = encryptedProperties[i];
-            const val = <string>(<any>service)[prop];
-            (<any>service)[prop] = this.decryptValue(val);
+            const val = <string>(<IConnectedService>service)[prop];
+            (<IConnectedService>service)[prop] = this.decryptValue(val);
         }
         return service;
     }
@@ -259,4 +259,3 @@ export class BotConfig extends BotConfigModel {
         return value;
     }
 }
-

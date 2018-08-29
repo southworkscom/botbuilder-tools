@@ -9,8 +9,8 @@ import * as readline from 'readline-sync';
 import { BotConfig } from './BotConfig';
 import { IEndpointService, ServiceType } from './schema';
 
-program.Command.prototype.unknownOption = function (flag: any) {
-    console.error(chalk.default.redBright(`Unknown arguments: ${flag}`));
+program.Command.prototype.unknownOption = (): void => {
+    console.error(chalk.default.redBright(`Unknown arguments: ${process.argv.slice(2).join(' ')}`));
     program.help();
 };
 

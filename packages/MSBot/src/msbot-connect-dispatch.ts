@@ -13,8 +13,8 @@ import { DispatchService } from './models';
 import { IConnectedService, IDispatchService, ILuisService, ServiceType } from './schema';
 import { uuidValidate } from './utils';
 
-program.Command.prototype.unknownOption = function (flag: any) {
-    console.error(chalk.default.redBright(`Unknown arguments: ${flag}`));
+program.Command.prototype.unknownOption = (): void => {
+    console.error(chalk.default.redBright(`Unknown arguments: ${process.argv.slice(2).join(' ')}`));
     showErrorHelp();
 };
 

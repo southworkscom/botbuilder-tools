@@ -20,6 +20,9 @@ export interface IConnectedService {
 
     // unique Id for the service (appid, etc)
     id?: string;
+
+    // tslint:disable-next-line:no-any
+    [key: string]: any;
 }
 
 export interface IEndpointService extends IConnectedService {
