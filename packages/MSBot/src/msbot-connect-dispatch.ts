@@ -55,11 +55,9 @@ const args: ConnectLuisArgs = {
 };
 
 const commands: program.Command = program.parse(process.argv);
-for (const i of commands.args) {
-    if (args.hasOwnProperty(i)) {
-        args[i] = commands[i];
-    }
-}
+Object.keys(args).forEach(key => {
+    args[key] = commands[key];
+});
 
 if (process.argv.length < 3) {
     program.help();
@@ -124,14 +122,11 @@ async function processConnectDispatch(config: BotConfig): Promise<BotConfig> {
         name: ''
     };
 
-    for (const i of commands.args) {
-        if (dispatchService.hasOwnProperty(i)) {
-            dispatchService[i] = args[i];
-        }
-    }
+    Object.keys(dispatchService).forEach(key => {
+        dispatchService[key] = args[key];
+    });
 
     const newService = new DispatchService(dispatchService);
-
     const dispatchServices = <IConnectedService[]>(args).services;
 
     if (<IConnectedService[]>dispatchServices) {
