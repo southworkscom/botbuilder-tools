@@ -38,7 +38,6 @@ program
     .option('--stdin', 'arguments are passed in as JSON object via stdin')
     .action((cmd: program.Command, actions: program.Command) => undefined);
 
-//let args = <ConnectEndpointArgs><any>program.parse(process.argv);
 const args: IConnectEndpointArgs = {
     bot: '',
     secret: '',
