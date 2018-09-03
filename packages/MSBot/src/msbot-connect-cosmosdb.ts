@@ -15,12 +15,11 @@ program.Command.prototype.unknownOption = (): void => {
     showErrorHelp();
 };
 
-interface IConnectoCosmosDbArgs extends ICosmosDBService {
+interface IConnectCosmosDbArgs extends ICosmosDBService {
     bot: string;
     secret: string;
     stdin: boolean;
     input?: string;
-    [key: string]: string | boolean | undefined;
 }
 
 program
@@ -41,7 +40,7 @@ program
     .option('--stdin', 'arguments are passed in as JSON object via stdin')
     .action((cmd: program.Command, actions: program.Command) => undefined);
 
-const args: IConnectoCosmosDbArgs = {
+const args: IConnectCosmosDbArgs = {
     bot: '',
     secret: '',
     stdin: true,
@@ -56,11 +55,7 @@ const args: IConnectoCosmosDbArgs = {
 };
 
 const commands: program.Command = program.parse(process.argv);
-for (const i of commands.args) {
-    if (args.hasOwnProperty(i)) {
-        args[i] = commands[i];
-    }
-}
+Object.assign(args, commands);
 
 if (process.argv.length < 3) {
     program.help();
