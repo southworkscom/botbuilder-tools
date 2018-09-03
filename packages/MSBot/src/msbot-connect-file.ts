@@ -16,8 +16,6 @@ program.Command.prototype.unknownOption = function (): void {
 interface IConnectFileArgs extends IFileService {
     bot: string;
     secret: string;
-    // tslint:disable-next-line:no-any
-    [key: string]: any;
 }
 
 program
@@ -38,9 +36,7 @@ const args: IConnectFileArgs = {
     name: ''
 };
 
-for (const key of args.keys) {
-    args[key] = commands[key];
-}
+Object.assign(args, commands);
 
 if (process.argv.length < 3) {
     program.help();
