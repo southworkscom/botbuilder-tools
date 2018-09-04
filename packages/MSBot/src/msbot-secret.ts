@@ -17,7 +17,6 @@ interface ISecretArgs {
     secret: string;
     clear: boolean;
     new: boolean;
-    [key: string]: string | boolean;
 }
 
 program
@@ -33,17 +32,13 @@ program
 const args: ISecretArgs = {
     bot: '',
     secret: '',
-    endpoint: '',
     clear: false,
     new: false
 };
 
 const commands: program.Command = program.parse(process.argv);
-for (const i of commands.args) {
-    if (args.hasOwnProperty(i)) {
-        args[i] = commands[i];
-    }
-}
+Object.assign(args, commands);
+
 if (process.argv.length < 3) {
     showErrorHelp();
 } else {

@@ -16,7 +16,6 @@ program.Command.prototype.unknownOption = (): void => {
 interface IListArgs {
     bot: string;
     secret: string;
-    [key: string]: string;
 }
 
 program
@@ -31,11 +30,7 @@ const args: IListArgs = {
 };
 
 const commands: program.Command = program.parse(process.argv);
-for (const i of commands.args) {
-    if (args.hasOwnProperty(i)) {
-        args[i] = commands[i];
-    }
-}
+Object.assign(args, commands);
 
 if (!args.bot) {
     BotConfiguration.loadBotFromFolder(process.cwd(), args.secret)
