@@ -22,7 +22,6 @@ interface IInitArgs {
     appId: string;
     appPassword: string;
     quiet: boolean;
-    [key: string]: string | boolean;
 }
 
 program
@@ -48,11 +47,8 @@ const args: IInitArgs = {
 };
 
 const commands: program.Command = program.parse(process.argv);
-for (const i of commands.args) {
-    if (args.hasOwnProperty(i)) {
-        args[i] = commands[i];
-    }
-}
+Object.assign(args, commands);
+
 if (!args.quiet) {
 
     let exists: boolean = fsx.existsSync(`${args.name}.bot`);
