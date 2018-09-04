@@ -4,6 +4,7 @@
   "description": "MSBot command line tool for manipulating Microsoft Bot Framework .bot files",
   "main": "bin/BotConfig.js",
   "scripts": {
+    "test": "cd test/ && mocha --opts mocha.opts",
     "build": "tsc"
   },
   "bin": {
