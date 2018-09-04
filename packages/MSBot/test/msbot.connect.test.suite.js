@@ -3,7 +3,7 @@ let assert = require('assert');
 let util = require('util');
 let fs = require('fs');
 let exec = util.promisify(require('child_process').exec);
-const msbot = require.resolve('../bin/msbot.js')
+const msbot = require.resolve('../bin/msbot.js');
 
 describe("msbot connection tests", () => {
 

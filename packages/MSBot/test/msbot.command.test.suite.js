@@ -4,6 +4,7 @@ let util = require('util');
 let fs = require('fs');
 let exec = util.promisify(require('child_process').exec);
 const msbot = require.resolve('../bin/msbot.js');
+const botConfig = require.resolve('./bot.txt');
 
 describe("msbot commands", () => {
     it("msbot init", async () => {
@@ -26,7 +27,7 @@ describe("msbot commands", () => {
         let p = await exec(`node ${ msbot } get -b bot.txt 141`);
         let result = JSON.parse(p.stdout);
 
-        let bot = await bf.BotConfiguration.load("bot.txt");
+        let bot = await bf.BotConfiguration.load(`${botConfig}`);
 
         assert.deepEqual(result, bot.findServiceByNameOrId(141), "service by id is wrong");
 
@@ -37,7 +38,7 @@ describe("msbot commands", () => {
     
 
     it("msbot list", async () => {
-        let bot = await bf.BotConfiguration.load("bot.txt");
+        let bot = await bf.BotConfiguration.load(`${botConfig}`);
         let p = await exec(`node ${ msbot } list -b bot.txt`);
         let result = JSON.parse(p.stdout);
         assert.deepEqual(result.services, bot.toJSON().services, "services are different");
@@ -54,7 +55,7 @@ describe("msbot commands", () => {
 
 
     it("msbot secret --new add", async () => {
-        var config = await bf.BotConfiguration.load("bot.txt");
+        var config = await bf.BotConfiguration.load(`${botConfig}`);
         config.saveAs('save.bot');
 
         // test add secret
@@ -68,7 +69,7 @@ describe("msbot commands", () => {
     });
 
     it("msbot secret --new replace", async () => {
-        var config = await bf.BotConfiguration.load("bot.txt");
+        var config = await bf.BotConfiguration.load(`${botConfig}`);
         let secret = bf.BotConfiguration.generateKey();
         config.saveAs('save.bot', secret);
 
@@ -80,7 +81,7 @@ describe("msbot commands", () => {
     });
 
     it("msbot secret --clear", async () => {
-        var config = await bf.BotConfiguration.load("bot.txt");
+        var config = await bf.BotConfiguration.load(`${botConfig}`);
         let secret = bf.BotConfiguration.generateKey();
         config.saveAs('save.bot', secret);
 
