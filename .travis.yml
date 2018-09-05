@@ -5,7 +5,7 @@ node_js:
   - "node"
 install: true
 script:
-  - sudo npm i -g dotnet-2.0.0
+  - npm i -g dotnet-2.0.0
   - echo test luis-apis
   - sudo npm config set registry https://botbuilder.myget.org/F/botbuilder-tools-daily/npm/
   - sudo npm i -g luis-apis
