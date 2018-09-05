@@ -1,3 +1,4 @@
+os: osx
 sudo: true
 language: node_js
 node_js:
@@ -5,16 +6,6 @@ node_js:
 install: true
 script:
   - sudo npm i -g dotnet-2.0.0
-  - echo test luis-apis
-  - sudo npm config set registry https://botbuilder.myget.org/F/botbuilder-tools-daily/npm/
-  - sudo npm i -g luis-apis
-  - luis
-  - echo luisgen
-  - sudo npm i -g luisgen
-  - luisgen
-  - echo botdispatch
-  - sudo npm i -g botdispatch
-  - botdispatch
   - cd $HOME/.npm/_logs/
   - ls -la
   - cat $HOME/.npm/_logs/*.log
