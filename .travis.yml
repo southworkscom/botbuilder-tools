@@ -1,17 +1,16 @@
 os: osx
-sudo: true
 language: node_js
 node_js:
   - "node"
 install: true
 script:
   - echo test luis-apis
-  - sudo npm config set registry https://botbuilder.myget.org/F/botbuilder-tools-daily/npm/
-  - sudo npm i -g luis-apis
+  - npm config set registry https://botbuilder.myget.org/F/botbuilder-tools-daily/npm/
+  - npm i -g luis-apis
   - luis
   - echo luisgen
-  - sudo npm i -g luisgen
+  - npm i -g luisgen
   - luisgen
   - echo botdispatch
-  - sudo npm i -g botdispatch
+  - npm i -g botdispatch
   - botdispatch
