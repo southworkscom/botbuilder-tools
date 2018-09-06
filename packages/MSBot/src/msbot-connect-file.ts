@@ -34,7 +34,7 @@ program
     });
 
 const command: program.Command = program.parse(process.argv);
-const args = <IConnectFileArgs>{};
+const args: IConnectFileArgs = <IConnectFileArgs>{};
 Object.assign(args, command);
 
 if (process.argv.length < 3) {
@@ -58,8 +58,8 @@ if (process.argv.length < 3) {
 }
 
 async function processConnectFile(config: BotConfiguration): Promise<BotConfiguration> {
-    if (!args.path && !args.file)
-        throw new Error('missing --file');
+    if (!args.path && !args.file) {
+        throw new Error('missing --file'); }
 
     // add the service
     const newService = new FileService({
