@@ -29,7 +29,7 @@ export function spawnAsync(command: string, stdout?: (data: string) => void, std
             if (code > 0) {
                 reject(` ${code}`);
             } else {
-                resolve(out); }
+                resolve(out);
             }
         });
     });
