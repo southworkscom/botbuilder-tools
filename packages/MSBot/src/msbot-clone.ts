@@ -6,12 +6,11 @@
 // tslint:disable:no-object-literal-type-assertion
 import {
     AppInsightsService, BlobStorageService, BotConfiguration,
-    BotRecipe, BotService, EndpointService, IAppInsightsService,
-    IBlobResource, IBlobStorageService, IBotService,
+    BotRecipe, BotService, CosmosDbService, DispatchService, EndpointService,
+    FileService, GenericService, IBlobResource, IBotService,
     ICosmosDBResource, IDispatchResource, IDispatchService,
-    IEndpointService, IFileResource, IFileService,
-    IGenericResource, IGenericService, ILuisService,
-    IQnAService, IUrlResource, ServiceTypes
+    IEndpointService, IFileResource, IGenericResource,
+    ILuisService, IQnAService, IUrlResource, ServiceTypes
     } from 'botframework-config';
 import * as chalk from 'chalk';
 import * as child_process from 'child_process';
@@ -327,7 +326,7 @@ async function processConfiguration(): Promise<void> {
                             tenantId: args.tenantId,
                             subscriptionId: args.subscriptionId,
                             resourceGroup: args.groupName,
-                            serviceName: azBot.name
+                            serviceName: azBot.name,
                             appId: azBot.appId
                         }));
                         await config.save();
@@ -537,7 +536,7 @@ async function processConfiguration(): Promise<void> {
                     tenantId: args.tenantId,
                     subscriptionId: args.subscriptionId,
                     resourceGroup: args.groupName,
-                    serviceName: azBot.name
+                    serviceName: azBot.name,
                     appId: azBot.appId
                 }));
 
