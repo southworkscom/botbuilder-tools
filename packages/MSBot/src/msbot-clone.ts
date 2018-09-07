@@ -327,7 +327,8 @@ async function processConfiguration(): Promise<void> {
                             tenantId: args.tenantId,
                             subscriptionId: args.subscriptionId,
                             resourceGroup: args.groupName,
-                            serviceName: azBot.name
+                            // tslint:disable-next-line:trailing-comma
+                            serviceName: azBot.name,
                         });
                         await config.save();
                     }
@@ -535,7 +536,8 @@ async function processConfiguration(): Promise<void> {
                     tenantId: args.tenantId,
                     subscriptionId: args.subscriptionId,
                     resourceGroup: args.groupName,
-                    serviceName: azBot.name
+                    // tslint:disable-next-line:trailing-comma
+                    serviceName: azBot.name,
                 }));
 
                 // add endpoint
