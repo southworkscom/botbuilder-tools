@@ -3,6 +3,7 @@
  * Licensed under the MIT License.
  */
 // tslint:disable:no-console
+// tslint:disable:no-object-literal-type-assertion
 import {
     AppInsightsService, BlobStorageService, BotConfiguration,
     BotRecipe, BotService, EndpointService, IAppInsightsService,
