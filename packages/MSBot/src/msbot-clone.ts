@@ -359,11 +359,6 @@ async function processConfiguration(): Promise<void> {
                         logCommand(args, `Creating Azure CosmosDB collection [${cosmosResource.collection}]`, command);
                         output = await exec(command);
 
-                        // get connection string is broken
-                        // command = `az cosmosdb list-connection-strings -g ${azGroup.name} -n ${args.name}`;
-                        // logCommand(args, `Fetching cosmosdb connection strings ${cosmosResource.collection}`, command);
-                        // p = await exec(command);
-                        // let connections = JSON.parse(p.stdout);
                         const connectionString: string = `AccountEndpoint=https://${cosmosName}.documents.azure.com:443/;` +
                                                         `AccountKey=${cosmosDbKeys.primaryMasterKey};`;
 
