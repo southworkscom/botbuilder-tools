@@ -10,7 +10,7 @@ import {
     ICosmosDBResource, IDispatchResource, IDispatchService,
     IEndpointService, IFileResource, IFileService,
     IGenericResource, IGenericService, ILuisService,
-    IQnAService, IResource, IUrlResource, ServiceTypes, IAzureService
+    IQnAService, IUrlResource, ServiceTypes
     } from 'botframework-config';
 import * as chalk from 'chalk';
 import * as child_process from 'child_process';
@@ -20,6 +20,7 @@ import * as txtfile from 'read-text-file';
 import * as url from 'url';
 import * as util from 'util';
 import { spawnAsync } from './processUtils';
+// tslint:disable-next-line:no-var-requires no-require-imports
 const opn: Function = require('opn');
 const exec: Function = util.promisify(child_process.exec);
 
@@ -250,12 +251,14 @@ async function processConfiguration(): Promise<void> {
         logCommand(args, `Fetching bot extended information [${args.name}]`, command);
         output = await exec(command);
 
+        // tslint:disable-next-line:no-any
         const azBotExtended: any = JSON.parse(output.stdout);
 
         // fetch co-created resources so we can get blob and appinsights data
         command = `az resource list -g ${azGroup.name}`;
         logCommand(args, `Fetching co-created resources [${args.name}]`, command);
         output = await exec(command);
+        // tslint:disable-next-line:no-any
         const azGroupResources: any = JSON.parse(output.stdout);
         let appInsightInfo: {name: string} = { name: ''};
         let storageInfo: {name: string} = {name: ''};
@@ -458,6 +461,7 @@ async function processConfiguration(): Promise<void> {
                         const luisService: ILuisService = <ILuisService>JSON.parse(output.stdout);
 
                         const dispatchService: IDispatchService = { serviceIds: dispatchResource.serviceIds, ...luisService};
+                        // tslint:disable-next-line:no-any
                         (<any>dispatchService).type = ServiceTypes.Dispatch;
                         dispatchService.id = resource.id; // keep same resource id
                         config.services.push(new DispatchService(dispatchService));
@@ -522,6 +526,7 @@ async function processConfiguration(): Promise<void> {
                         break;
                     case ServiceTypes.Bot:
                         hasBot = true;
+                    default:
                 }
             }
             if (!hasBot && azBot) {
