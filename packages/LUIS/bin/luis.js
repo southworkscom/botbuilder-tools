@@ -686,7 +686,8 @@ async function initializeConfig() {
 }
 
 async function waitForTrainingToComplete(client, args) {
-    do {
+    // eslint-disable-next-line no-constant-condition
+    while (true) { 
         let result = await client.train.getStatus(args.region, args.appId, args.versionId, args);
         // get completed or up to date items
         let completedItems = result.filter(item => { return (item.details.status == "Success") || (item.details.status == "UpToDate") });
@@ -695,7 +696,7 @@ async function waitForTrainingToComplete(client, args) {
         if (failedItems.length !== 0) throw new Error(`Training failed for ${failedItems[0].modelId}: ${failedItems[0].details.failureReason}`);
         process.stderr.write(`${completedItems.length}/${result.length} complete.\r`);
         await Delay(1000);
-    } while (true);
+    }
 }
 
 /**
