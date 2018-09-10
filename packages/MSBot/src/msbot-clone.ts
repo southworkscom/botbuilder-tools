@@ -3,7 +3,7 @@
  * Licensed under the MIT License.
  */
 // tslint:disable:no-console
-import { AppInsightsService, BlobStorageService, BotConfiguration, BotRecipe, BotService, CosmosDbService, DispatchService, EndpointService, FileService, GenericService, IBlobResource, IBotService, ICosmosDBResource, IDispatchResource, IDispatchService, IEndpointService, IFileResource, IGenericResource, ILuisService, IUrlResource, LuisService, QnaMakerService, ServiceTypes } from 'botframework-config';
+import { AppInsightsService, BlobStorageService, BotConfiguration, BotRecipe, BotService, EndpointService, IAppInsightsService, IBlobResource, IBlobStorageService, IBotService, ICosmosDBResource, IDispatchResource, IDispatchService, IEndpointService, IFileResource, IFileService, IGenericResource, IGenericService, ILuisService, IQnAService, IUrlResource, ServiceTypes } from 'botframework-config';
 import * as chalk from 'chalk';
 import * as child_process from 'child_process';
 import * as program from 'commander';
@@ -242,7 +242,7 @@ async function processConfiguration(): Promise<void> {
                 case ServiceTypes.AppInsights:
                     {
                         // this was created via az bot create, hook it up
-                        config.services.push(new AppInsightsService({
+                        config.services.push(<IAppInsightsService>{
                             type: ServiceTypes.AppInsights,
                             id: resource.id,
                             tenantId: args.tenantId,
@@ -253,7 +253,7 @@ async function processConfiguration(): Promise<void> {
                             instrumentationKey: azBotExtended.properties.developerAppInsightKey,
                             applicationId: azBotExtended.properties.developerAppInsightsApplicationId,
                             apiKeys: azBotExtended.properties.developerAppInsightsApiKey
-                        }));
+                        });
                         await config.save();
                     }
                     break;
@@ -277,7 +277,7 @@ async function processConfiguration(): Promise<void> {
                             resourceGroup: args.groupName,
                             connectionString: blobConnection.connectionString,
                             container: blobResource.container
-                        }));
+                        });
                         await config.save();
                     }
                     break;
@@ -285,7 +285,7 @@ async function processConfiguration(): Promise<void> {
                 case ServiceTypes.Bot:
                     {
                         // created via az bot create, register the result
-                        config.services.push(new BotService({
+                        config.services.push(<IBotService>{
                             type: ServiceTypes.Bot,
                             id: resource.id,
                             name: azBot.name,
@@ -293,8 +293,7 @@ async function processConfiguration(): Promise<void> {
                             subscriptionId: args.subscriptionId,
                             resourceGroup: args.groupName,
                             serviceName: azBot.name,
-                            appId: azBot.appId
-                        }));
+                        });
                         await config.save();
                     }
                     break;
@@ -334,7 +333,7 @@ async function processConfiguration(): Promise<void> {
                         let connectionString: string = `AccountEndpoint=https://${cosmosName}.documents.azure.com:443/;AccountKey=${cosmosDbKeys.primaryMasterKey};`;
 
                         // register it as a service
-                        config.services.push(new CosmosDbService({
+                        config.services.push(<ICosmosDBResource>{
                             type: ServiceTypes.CosmosDB,
                             id: cosmosResource.id,
                             name: cosmosName,
@@ -342,11 +341,10 @@ async function processConfiguration(): Promise<void> {
                             tenantId: args.tenantId,
                             subscriptionId: args.subscriptionId,
                             resourceGroup: args.groupName,
-                            endpoint: `https://${cosmosName}.documents.azure.com:443/`,
-                            key: cosmosDbKeys.primaryMasterKey,
+                            connectionString: connectionString,
                             database: cosmosResource.database,
                             collection: cosmosResource.collection,
-                        }));
+                        });
                     }
                     await config.save();
                     break;
@@ -356,28 +354,28 @@ async function processConfiguration(): Promise<void> {
                         let urlResource: IUrlResource = <IUrlResource>resource;
                         if (urlResource.url && urlResource.url.indexOf('localhost') > 0) {
                             // add localhost record as is, but add appId/password
-                            config.services.push(new EndpointService({
+                            config.services.push(<IEndpointService>{
                                 type: ServiceTypes.Endpoint,
                                 id: resource.id,
                                 name: resource.name,
                                 appId: azBotEndpoint.appId,
                                 appPassword: azBotEndpoint.appPassword,
                                 endpoint: urlResource.url
-                            }));
+                            });
                         } else {
                             // merge oldUrl and new Url hostname
                             let oldUrl: URL = new url.URL(urlResource.url);
                             let azUrl: URL = new url.URL(azBotEndpoint.endpoint);
                             oldUrl.hostname = azUrl.hostname;
 
-                            config.services.push(new EndpointService({
+                            config.services.push(<IEndpointService>{
                                 type: ServiceTypes.Endpoint,
                                 id: resource.id,
                                 name: resource.name,
                                 appId: azBotEndpoint.appId,
                                 appPassword: azBotEndpoint.appPassword,
                                 endpoint: oldUrl.href
-                            }));
+                            });
 
                             if (oldUrl != azUrl) {
                                 // TODO update bot service record with merged url
@@ -396,7 +394,7 @@ async function processConfiguration(): Promise<void> {
                             id: fileResource.id,
                             name: fileResource.name,
                             path: fileResource.path,
-                        }));
+                        });
                         await config.save();
                     }
                     break;
@@ -410,7 +408,7 @@ async function processConfiguration(): Promise<void> {
                             name: genericResource.name,
                             url: genericResource.url,
                             configuration: genericResource.configuration,
-                        }));
+                        });
                         await config.save();
                     }
                     break;
@@ -430,7 +428,7 @@ async function processConfiguration(): Promise<void> {
                         let dispatchService: IDispatchService = Object.assign({ serviceIds: dispatchResource.serviceIds, }, luisService);
                         (<any>dispatchService).type = ServiceTypes.Dispatch;
                         dispatchService.id = resource.id; // keep same resource id
-                        config.services.push(new DispatchService(dispatchService));
+                        config.services.push(dispatchService);
                         await config.save();
 
                         // train luis service
@@ -503,7 +501,6 @@ async function processConfiguration(): Promise<void> {
                     subscriptionId: args.subscriptionId,
                     resourceGroup: args.groupName,
                     serviceName: azBot.name,
-                    appId: azBot.appId
                 }));
 
                 // add endpoint
@@ -636,4 +633,3 @@ function logCommand(args: ICloneArgs, message: string, command: string): void {
         }
     }
 }
-
