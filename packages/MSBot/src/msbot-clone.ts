@@ -109,26 +109,10 @@ async function processConfiguration(): Promise<void> {
         }
 
         // create group
-        const azBase: ICloneArgs = {
-            name: '',
-            folder: '',
-            location: '',
-            subscriptionId: '',
-            tenantId: '',
-            groupName: '',
-            secret: '',
-            quiet: false,
-            verbose: false,
-            luisAuthoringKey: '',
-            luisSubscriptionKey: '',
-            qnaSubscriptionKey: '',
-            luisRegion: '',
-            args: []
-        };
-        let azGroup: ICloneArgs = azBase;
+        let azGroup: ICloneArgs = <ICloneArgs>{};
         let azBot: IBotService | undefined;
-        let azQnaSubscription: ICloneArgs = azBase;
-        let azLuisSubscription: ICloneArgs = azBase;
+        let azQnaSubscription: ICloneArgs = <ICloneArgs>{};
+        let azLuisSubscription: ICloneArgs = <ICloneArgs>{};
 
         // make sure we have args for services and provisioned LUIS and QnA cognitive services
         for (const resource of recipe.resources) {
