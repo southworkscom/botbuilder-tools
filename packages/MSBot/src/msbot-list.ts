@@ -3,6 +3,7 @@
  * Licensed under the MIT License.
  */
 // tslint:disable:no-console
+// tslint:disable:no-object-literal-type-assertion
 import { BotConfiguration, IConnectedService } from 'botframework-config';
 import * as chalk from 'chalk';
 import * as program from 'commander';
@@ -26,7 +27,7 @@ program
     .action((cmd: program.Command, actions: program.Command) => undefined);
 
 const command: program.Command = program.parse(process.argv);
-const args = <IListArgs>{};
+const args: IListArgs = <IListArgs>{};
 Object.assign(args, command);
 
 if (!args.bot) {

@@ -3,6 +3,7 @@
  * Licensed under the MIT License.
  */
 // tslint:disable:no-console
+// tslint:disable:no-object-literal-type-assertion
 import { BotConfiguration, EndpointService } from 'botframework-config';
 import * as chalk from 'chalk';
 import * as program from 'commander';
@@ -38,7 +39,7 @@ program
     });
 
 const command: program.Command = program.parse(process.argv);
-const args = <IInitArgs>{};
+const args: IInitArgs = <IInitArgs>{};
 Object.assign(args, command);
 
 if (!args.quiet) {
@@ -53,18 +54,19 @@ if (!args.quiet) {
     }
 
     while (!args.endpoint || args.endpoint.length === 0) {
-        args.endpoint = readline.question(`What localhost endpoint does your bot use for debugging [Example: http://localhost:3978/api/messages]? `, {
-            defaultInput: ' '
-        });
+        // tslint:disable-next-line:max-line-length
+        args.endpoint = readline.question(`What localhost endpoint does your bot use for debugging? ` +
+                                          `[Example: http://localhost:3978/api/messages] `,
+                                          { defaultInput: ' ' });
     }
 
     if (validurl.isHttpUri(args.endpoint) || validurl.isHttpsUri(args.endpoint)) {
 
         if (!args.appId || args.appId.length === 0) {
-            const answer = readline.question(`Do you have an appId for endpoint? [no] `, {
+            const answer: string = readline.question(`Do you have an appId for endpoint? [no] `, {
                 defaultInput: 'no'
             });
-            if (answer == 'y' || answer === 'yes') {
+            if (answer === 'y' || answer === 'yes') {
                 args.appId = readline.question(`What is your appId for ${args.endpoint}? [none] `, {
                     defaultInput: ''
                 });
