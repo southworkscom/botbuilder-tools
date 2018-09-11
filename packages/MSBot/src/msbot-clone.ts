@@ -2,8 +2,14 @@
  * Copyright(c) Microsoft Corporation.All rights reserved.
  * Licensed under the MIT License.
  */
-// tslint:disable:no-console
-import { AppInsightsService, BlobStorageService, BotConfiguration, BotRecipe, BotService, CosmosDbService, DispatchService, EndpointService, FileService, GenericService, IBlobResource, IBotService, ICosmosDBResource, IDispatchResource, IDispatchService, IEndpointService, IFileResource, IGenericResource, ILuisService, IUrlResource, LuisService, QnaMakerService, ServiceTypes } from 'botframework-config';
+/* tslint:disable */
+import { AppInsightsService, BlobStorageService, BotConfiguration,
+        BotRecipe, BotService, CosmosDbService, DispatchService,
+        EndpointService, FileService, GenericService, IBlobResource,
+        IBotService, ICosmosDBResource, IDispatchResource,
+        IDispatchService, IEndpointService, IFileResource,
+        IGenericResource, ILuisService, IUrlResource, LuisService,
+        QnaMakerService, ServiceTypes } from 'botframework-config';
 import * as chalk from 'chalk';
 import * as child_process from 'child_process';
 import * as program from 'commander';
@@ -43,17 +49,19 @@ program
     .option('-f, --folder <folder>', 'path to folder containing exported resources')
     .option('-l, --location <location>', 'location to create the bot service in (westus, ...)')
     .option('--luisAuthoringKey <luisAuthoringKey>', 'authoring key for creating luis resources')
-    .option('--subscriptionId <subscriptionId>', '(OPTIONAL) Azure subscriptionId to clone bot to, if not passed then current az account will be used')
-    .option('--groupName <groupName>', '(OPTIONAL) groupName for cloned bot, if not passed then new bot name will be used for the new group')
+    .option('--subscriptionId <subscriptionId>',
+            '(OPTIONAL) Azure subscriptionId to clone bot to, if not passed then current az account will be used')
+    .option('--groupName <groupName>',
+            '(OPTIONAL) groupName for cloned bot, if not passed then new bot name will be used for the new group')
     .option('--verbose', 'show verbose information')
     .option('-q, --quiet', 'disable output')
     .description('allows you to clone a bot with a new configuration')
     .action((cmd: program.Command, actions: program.Command) => undefined);
 program.parse(process.argv);
 
-const command: program.Command = program.parse(process.argv);
+const commandArgs: program.Command = program.parse(process.argv);
 const args = <ICloneArgs>{};
-Object.assign(args, command);
+Object.assign(args, commandArgs);
 
 if (typeof (args.name) != 'string') {
     console.error(chalk.default.redBright('missing --name argument'));
@@ -62,7 +70,7 @@ if (typeof (args.name) != 'string') {
 
 let config = new BotConfiguration();
 config.name = args.name;
-config.saveAs(config.name + '.bot')
+config.saveAs(`${config.name}.bot`)
     .then(processConfiguration)
     .catch((reason) => {
         console.error(chalk.default.redBright(reason.toString().split('\n')[0]));
@@ -73,7 +81,7 @@ async function processConfiguration(): Promise<void> {
     if (!args.folder) {
         throw new Error('missing --folder argument');
     }
-    let recipeJson = await txtfile.read(args.folder + `/bot.recipe`);
+    let recipeJson = await txtfile.read(`${args.folder}/bot.recipe`);
     let recipe = <BotRecipe>JSON.parse(recipeJson);
 
     try {
@@ -116,7 +124,8 @@ async function processConfiguration(): Promise<void> {
 
                         // create luis subscription
                         let luisCogsName = `${args.name}-LUIS`;
-                        command = `az cognitiveservices account create -g ${azGroup.name} --kind LUIS -n "${luisCogsName}" --location ${args.location} --sku S0 --yes`;
+                        command = `az cognitiveservices account create -g ${azGroup.name}`
+                                + ` --kind LUIS -n "${luisCogsName}" --location ${args.location} --sku S0 --yes`;
                         logCommand(args, `Creating LUIS Cognitive Service [${luisCogsName}]`, command);
                         p = await exec(command);
                         azLuisSubscription = JSON.parse(p.stdout);
@@ -142,10 +151,10 @@ async function processConfiguration(): Promise<void> {
                         }
                         // create qnaMaker service in resource group
 
-                        // we have a group, and app service, 
+                        // we have a group, and app service,
 
                         // provision search instance
-                        let searchName = args.name.toLowerCase() + '-search';
+                        let searchName = `${args.name.toLowerCase()}-search`;
                         command = `az search service create -g ${azGroup.name} -n "${searchName}" --sku standard`;
                         logCommand(args, `Creating Azure Search Service [${searchName}]`, command);
                         p = await exec(command);
@@ -158,7 +167,7 @@ async function processConfiguration(): Promise<void> {
                         let searchKeys = JSON.parse(p.stdout);
 
                         // create qna host service
-                        let qnaHostName = args.name + '-qnahost';
+                        let qnaHostName = `${args.name}-qnahost`;
                         command = `az webapp create -g ${azGroup.name} -n ${qnaHostName} --plan ${args.name}`;
                         logCommand(args, `Creating QnA Maker host web service [${qnaHostName}]`, command);
                         p = await exec(command);
@@ -180,7 +189,7 @@ async function processConfiguration(): Promise<void> {
                         p = await exec(command);
 
                         // create qnamaker account
-                        let qnaAccountName = args.name + '-QnAMaker';
+                        let qnaAccountName = `${args.name}-QnAMaker`;
                         command = `az cognitiveservices account create -g ${azGroup.name} --kind QnAMaker -n "${qnaAccountName}" --sku S0 `;
                         command += `--location ${azGroup.location} --yes `;
                         command += `--api-properties qnaRuntimeEndpoint=https://${qnaHostName}.azurewebsites.net`;
@@ -229,9 +238,9 @@ async function processConfiguration(): Promise<void> {
         let appInsightInfo;
         let storageInfo;
         for (let groupResource of azGroupResources) {
-            if (groupResource.type == "microsoft.insights/components") {
+            if (groupResource.type == 'microsoft.insights/components') {
                 appInsightInfo = groupResource;
-            } else if (groupResource.type == "Microsoft.Storage/storageAccounts") {
+            } else if (groupResource.type == 'Microsoft.Storage/storageAccounts') {
                 storageInfo = groupResource;
             }
         }
@@ -316,13 +325,20 @@ async function processConfiguration(): Promise<void> {
                         p = await exec(command);
                         let cosmosDbKeys = JSON.parse(p.stdout);
 
-                        // az cosmosdb database create -n clonebot1cosmosdb --key <key> -d db1 --url-connection https://clonebot1cosmosdb.documents.azure.com:443/
-                        command = `az cosmosdb database create -g ${azGroup.name} -n ${cosmosName} --key ${cosmosDbKeys.primaryMasterKey} -d ${cosmosResource.database} --url-connection https://${cosmosName}.documents.azure.com:443/`;
+                        // az cosmosdb database create -n clonebot1cosmosdb --key <key> -d db1
+                        // --url-connection https://clonebot1cosmosdb.documents.azure.com:443/
+                        command = `az cosmosdb database create -g ${azGroup.name} -n ${cosmosName} --key ` +
+                                  `${cosmosDbKeys.primaryMasterKey} -d ${cosmosResource.database}` +
+                                  ` --url-connection https://${cosmosName}.documents.azure.com:443/`;
                         logCommand(args, `Creating Azure CosmosDB database [${cosmosResource.database}]`, command);
                         p = await exec(command);
 
-                        // az cosmosdb collection create -n clonebot1cosmosdb --key <key> -d db1 --url-connection https://clonebot1cosmosdb.documents.azure.com:443/ --collection-name collection
-                        command = `az cosmosdb collection create -g ${azGroup.name} -n ${cosmosName} --key ${cosmosDbKeys.primaryMasterKey} -d ${cosmosResource.database} --url-connection https://${cosmosName}.documents.azure.com:443/ --collection-name ${cosmosResource.collection}`;
+                        // az cosmosdb collection create -n clonebot1cosmosdb --key <key> -d db1 --url-connection
+                        // https://clonebot1cosmosdb.documents.azure.com:443/ --collection-name collection
+                        command = `az cosmosdb collection create -g ${azGroup.name} -n ${cosmosName} --key ` +
+                                  `${cosmosDbKeys.primaryMasterKey} -d ${cosmosResource.database} ` +
+                                  `--url-connection https://${cosmosName}.documents.azure.com:443/ ` +
+                                  `--collection-name ${cosmosResource.collection}`;
                         logCommand(args, `Creating Azure CosmosDB collection [${cosmosResource.collection}]`, command);
                         p = await exec(command);
 
@@ -418,10 +434,11 @@ async function processConfiguration(): Promise<void> {
                     {
                         let dispatchResource = <IDispatchResource>resource;
 
-                        // import application 
-                        let luisPath = args.folder + '/' + resource.id + '.luis';
+                        // import application
+                        let luisPath = `${args.folder}/${resource.id}.luis`;
                         let appName = `${args.name}-${resource.name}`;
-                        command = `luis import application --appName ${appName} --in "${luisPath}" --authoringKey ${args.luisAuthoringKey} --msbot`;
+                        command = `luis import application --appName ${appName} --in "${luisPath}"` +
+                                  ` --authoringKey ${args.luisAuthoringKey} --msbot`;
                         logCommand(args, `Creating LUIS Dispatch application [${appName}]`, command);
                         p = await exec(command);
                         let luisService = <ILuisService>JSON.parse(p.stdout);
@@ -439,10 +456,11 @@ async function processConfiguration(): Promise<void> {
 
                 case ServiceTypes.Luis:
                     {
-                        // import application 
-                        let luisPath = args.folder + '/' + resource.id + '.luis';
+                        // import application
+                        let luisPath = `${args.folder}/${resource.id}.luis`;
                         let luisAppName = `${args.name}-${resource.name}`;
-                        command = `luis import application --appName "${luisAppName}" --in ${luisPath} --authoringKey ${args.luisAuthoringKey} --msbot`;
+                        command = `luis import application --appName "${luisAppName}" ` +
+                                  `--in ${luisPath} --authoringKey ${args.luisAuthoringKey} --msbot`;
                         logCommand(args, `Creating LUIS application [${luisAppName}]`, command);
                         p = await exec(command);
                         let luisService = new LuisService(JSON.parse(p.stdout));
@@ -457,10 +475,12 @@ async function processConfiguration(): Promise<void> {
 
                 case ServiceTypes.QnA:
                     {
-                        // qnamaker create kb --subscriptionKey c87eb99bfc274a4db6b671b43f867575  --name testtesttest --in qna.json --wait --msbot -q
+                        // qnamaker create kb --subscriptionKey c87eb99bfc274a4db6b671b43f867575
+                        //  --name testtesttest --in qna.json --wait --msbot -q
                         let qnaPath = `${args.folder}/${resource.id}.qna`;
                         let kbName = `${args.name}-${resource.name}`;
-                        command = `qnamaker create kb --subscriptionKey ${args.qnaSubscriptionKey} --name "${kbName}" --in ${qnaPath} --wait --msbot -q`;
+                        command = `qnamaker create kb --subscriptionKey ${args.qnaSubscriptionKey} ` +
+                                  `--name "${kbName}" --in ${qnaPath} --wait --msbot -q`;
                         logCommand(args, `Creating QnA Maker KB [${kbName}]`, command);
                         p = await exec(command);
                         let service = new QnaMakerService(JSON.parse(p.stdout));
@@ -558,23 +578,23 @@ async function processConfiguration(): Promise<void> {
         let message = '';
         for (let line of lines) {
             // trim to copywrite symbol, help from inner process command line args is inappropriate
-            if (line.indexOf('©') > 0)
-                break;
+            if (line.indexOf('©') > 0) {
+                break; }
             message += line;
         }
         throw new Error(message);
     }
 }
 
-
-
 async function TrainAndPublishLuisService(luisService: ILuisService) {
-    let command = `luis train version --appId ${luisService.appId} --authoringKey ${luisService.authoringKey} --versionId "${luisService.version}" --wait `;
+    let command = `luis train version --appId ${luisService.appId} ` +
+                  `--authoringKey ${luisService.authoringKey} --versionId "${luisService.version}" --wait `;
     logCommand(args, `Training LUIS application [${luisService.name}]`, command);
     await spawnAsync(command);
 
     // publish application
-    command = `luis publish version --appId ${luisService.appId} --authoringKey ${luisService.authoringKey} --versionId "${luisService.version}" --region ${luisService.region} `;
+    command = `luis publish version --appId ${luisService.appId} ` +
+              `--authoringKey ${luisService.authoringKey} --versionId "${luisService.version}" --region ${luisService.region} `;
     logCommand(args, `Publishing LUIS application [${luisService.name}]`, command);
     await exec(command);
 
@@ -592,12 +612,12 @@ async function createBot(): Promise<IBotService> {
         if (stderr.indexOf('https://microsoft.com/devicelogin') > 0) {
             console.warn(stderr.replace('WARNING: ', ''));
             opn('https://microsoft.com/devicelogin');
-        }
-        else if (stderr.indexOf('Provisioning') > 0) {
+        } else if (stderr.indexOf('Provisioning') > 0) {
             // we need to show warning to user so we can get instructions on logging in
-            console.warn(stderr.replace('WARNING: ', '') + " (this will take several minutes)");
+            console.warn(`${stderr.replace('WARNING: ', '')} (this will take several minutes)`);
         }
     });
+
     return <IBotService>JSON.parse(stdout);
 }
 
@@ -611,12 +631,14 @@ async function createGroup(): Promise<any> {
     let p = await exec(command);
     let azGroup = JSON.parse(p.stdout);
     args.groupName = azGroup.name;
+
     return azGroup;
 }
 
 function showErrorHelp() {
     program.outputHelp((str) => {
         console.error(str);
+
         return '';
     });
     console.log(chalk.default.bold(`NOTE: You did not complete clone process.`));
@@ -627,12 +649,11 @@ function showErrorHelp() {
     process.exit(1);
 }
 
-function logCommand(args: ICloneArgs, message: string, command: string) {
-    if (!args.quiet) {
+function logCommand(cloneArgs: ICloneArgs, message: string, command: string) {
+    if (!cloneArgs.quiet) {
         console.log(chalk.default.bold(message));
-        if (args.verbose) {
+        if (cloneArgs.verbose) {
             console.log(chalk.default.italic(command));
         }
     }
 }
-
