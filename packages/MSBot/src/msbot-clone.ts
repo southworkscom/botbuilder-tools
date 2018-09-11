@@ -304,7 +304,6 @@ async function processConfiguration(): Promise<void> {
                         let cosmosResource = <ICosmosDBResource>resource;
                         let cosmosName = `${args.name.toLowerCase()}`;
 
-                        // az cosmosdb create --n name -g Group1
                         command = `az cosmosdb create -n ${cosmosName} -g ${azGroup.name}`;
                         logCommand(args, `Creating Azure CosmosDB account [${cosmosName}] (long operation)`, command);
                         p = await exec(command);
@@ -316,21 +315,13 @@ async function processConfiguration(): Promise<void> {
                         p = await exec(command);
                         let cosmosDbKeys = JSON.parse(p.stdout);
 
-                        // az cosmosdb database create -n clonebot1cosmosdb --key <key> -d db1 --url-connection https://clonebot1cosmosdb.documents.azure.com:443/
                         command = `az cosmosdb database create -g ${azGroup.name} -n ${cosmosName} --key ${cosmosDbKeys.primaryMasterKey} -d ${cosmosResource.database} --url-connection https://${cosmosName}.documents.azure.com:443/`;
                         logCommand(args, `Creating Azure CosmosDB database [${cosmosResource.database}]`, command);
                         p = await exec(command);
 
-                        // az cosmosdb collection create -n clonebot1cosmosdb --key <key> -d db1 --url-connection https://clonebot1cosmosdb.documents.azure.com:443/ --collection-name collection
                         command = `az cosmosdb collection create -g ${azGroup.name} -n ${cosmosName} --key ${cosmosDbKeys.primaryMasterKey} -d ${cosmosResource.database} --url-connection https://${cosmosName}.documents.azure.com:443/ --collection-name ${cosmosResource.collection}`;
                         logCommand(args, `Creating Azure CosmosDB collection [${cosmosResource.collection}]`, command);
                         p = await exec(command);
-
-                        // get connection string is broken
-                        // command = `az cosmosdb list-connection-strings -g ${azGroup.name} -n ${args.name}`;
-                        // logCommand(args, `Fetching cosmosdb connection strings ${cosmosResource.collection}`, command);
-                        // p = await exec(command);
-                        // let connections = JSON.parse(p.stdout);
 
                         // register it as a service
                         config.services.push(new CosmosDbService({
@@ -457,7 +448,6 @@ async function processConfiguration(): Promise<void> {
 
                 case ServiceTypes.QnA:
                     {
-                        // qnamaker create kb --subscriptionKey c87eb99bfc274a4db6b671b43f867575  --name testtesttest --in qna.json --wait --msbot -q
                         let qnaPath = `${args.folder}/${resource.id}.qna`;
                         let kbName = `${args.name}-${resource.name}`;
                         command = `qnamaker create kb --subscriptionKey ${args.qnaSubscriptionKey} --name "${kbName}" --in ${qnaPath} --wait --msbot -q`;
