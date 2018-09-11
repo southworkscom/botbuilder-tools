@@ -2,7 +2,6 @@
  * Copyright(c) Microsoft Corporation.All rights reserved.
  * Licensed under the MIT License.
  */
-// tslint:disable:no-console
 import { AppInsightsService, BlobStorageService, BotConfiguration,
         BotRecipe, BotService, CosmosDbService, DispatchService,
         EndpointService, FileService, GenericService, IBlobResource,
@@ -59,9 +58,9 @@ program
     .action((cmd: program.Command, actions: program.Command) => undefined);
 program.parse(process.argv);
 
-const command: program.Command = program.parse(process.argv);
+const commandArgs: program.Command = program.parse(process.argv);
 const args = <ICloneArgs>{};
-Object.assign(args, command);
+Object.assign(args, commandArgs);
 
 if (typeof (args.name) != 'string') {
     console.error(chalk.default.redBright('missing --name argument'));
@@ -652,10 +651,10 @@ function showErrorHelp() {
     process.exit(1);
 }
 
-function logCommand(args: ICloneArgs, message: string, command: string) {
-    if (!args.quiet) {
+function logCommand(cloneArgs: ICloneArgs, message: string, command: string) {
+    if (!cloneArgs.quiet) {
         console.log(chalk.default.bold(message));
-        if (args.verbose) {
+        if (cloneArgs.verbose) {
             console.log(chalk.default.italic(command));
         }
     }
