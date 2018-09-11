@@ -150,7 +150,7 @@ async function processConfiguration(): Promise<void> {
                         }
                         // create qnaMaker service in resource group
 
-                        // we have a group, and app service, 
+                        // we have a group, and app service,
 
                         // provision search instance
                         let searchName = `${args.name.toLowerCase()}-search`;
@@ -237,9 +237,9 @@ async function processConfiguration(): Promise<void> {
         let appInsightInfo;
         let storageInfo;
         for (let groupResource of azGroupResources) {
-            if (groupResource.type == "microsoft.insights/components") {
+            if (groupResource.type == 'microsoft.insights/components') {
                 appInsightInfo = groupResource;
-            } else if (groupResource.type == "Microsoft.Storage/storageAccounts") {
+            } else if (groupResource.type == 'Microsoft.Storage/storageAccounts') {
                 storageInfo = groupResource;
             }
         }
@@ -433,7 +433,7 @@ async function processConfiguration(): Promise<void> {
                     {
                         let dispatchResource = <IDispatchResource>resource;
 
-                        // import application 
+                        // import application
                         let luisPath = `${args.folder}/${resource.id}.luis`;
                         let appName = `${args.name}-${resource.name}`;
                         command = `luis import application --appName ${appName} --in "${luisPath}"` +
@@ -455,7 +455,7 @@ async function processConfiguration(): Promise<void> {
 
                 case ServiceTypes.Luis:
                     {
-                        // import application 
+                        // import application
                         let luisPath = `${args.folder}/${resource.id}.luis`;
                         let luisAppName = `${args.name}-${resource.name}`;
                         command = `luis import application --appName "${luisAppName}" ` +
@@ -577,15 +577,13 @@ async function processConfiguration(): Promise<void> {
         let message = '';
         for (let line of lines) {
             // trim to copywrite symbol, help from inner process command line args is inappropriate
-            if (line.indexOf('©') > 0)
-                break;
+            if (line.indexOf('©') > 0) {
+                break; }
             message += line;
         }
         throw new Error(message);
     }
 }
-
-
 
 async function TrainAndPublishLuisService(luisService: ILuisService) {
     let command = `luis train version --appId ${luisService.appId} ` +
@@ -613,8 +611,7 @@ async function createBot(): Promise<IBotService> {
         if (stderr.indexOf('https://microsoft.com/devicelogin') > 0) {
             console.warn(stderr.replace('WARNING: ', ''));
             opn('https://microsoft.com/devicelogin');
-        }
-        else if (stderr.indexOf('Provisioning') > 0) {
+        } else if (stderr.indexOf('Provisioning') > 0) {
             // we need to show warning to user so we can get instructions on logging in
             console.warn(`${stderr.replace('WARNING: ', '')} (this will take several minutes)`);
         }
@@ -659,4 +656,3 @@ function logCommand(cloneArgs: ICloneArgs, message: string, command: string) {
         }
     }
 }
-
