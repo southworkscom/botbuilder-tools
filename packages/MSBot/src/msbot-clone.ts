@@ -70,7 +70,7 @@ if (typeof (args.name) != 'string') {
 
 let config = new BotConfiguration();
 config.name = args.name;
-config.saveAs(config.name + '.bot')
+config.saveAs(`${config.name}.bot`)
     .then(processConfiguration)
     .catch((reason) => {
         console.error(chalk.default.redBright(reason.toString().split('\n')[0]));
@@ -81,7 +81,7 @@ async function processConfiguration(): Promise<void> {
     if (!args.folder) {
         throw new Error('missing --folder argument');
     }
-    let recipeJson = await txtfile.read(args.folder + `/bot.recipe`);
+    let recipeJson = await txtfile.read(`${args.folder}/bot.recipe`);
     let recipe = <BotRecipe>JSON.parse(recipeJson);
 
     try {
@@ -154,7 +154,7 @@ async function processConfiguration(): Promise<void> {
                         // we have a group, and app service, 
 
                         // provision search instance
-                        let searchName = args.name.toLowerCase() + '-search';
+                        let searchName = `${args.name.toLowerCase()}-search`;
                         command = `az search service create -g ${azGroup.name} -n "${searchName}" --sku standard`;
                         logCommand(args, `Creating Azure Search Service [${searchName}]`, command);
                         p = await exec(command);
@@ -167,7 +167,7 @@ async function processConfiguration(): Promise<void> {
                         let searchKeys = JSON.parse(p.stdout);
 
                         // create qna host service
-                        let qnaHostName = args.name + '-qnahost';
+                        let qnaHostName = `${args.name}-qnahost`;
                         command = `az webapp create -g ${azGroup.name} -n ${qnaHostName} --plan ${args.name}`;
                         logCommand(args, `Creating QnA Maker host web service [${qnaHostName}]`, command);
                         p = await exec(command);
@@ -189,7 +189,7 @@ async function processConfiguration(): Promise<void> {
                         p = await exec(command);
 
                         // create qnamaker account
-                        let qnaAccountName = args.name + '-QnAMaker';
+                        let qnaAccountName = `${args.name}-QnAMaker`;
                         command = `az cognitiveservices account create -g ${azGroup.name} --kind QnAMaker -n "${qnaAccountName}" --sku S0 `;
                         command += `--location ${azGroup.location} --yes `;
                         command += `--api-properties qnaRuntimeEndpoint=https://${qnaHostName}.azurewebsites.net`;
@@ -435,7 +435,7 @@ async function processConfiguration(): Promise<void> {
                         let dispatchResource = <IDispatchResource>resource;
 
                         // import application 
-                        let luisPath = args.folder + '/' + resource.id + '.luis';
+                        let luisPath = `${args.folder}/${resource.id}.luis`;
                         let appName = `${args.name}-${resource.name}`;
                         command = `luis import application --appName ${appName} --in "${luisPath}"` +
                                   ` --authoringKey ${args.luisAuthoringKey} --msbot`;
@@ -457,7 +457,7 @@ async function processConfiguration(): Promise<void> {
                 case ServiceTypes.Luis:
                     {
                         // import application 
-                        let luisPath = args.folder + '/' + resource.id + '.luis';
+                        let luisPath = `${args.folder}/${resource.id}.luis`;
                         let luisAppName = `${args.name}-${resource.name}`;
                         command = `luis import application --appName "${luisAppName}" ` +
                                   `--in ${luisPath} --authoringKey ${args.luisAuthoringKey} --msbot`;
@@ -617,7 +617,7 @@ async function createBot(): Promise<IBotService> {
         }
         else if (stderr.indexOf('Provisioning') > 0) {
             // we need to show warning to user so we can get instructions on logging in
-            console.warn(stderr.replace('WARNING: ', '') + " (this will take several minutes)");
+            console.warn(`${stderr.replace('WARNING: ', '')} (this will take several minutes)`);
         }
     });
 
