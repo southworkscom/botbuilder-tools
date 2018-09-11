@@ -620,6 +620,7 @@ async function createBot(): Promise<IBotService> {
             console.warn(stderr.replace('WARNING: ', '') + " (this will take several minutes)");
         }
     });
+
     return <IBotService>JSON.parse(stdout);
 }
 
@@ -633,12 +634,14 @@ async function createGroup(): Promise<any> {
     let p = await exec(command);
     let azGroup = JSON.parse(p.stdout);
     args.groupName = azGroup.name;
+
     return azGroup;
 }
 
 function showErrorHelp() {
     program.outputHelp((str) => {
         console.error(str);
+
         return '';
     });
     console.log(chalk.default.bold(`NOTE: You did not complete clone process.`));
