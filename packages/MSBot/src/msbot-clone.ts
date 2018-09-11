@@ -2,6 +2,7 @@
  * Copyright(c) Microsoft Corporation.All rights reserved.
  * Licensed under the MIT License.
  */
+/* tslint:disable */
 import { AppInsightsService, BlobStorageService, BotConfiguration,
         BotRecipe, BotService, CosmosDbService, DispatchService,
         EndpointService, FileService, GenericService, IBlobResource,
