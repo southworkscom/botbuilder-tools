@@ -33,8 +33,8 @@ $commPreference:call=
 - call
 - cell phone
 - phone`,
-'langCode':'de',
-'translatedContent': `$userName:simple
+        'langCode':'de',
+        'translatedContent': `$userName:simple
 $PREBUILT:datetimeV2
 $PREBUILT:age
 $PREBUILT:dimension

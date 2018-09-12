@@ -64,7 +64,7 @@ const translateModule = {
                 throw(err);
             }
             filesToParse.splice(0,1);
-         }
+        }
     }
 }
 
