@@ -74,7 +74,7 @@ describe("msbot commands", () => {
         config.saveAs('save.bot', secret);
 
         // test new secret
-        p = await exec(`node ${msbot} secret -b save.bot --secret ${secret} --new`);
+        const p = await exec(`node ${msbot} secret -b save.bot --secret ${secret} --new`);
         fs.unlinkSync("save.bot");
         let secret2 = p.stdout.split('\n')[1];
         assert.notEqual(secret2, secret, "secret should change");
@@ -86,7 +86,7 @@ describe("msbot commands", () => {
         config.saveAs('save.bot', secret);
 
         // test clear secret
-        p = await exec(`node ${msbot} secret -b save.bot --secret ${secret} --clear`);
+        await exec(`node ${msbot} secret -b save.bot --secret ${secret} --clear`);
 
         // verify we can load without a password
         config = await bf.BotConfiguration.load("save.bot");

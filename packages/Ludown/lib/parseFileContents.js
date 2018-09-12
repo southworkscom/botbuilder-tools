@@ -128,7 +128,7 @@ const parseFileContentsModule = {
         }
         // loop through every chunk of information
         for(let chunkIdx in splitOnBlankLines) {
-            chunk = splitOnBlankLines[chunkIdx];
+            const chunk = splitOnBlankLines[chunkIdx];
             let chunkSplitByLine = chunk.split(NEWLINE);
             if(chunk.indexOf(PARSERCONSTS.URLORFILEREF) === 0) {
                 try {
@@ -151,7 +151,7 @@ const parseFileContentsModule = {
             } else if(chunk.indexOf(PARSERCONSTS.QNA) === 0) {
                 parsedContent.qnaJsonStructure.qnaList.push(new qnaListObj(0, chunkSplitByLine[1], 'custom editorial', [chunkSplitByLine[0].replace(PARSERCONSTS.QNA, '').trim()], []));
             } 
-        };
+        }
         return parsedContent;
     },
     /**
