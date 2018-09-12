@@ -151,7 +151,7 @@ const parseFileContentsModule = {
             } else if(chunk.indexOf(PARSERCONSTS.QNA) === 0) {
                 parsedContent.qnaJsonStructure.qnaList.push(new qnaListObj(0, chunkSplitByLine[1], 'custom editorial', [chunkSplitByLine[0].replace(PARSERCONSTS.QNA, '').trim()], []));
             } 
-        };
+        }
         return parsedContent;
     },
     /**
