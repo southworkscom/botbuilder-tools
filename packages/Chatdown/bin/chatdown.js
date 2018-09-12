@@ -67,8 +67,7 @@ function getInput(args) {
  * @param args An object containing the argument k/v pairs
  * @returns {Promise<string>|boolean} The path of the file to write or true if written to stdout
  */
-async function writeOut(activities, args) {
-    const { out } = args; //Is this used? Doesn't seem to be...
+async function writeOut(activities) {
     process.stdout.write(JSON.stringify(activities, null, 2));
     return true;
 }
