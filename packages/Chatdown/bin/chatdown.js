@@ -7,6 +7,7 @@ const pkg = require('../package.json');
 const semver = require('semver');
 let requiredVersion = pkg.engines.node;
 if (!semver.satisfies(process.version, requiredVersion)) {
+    // eslint-disable-next-line no-console
     console.log(`Required node version ${requiredVersion} not satisfied with current version ${process.version}.`);
     process.exit(1);
 }
