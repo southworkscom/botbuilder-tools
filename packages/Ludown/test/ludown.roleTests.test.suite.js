@@ -24,12 +24,12 @@ describe('Roles in LU files', function() {
         
         $name: simple`;
         parser.parseFile(fileContent, false, null)
-        .then(res => {
-            assert.equal(res.LUISJsonStructure.entities[0].name, 'name');
-            assert.deepEqual(res.LUISJsonStructure.entities[0].roles, ['userName']);
-            done();
-        })
-        .catch(err => done(err));
+            .then(res => {
+                assert.equal(res.LUISJsonStructure.entities[0].name, 'name');
+                assert.deepEqual(res.LUISJsonStructure.entities[0].roles, ['userName']);
+                done();
+            })
+            .catch(err => done(err));
     });
 
     it('Correctly parses multiple role definitions in LU files correctly', function(done) {
@@ -77,15 +77,15 @@ describe('Roles in LU files', function() {
 
         `;
         parser.parseFile(fileContent, false, null)
-        .then(res => {
-            assert.equal(res.LUISJsonStructure.entities[0].name, 'entity');
-            assert.deepEqual(res.LUISJsonStructure.entities[0].roles, ['foo']);
-            assert.equal(res.LUISJsonStructure.patternAnyEntities[0].name, 'name');
-            assert.deepEqual(res.LUISJsonStructure.patternAnyEntities[0].roles, ['userName', 'userFirstName']);
-            assert.equal(res.LUISJsonStructure.prebuiltEntities[0].name, 'datetimeV2');
-            assert.deepEqual(res.LUISJsonStructure.prebuiltEntities[0].roles, ['startTime', 'deleteTime']);
-            done();
-        })
-        .catch(err => done(err));
+            .then(res => {
+                assert.equal(res.LUISJsonStructure.entities[0].name, 'entity');
+                assert.deepEqual(res.LUISJsonStructure.entities[0].roles, ['foo']);
+                assert.equal(res.LUISJsonStructure.patternAnyEntities[0].name, 'name');
+                assert.deepEqual(res.LUISJsonStructure.patternAnyEntities[0].roles, ['userName', 'userFirstName']);
+                assert.equal(res.LUISJsonStructure.prebuiltEntities[0].name, 'datetimeV2');
+                assert.deepEqual(res.LUISJsonStructure.prebuiltEntities[0].roles, ['startTime', 'deleteTime']);
+                done();
+            })
+            .catch(err => done(err));
     });
 });
