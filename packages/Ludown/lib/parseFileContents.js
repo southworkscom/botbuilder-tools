@@ -128,7 +128,7 @@ const parseFileContentsModule = {
         }
         // loop through every chunk of information
         for(let chunkIdx in splitOnBlankLines) {
-            chunk = splitOnBlankLines[chunkIdx];
+            const chunk = splitOnBlankLines[chunkIdx];
             let chunkSplitByLine = chunk.split(NEWLINE);
             if(chunk.indexOf(PARSERCONSTS.URLORFILEREF) === 0) {
                 try {
