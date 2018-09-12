@@ -14,12 +14,6 @@ const NEWLINE = require('os').EOL;
 const TEST_ROOT = path.join(__dirname);
 const PATH_TO_OUTPUT_FOLDER = path.resolve(TEST_ROOT + '/output');
 
-function compareFiles(actualPath, expectedPath) {
-    let expected = txtfile.readSync(actualPath).split(/\r?\n/);
-    let actual = txtfile.readSync(expectedPath).split(/\r?\n/);
-    assert.deepEqual(actual, expected);
-}
-
 function sanitizeExampleJson(fileContent) {
     let escapedExampleNewLine = JSON.stringify('\r\n').replace(/"/g, '').replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
     let escapedNewLine = JSON.stringify(NEWLINE).replace(/"/g, '');

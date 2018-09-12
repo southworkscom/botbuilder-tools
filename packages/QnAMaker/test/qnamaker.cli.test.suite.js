@@ -53,7 +53,7 @@ describe('The QnA Maker cli bin', () => {
 
         it('should update the key', function(done) {
             if (!subscriptionKey) this.skip('subscriptionKey not found');
-            exec(`node ${qnamaker} --subscriptionKey ${subscriptionKey} set`, (error, stdout, stderr) => {
+            exec(`node ${qnamaker} --subscriptionKey ${subscriptionKey} set`, (error, stdout) => {
                 let result = JSON.parse(stdout);
                 assert.equal(result.subscriptionKey, subscriptionKey, 'Key not found');
                 done();

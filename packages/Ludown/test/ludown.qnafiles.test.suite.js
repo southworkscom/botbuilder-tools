@@ -11,7 +11,7 @@ describe('With parse file function', function() {
     it('Throws when input lu file has invalid URIs', function(done){
         let fileContent = `[InvalidPDF](https://download.microsoft.com/download/2/9/B/29B20383-302C-4517-A006-B0186F04BE28/surface-pro-4-user-guide-EN2.pdf)`;
         parseFile(fileContent, false, null)
-            .then(res => done('Test fail! did not throw when expected'))
+            .then(() => done('Test fail! did not throw when expected'))
             .catch(err => {
                 assert.equal(err.errCode, retCode.INVALID_URI);
                 done()

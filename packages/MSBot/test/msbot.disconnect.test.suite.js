@@ -15,7 +15,7 @@ describe("msbot disconnect tests", () => {
         // save as save.bot
         await config.saveAs("save.bot", secret);
 
-        let p = await exec(`node ${msbot} disconnect -b save.bot --secret ${secret} testLuis`);
+        await exec(`node ${msbot} disconnect -b save.bot --secret ${secret} testLuis`);
         config = await bf.BotConfiguration.load("save.bot", secret);
         assert.equal(config.services.length, 8, "service wasn't removed");
 
@@ -30,7 +30,7 @@ describe("msbot disconnect tests", () => {
         await config.saveAs("save.bot", secret);
 
         let service = config.services[3];
-        let p = await exec(`node ${msbot} disconnect -b save.bot --secret ${secret} ${service.id}`);
+        await exec(`node ${msbot} disconnect -b save.bot --secret ${secret} ${service.id}`);
         config = await bf.BotConfiguration.load("save.bot", secret);
         assert.equal(config.services.length, 8, "service wasn't removed");
         assert.equal(null, config.findService(service.id), "service should have been removed");

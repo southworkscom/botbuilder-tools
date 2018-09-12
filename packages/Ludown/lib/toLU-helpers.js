@@ -4,7 +4,6 @@
  * Licensed under the MIT License.
  */
 const helperClasses = require('./classes/hclasses');
-const helpers = require('./helpers');
 const NEWLINE = require('os').EOL;
 const toLUHelpers = {
     /**
