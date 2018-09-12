@@ -252,7 +252,7 @@ bot->Joe: Hi Joe!`;
                     assert.equal(result[1].membersAdded[1].name, 'Susan', 'Susan should be second');
                     assert.equal(result[2].membersRemoved[0].name, 'Susan', 'Susan should be removed');
                 })
-                .catch((reason) => assert.fail('failed to output'));
+                .catch(() => assert.fail('failed to output'));
         });
 
         it('Reject invalid conversationupdate', async () => {
