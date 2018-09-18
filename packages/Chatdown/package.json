@@ -41,6 +41,7 @@
     "chatdown": "./bin/chatdown.js"
   },
   "devDependencies": {
+    "intercept-stdout": "^0.1.2",
     "mocha": "^5.2.0"
   }
 }
