@@ -1,9 +1,15 @@
 This folder contains several different examples of .lu files. 
 
-## Usage
+## Usage to generate files for LUIS
 
 ```bash
-ludown ./Examples/all.lu
+ludown parse ToLuis --in ./all.lu -o ./
+```
+
+## Usage to generate files for QnA Maker
+
+```bash
+ludown parse ToQna --in ./qna1.lu -o ./
 ```
 
 ludown tool will output:
