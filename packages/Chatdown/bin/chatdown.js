@@ -77,8 +77,8 @@ async function writeOut(activities, args) {
  * Processes multiple files, and writes them to the output directory.
  *
  * @param {string} inputDir String representing a glob that specifies the input directory
- * @param {string} outputDir String representing the output directory for the processesd files
- * @returns {Promise<string>|boolean} The length of the files array that was processes
+ * @param {string} outputDir String representing the output directory for the processed files
+ * @returns {Promise<string>|boolean} The length of the files array that was processed
  */
 async function processFiles(inputDir, outputDir) {
     return new Promise(async (resolve, reject) => {
@@ -148,10 +148,10 @@ async function runProgram() {
 }
 
 /**
- * Utility function that exist the process with an
+ * Utility function that exits the process with an
  * optional error. If an Error is received, the error
  * message is written to stdout, otherwise, the help
- * content are displayed.
+ * content is displayed.
  *
  * @param {*} error Either an instance of Error or null
  */
