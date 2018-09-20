@@ -29,7 +29,7 @@ module.exports = function (output) {
         wordWrap: true
     });
     table.push([chalk.cyan.bold('[chat]'), '[chat] is the location of the chat file to parse. If omitted, piping is assumed and stdin will be used for input.']);
-    table.push([chalk.cyan.bold('-v, --version'), 'Show version']);
+    table.push([chalk.cyan.bold('-v, --version'), 'Show version.']);
     table.push([chalk.cyan.bold('-f, --folder'), 'Process the files found at the given directory.']);
     table.push([chalk.cyan.bold('-o, --outFolder'), 'Uses the directory as the output path.']);
     table.push([chalk.cyan.bold('--help'), 'Prints this help info to the console.']);
