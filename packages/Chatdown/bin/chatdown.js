@@ -22,7 +22,7 @@ const glob = require('glob');
 
 /**
  * Retrieves the content to be parsed from a file if
- * the --in argument was specified or from the stdin
+ * the [chat] argument was specified or from the stdin
  * stream otherwise. Currently, interactive mode is
  * not supported and will timeout if no data is received
  * from stdin within 1000ms.
