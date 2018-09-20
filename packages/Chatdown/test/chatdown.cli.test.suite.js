@@ -71,4 +71,17 @@ describe('The Chatdown cli tool', () => {
         });
     });
 
+    it('should prefix [Chatdown] when --verbose is passed as an argument', done => {
+        exec(`node ${chatdown} --version --verbose`, (error, stdout, stderr) => {
+            assert(stdout.startsWith('[Chatdown]'), "It should show the tag '[Chatdown]' when using the argument --verbose");
+            done();
+        });
+    });
+
+    it('should prefix [Chatdown] when --verbose is passed as an argument and an error message is logged', done => {
+        exec(`echo bot=LuliBot=joe | node ${chatdown} --verbose`, (error, stdout, stderr) => {
+            assert(stderr.startsWith('[Chatdown]'), "It should show the tag '[Chatdown]' when using the argument --verbose");
+            done();
+        });
+    });
 });
