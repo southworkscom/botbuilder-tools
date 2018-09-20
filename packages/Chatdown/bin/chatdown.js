@@ -111,10 +111,9 @@ async function processFiles(inputDir, outputDir) {
 async function runProgram() {
     const args = minimist(process.argv.slice(2));
 
-    if (args.verbose) {
+    if (args.prefix) {
         const unhook_intercept = intercept(function(txt) {
-            const parentFolder = path.dirname(__dirname).split(path.sep).pop();
-            return `[${parentFolder}] ${txt}`;
+            return `[${pkg.name}]\n${txt}`;
         });
     }
 

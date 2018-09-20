@@ -2,6 +2,7 @@ const assert = require('assert');
 const {exec} = require('child_process');
 const semver = require('semver');
 const path = require('path');
+const pkg = require('../package.json');
 
 const chatdown = require.resolve('../bin/chatdown.js');
 
@@ -71,16 +72,23 @@ describe('The Chatdown cli tool', () => {
         });
     });
 
-    it('should prefix [Chatdown] when --verbose is passed as an argument', done => {
-        exec(`node ${chatdown} --version --verbose`, (error, stdout, stderr) => {
-            assert(stdout.startsWith('[Chatdown]'), "It should show the tag '[Chatdown]' when using the argument --verbose");
+    it('should not prefix [chatdown] to stdout when --prefix is not passed as an argument', done => {
+        exec(`echo bot=LuliBot=joe | node ${chatdown} --prefix`, (error, stdout, stderr) => {
+            assert.notEqual(stdout.startsWith(`[${pkg.name}]`), `It should not show the tag '[${pkg.name}]' when not using the argument --prefix`);
+            done();
+        });
+    });
+    
+    it('should prefix [chatdown] to stdout when --prefix is passed as an argument', done => {
+        exec(`node ${chatdown} --version --prefix`, (error, stdout, stderr) => {
+            assert(stdout.startsWith(`[${pkg.name}]`), `It should show the tag '[${pkg.name}]' when using the argument --prefix`);
             done();
         });
     });
 
-    it('should prefix [Chatdown] when --verbose is passed as an argument and an error message is logged', done => {
-        exec(`echo bot=LuliBot=joe | node ${chatdown} --verbose`, (error, stdout, stderr) => {
-            assert(stderr.startsWith('[Chatdown]'), "It should show the tag '[Chatdown]' when using the argument --verbose");
+    it('should prefix [chatdown] to stderr when --prefix is passed as an argument', done => {
+        exec(`echo bot=LuliBot=joe | node ${chatdown} --prefix`, (error, stdout, stderr) => {
+            assert(stderr.startsWith(`[${pkg.name}]`), `It should show the tag '[${pkg.name}]' when using the argument --prefix`);
             done();
         });
     });
