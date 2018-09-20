@@ -31,6 +31,7 @@ const txtfile = require('read-text-file');
 
 const help = require('./help');
 const Delay = require('await-delay');
+const intercept = require("intercept-stdout");
 
 let args;
 
@@ -54,6 +55,11 @@ async function runProgram() {
         args._.includes('help')) {
         return help(args, process.stdout);
     }
+    if (args.prefix) {
+        const unhook_intercept = intercept(function(txt) {
+            return `[${pkg.name}]\n${txt}`;
+        });
+    }
     if (args.version || args.v) {
         return process.stdout.write(require(path.join(__dirname, '../package.json')).version + "\n");
     }
@@ -70,6 +76,7 @@ async function runProgram() {
     const config = await composeConfig();
     let serviceIn = {};
     if (args.stdin) {
+        process.env.PREFIX = 'prefix';
         let json = await stdin();
         serviceIn = JSON.parse(json);
     }
