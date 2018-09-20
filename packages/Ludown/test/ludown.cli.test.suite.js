@@ -7,6 +7,7 @@ var assert = chai.assert;
 var path = require('path');
 const { exec } = require('child_process');
 const ludown = require.resolve('../bin/ludown');
+const package = require('../package.json');
 
 const LUDOWN_ROOT = path.join(__dirname, '../');
 const TRANSLATE_KEY = process.env.TRANSLATOR_KEY;
@@ -82,6 +83,39 @@ describe('The ludown cli tool', function() {
                 } catch (err) {
                     done(err);
                 }
+            });
+        });
+
+        it('should not prefix [ludown] to stdout when --verbose is not passed as an argument', function(done) {
+            exec(`node ${ludown}`, (error, stdout, stderr) => {
+                try {
+                    assert.notEqual(stderr.startsWith(`[${package.name}]`), true);
+                    done(); 
+                } catch (err) {
+                    done(err);
+                }                
+            });
+        });
+
+        it('should prefix [ludown] to stdout when --verbose is passed as an argument', function(done) {
+            exec(`node ${ludown} --verbose`, (error, stdout, stderr) => {
+                try {
+                    assert.equal(stdout.startsWith(`[${package.name}]`), true);
+                    done(); 
+                } catch (err) {
+                    done(err);
+                }                
+            });
+        });
+
+        it('should prefix [ludown] to stderr when --verbose is passed as an argument', function(done) {
+            exec(`node ${ludown} parse -x --verbose`, (error, stdout, stderr) => {
+                try {
+                    assert.equal(stderr.startsWith(`[${package.name}]`), true);
+                    done(); 
+                } catch (err) {
+                    done(err);
+                }                
             });
         });
     });
@@ -184,6 +218,39 @@ describe('The ludown cli tool', function() {
                 }
             });
         });
+
+        it('should not prefix [ludown] to stdout when --verbose is not passed as an argument', function(done) {
+            exec(`node ${ludown} translate`, (error, stdout, stderr) => {
+                try {
+                    assert.notEqual(stderr.startsWith(`[${package.name}]`), true);
+                    done(); 
+                } catch (err) {
+                    done(err);
+                }                
+            });
+        });
+        
+        it('should prefix [ludown] to stdout when --verbose is passed as an argument', function(done) {
+            exec(`node ${ludown} translate --verbose`, (error, stdout, stderr) => {
+                try {
+                    assert.equal(stdout.startsWith(`[${package.name}]`), true);
+                    done(); 
+                } catch (err) {
+                    done(err);
+                }                
+            });
+        });
+        
+        it('should prefix [ludown] to stderr when --verbose is passed as an argument', function(done) {
+            exec(`node ${ludown} translate -k --verbose`, (error, stdout, stderr) => {
+                try {
+                    assert.equal(stderr.startsWith(`[${package.name}]`), true);
+                    done(); 
+                } catch (err) {
+                    done(err);
+                }                
+            });
+        });
     });
     
     describe('With parse toluis command', function() {
@@ -270,6 +337,41 @@ describe('The ludown cli tool', function() {
                     done(err);
                 }
                 
+            });
+        });
+
+        it('should not prefix [ludown] to stdout when --verbose is not passed as an argument', function(done) {
+            exec(`node ${ludown} parse toluis`, (error, stdout, stderr) => {
+                try {
+                    assert.notEqual(stderr.startsWith(`[${package.name}]`), true);
+                    done(); 
+                } catch (err) {
+                    done(err);
+                }                
+            });
+        });
+        
+        it('should prefix [ludown] to stdout when --verbose is passed as an argument', function(done) {
+            exec(`node ${ludown} parse toluis --verbose`, (error, stdout, stderr) => {
+                try {
+                    assert.equal(stdout.startsWith(`[${package.name}]`), true);
+                    done(); 
+                } catch (err) {
+                    done(err);
+                }                
+            });
+        });
+        
+        it('should prefix [ludown] to stderr when --verbose is passed as an argument', function(done) {
+            let exampleLu = resolvePath('test/test123');
+            let luFile = resolvePath('examples/1.lu');
+            exec(`node ${ludown} parse toluis -o ${exampleLu}\\testFolder --in ${luFile} --verbose`, (error, stdout, stderr) => {
+                try {
+                    assert.equal(stderr.startsWith(`[${package.name}]`), true);
+                    done(); 
+                } catch (err) {
+                    done(err);
+                }                
             });
         });
     });
@@ -362,6 +464,41 @@ describe('The ludown cli tool', function() {
                 
             });
         });
+
+        it('should not prefix [ludown] to stdout when --verbose is not passed as an argument', function(done) {
+            exec(`node ${ludown} parse toqna`, (error, stdout, stderr) => {
+                try {
+                    assert.notEqual(stderr.startsWith(`[${package.name}]`), true);
+                    done(); 
+                } catch (err) {
+                    done(err);
+                }                
+            });
+        });
+        
+        it('should prefix [ludown] to stdout when --verbose is passed as an argument', function(done) {
+            exec(`node ${ludown} parse toqna --verbose`, (error, stdout, stderr) => {
+                try {
+                    assert.equal(stdout.startsWith(`[${package.name}]`), true);
+                    done(); 
+                } catch (err) {
+                    done(err);
+                }                
+            });
+        });
+        
+        it('should prefix [ludown] to stderr when --verbose is passed as an argument', function(done) {
+            let exampleLu = resolvePath('test/test123');
+            let luFile = resolvePath('examples/1.lu');
+            exec(`node ${ludown} parse toqna -o ${exampleLu}\\testFolder --in ${luFile} --verbose`, (error, stdout, stderr) => {
+                try {
+                    assert.equal(stderr.startsWith(`[${package.name}]`), true);
+                    done(); 
+                } catch (err) {
+                    done(err);
+                }                
+            });
+        });
     });
 
     describe('With refresh command', function() {
@@ -426,6 +563,40 @@ describe('The ludown cli tool', function() {
                 
             });
         });
-    });
 
+        it('should not prefix [ludown] to stdout when --verbose is not passed as an argument', function(done) {
+            exec(`node ${ludown} refresh`, (error, stdout, stderr) => {
+                try {
+                    assert.notEqual(stderr.startsWith(`[${package.name}]`), true);
+                    done(); 
+                } catch (err) {
+                    done(err);
+                }                
+            });
+        });
+        
+        it('should prefix [ludown] to stdout when --verbose is passed as an argument', function(done) {
+            exec(`node ${ludown} refresh --verbose`, (error, stdout, stderr) => {
+                try {
+                    assert.equal(stdout.startsWith(`[${package.name}]`), true);
+                    done(); 
+                } catch (err) {
+                    done(err);
+                }                
+            });
+        });
+        
+        it('should prefix [ludown] to stderr when --verbose is passed as an argument', function(done) {
+            let exampleLu = resolvePath('test/test123');
+            let luFile = resolvePath('examples/1.lu');
+            exec(`node ${ludown} refresh -o ${exampleLu}\\testFolder --in ${luFile} --verbose`, (error, stdout, stderr) => {
+                try {
+                    assert.equal(stderr.startsWith(`[${package.name}]`), true);
+                    done(); 
+                } catch (err) {
+                    done(err);
+                }                
+            });
+        });
+    });
 });
