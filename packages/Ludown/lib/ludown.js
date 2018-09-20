@@ -8,8 +8,8 @@ const chalk = require('chalk');
 const pjson = require('../package.json');
 const utils = require('./utils');
 program
-    .option('--verbose', 'Add [Ludown] prefix to all messages')
-    .on('option:verbose', () => process.env.VERBOSE = 'verbose');
+    .option('--prefix', 'Add [ludown] prefix to all messages')
+    .on('option:prefix', () => process.env.PREFIX = 'prefix');
 program.Command.prototype.unknownOption = function () {
     process.stderr.write(chalk.default.redBright(`\n  Unknown arguments: ${process.argv.slice(2).join(' ')}\n`));
     program.help();
