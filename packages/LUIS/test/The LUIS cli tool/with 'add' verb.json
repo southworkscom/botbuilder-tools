@@ -1,0 +1,9 @@
+[
+ 	{
+		"title": "and 'application'",
+		"args": "add app --in %s --authoringKey dummyKey --region westus",
+		"stdout": "",
+		"stderr": "Access denied due to invalid subscription key.",
+		"resource": ["ApplicationCreateObject.json"]
+	}
+]
