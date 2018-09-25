@@ -7,8 +7,8 @@ const { lstatSync, readdirSync } = require('fs');
 const {join} = require('path')
 const path = require('path');
 
-const IsDirectory = __dirname => lstatSync(__dirname).isDirectory()
-const GetDirectories = __dirname => readdirSync(__dirname).map(name => join(__dirname, name)).filter(IsDirectory)
+const IsDirectory = path => lstatSync(path).isDirectory()
+const GetDirectories = folder => readdirSync(folder).map(name => join(folder, name)).filter(IsDirectory)
 
 function RunTests(directory) {
     GetDirectories(directory).forEach(directory => {        
