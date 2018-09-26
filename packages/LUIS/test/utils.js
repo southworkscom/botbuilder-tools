@@ -25,7 +25,7 @@ function RunTests(directory) {
 function GetTestGroup(directory) {
     const fs = require('fs');
     readdirSync(directory).filter(HasExtension).forEach(file => {
-        describe(file.slice(0, -5), () => {
+        describe(file.replace(extension, ''), () => {
             var tests = JSON.parse(fs.readFileSync(`${directory}/${file}`, 'utf8'));
             ExecuteGroup(tests);
         });
