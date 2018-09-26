@@ -3,21 +3,16 @@ const nock = require('nock');
 const path = require('path');
 const pathToMockFile = path.resolve(process.argv[2]);
 const pathToCLITool = path.resolve(process.argv[3]);
+const mockData = fs.readJSONSync(pathToMockFile);
 
-var mocks = fs.readJSONSync(pathToMockFile);
-for (const key in mocks) {
-	if (mocks.hasOwnProperty(key)) {
-		const element = mocks[key];
-		var nockObj = nock(element.url);
-		var interceptor;
-		if(element.method === "post"){
-			interceptor = nockObj.post(element.uri);
-		} else {
-			interceptor = nockObj.get(element.uri);
-		}
-		interceptor.reply(element.response);
+for (const key in mockData) {
+	if (mockData.hasOwnProperty(key)) {
+		const element = mockData[key];
+		nock(element.url)
+		.intercept(new RegExp(element.uri, "i"), element.method)
+		.reply(element.responseCode,element.response);
 	}
 }
 
-process.argv.splice(0,2); //Don't remove needed params
+process.argv.splice(1,2); //The args would look like it was run directly from the CLI
 require(pathToCLITool);
