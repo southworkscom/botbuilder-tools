@@ -3,9 +3,7 @@ const { exec } = require('child_process');
 const luis = require.resolve('../bin/luis');
 
 describe('The LUIS cli tool', () => {
-
     describe('should perform the correct action and display the contents', () => {
-
         it('when using the "luis" arg', done =>{
             exec(`node ${luis} luis list apps`, (error, stdout, stderr) => {
                 assert.equal(stdout, '');
@@ -39,6 +37,5 @@ describe('The LUIS cli tool', () => {
                 });
             });
         });
-        
     });
 });
