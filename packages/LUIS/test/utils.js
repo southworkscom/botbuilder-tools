@@ -7,8 +7,10 @@ const { lstatSync, readdirSync } = require('fs');
 const {join} = require('path')
 const path = require('path');
 
+const extension = '.json';
 const IsDirectory = path => lstatSync(path).isDirectory()
 const GetDirectories = folder => readdirSync(folder).map(name => join(folder, name)).filter(IsDirectory)
+const HasExtension = file => path.extname(file).toLowerCase() === extension;
 
 function RunTests(directory) {
     GetDirectories(directory).forEach(directory => {        
@@ -19,9 +21,10 @@ function RunTests(directory) {
     });
 };
 
+
 function GetTestGroup(directory) {
     const fs = require('fs');
-    readdirSync(directory).forEach(file => {
+    readdirSync(directory).filter(HasExtension).forEach(file => {
         describe(file.slice(0, -5), () => {
             var tests = JSON.parse(fs.readFileSync(`${directory}/${file}`, 'utf8'));
             ExecuteGroup(tests);
