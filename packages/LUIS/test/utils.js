@@ -3,56 +3,54 @@ const assert = require('assert');
 const util = require( "util" );
 const {exec} = require('child_process');
 const luis = require.resolve('../bin/luis');
-const { lstatSync, readdirSync } = require('fs');
-const {join} = require('path')
 const path = require('path');
+const fs = require('fs');
 
-const extension = '.json';
-const IsDirectory = path => lstatSync(path).isDirectory()
-const GetDirectories = folder => readdirSync(folder).map(name => join(folder, name)).filter(IsDirectory)
-const HasExtension = file => path.extname(file).toLowerCase() === extension;
+const extension = '.spec.json';
+const isDirectory = path => fs.lstatSync(path).isDirectory()
+const getDirectories = folder => fs.readdirSync(folder).map(name => path.join(folder, name)).filter(isDirectory)
 
-function RunTests(directory) {
-    GetDirectories(directory).forEach(directory => {        
-        const testGroup = directory.split(path.sep).pop()
-        describe(testGroup, () => {
-            GetTestGroup(directory);
+function runTests(directory) {
+    getDirectories(directory).forEach(directory => {        
+        const testSuite = directory.split(path.sep).pop()
+        describe(testSuite, () => {
+            getTestGroup(directory);
         });
     });
-};
+}
 
-
-function GetTestGroup(directory) {
-    const fs = require('fs');
-    readdirSync(directory).filter(HasExtension).forEach(file => {
-        describe(file.replace(extension, ''), () => {
-            var tests = JSON.parse(fs.readFileSync(`${directory}/${file}`, 'utf8'));
-            ExecuteGroup(tests);
+function getTestGroup(directory) {
+    fs.readdirSync(directory).filter(file => file.endsWith(extension)).forEach(file => {
+        const testGroup = JSON.parse(fs.readFileSync(`${directory}/${file}`, 'utf8'));
+        describe(testGroup.GroupName, () => {
+            executeGroup(testGroup.TestCollection);
+            //var tests = JSON.parse(fs.readFileSync(`${directory}/${file}`, 'utf8'));
+            //executeGroup(tests);
         });
     })
 }
 
-function ExecuteGroup (tests) {
+function executeGroup (tests) {
     tests.forEach((test) => {
         let command = `node ${luis}  ${test.args}`;
 
         if(test.resource) {
-            command = GetResources(test, command); };
+            command = getResources(test, command); }
 
-        ExecuteTest(test, command);
+        executeTest(test, command);
     });
-};
+}
 
-function GetResources (test, command) {
+function getResources (test, command) {
     test.resource.forEach(resource => {
         const AppObject = require.resolve(`../examples/${resource}`);
         command = util.format(command, AppObject)
     });
 
     return command;
-};
+}
 
-function ExecuteTest (test, command) {
+function executeTest (test, command) {
     it(test.title, done => {                
         exec(command, (error, stdout, stderr) => {
             assert(stdout.includes(test.stdout));
@@ -60,6 +58,6 @@ function ExecuteTest (test, command) {
             done();
         });
     }); 
-};
+}
 
-exports.RunTests = RunTests;
+exports.runTests = runTests;

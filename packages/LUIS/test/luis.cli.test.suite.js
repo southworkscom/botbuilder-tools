@@ -1,7 +1,7 @@
 const assert = require('assert');
 const { exec } = require('child_process');
 const luis = require.resolve('../bin/luis');
-const runTests = require('./utils.js').RunTests;
+const runTests = require('./utils.js').runTests;
 
 describe('The LUIS cli tool', () => {
 
