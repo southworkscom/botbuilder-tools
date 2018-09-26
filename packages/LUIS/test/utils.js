@@ -3,31 +3,31 @@ const assert = require('assert');
 const util = require( "util" );
 const {exec} = require('child_process');
 const luis = require.resolve('../bin/luis');
-const path = require('path');
 const fs = require('fs');
-
 const extension = '.spec.json';
-const isDirectory = path => fs.lstatSync(path).isDirectory()
-const getDirectories = folder => fs.readdirSync(folder).map(name => path.join(folder, name)).filter(isDirectory)
 
-function runTests(directory) {
-    getDirectories(directory).forEach(directory => {        
-        const testSuite = directory.split(path.sep).pop()
-        describe(testSuite, () => {
-            getTestGroup(directory);
+function runTests(file) {
+    if (validatePath(file, 'hub file')) {
+        const HubFile = JSON.parse(fs.readFileSync(file, 'utf8'));
+
+        HubFile.forEach(suite => {
+            describe(suite.SuiteName, () => {
+                getTestGroup(__dirname + suite.SuitePath);
+            });        
         });
-    });
+    }
 }
 
 function getTestGroup(directory) {
-    fs.readdirSync(directory).filter(file => file.endsWith(extension)).forEach(file => {
-        const testGroup = JSON.parse(fs.readFileSync(`${directory}/${file}`, 'utf8'));
-        describe(testGroup.GroupName, () => {
-            executeGroup(testGroup.TestCollection);
-            //var tests = JSON.parse(fs.readFileSync(`${directory}/${file}`, 'utf8'));
-            //executeGroup(tests);
-        });
-    })
+    if (validatePath(directory, 'suite directory')) {
+        fs.readdirSync(directory).filter(file => file.endsWith(extension)).forEach(file => {
+            const testGroup = JSON.parse(fs.readFileSync(`${directory}/${file}`, 'utf8'));
+
+            describe(testGroup.GroupName, () => {
+                executeGroup(testGroup.TestCollection);
+            });
+        })
+    }
 }
 
 function executeGroup (tests) {
@@ -43,8 +43,11 @@ function executeGroup (tests) {
 
 function getResources (test, command) {
     test.resource.forEach(resource => {
-        const AppObject = require.resolve(`../examples/${resource}`);
-        command = util.format(command, AppObject)
+        const resourcePath = `../examples/${resource}`;
+        if (validatePath(resourcePath, 'resource')) {
+            const AppObject = require.resolve(resourcePath);
+            command = util.format(command, AppObject)
+        }
     });
 
     return command;
@@ -58,6 +61,15 @@ function executeTest (test, command) {
             done();
         });
     }); 
+}
+
+function validatePath (file, desc) {
+    if (fs.existsSync(file)) {
+        return true;
+    } else {
+        console.warn(`WARNING: The especified ${desc} does not exist: ${file}`);
+        return false;
+    }
 }
 
 exports.runTests = runTests;
