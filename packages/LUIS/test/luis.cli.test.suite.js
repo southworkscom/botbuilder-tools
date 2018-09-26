@@ -4,6 +4,8 @@ const luis = require.resolve('../bin/luis');
 const runTests = require('./utils.js').runTests;
 const fs = require('fs');
 
+const hubFile = 'SuiteHub.json';
+
 describe('The LUIS cli tool', () => {
 
     describe('should perform the correct action and display the contents', () => {
@@ -44,5 +46,5 @@ describe('The LUIS cli tool', () => {
         
     });
 
-    runTests(`${__dirname}/TestHub.json`);
+    runTests(`${__dirname}/${hubFile}`);
 });
