@@ -5,7 +5,7 @@ const AppObject = require.resolve('../examples/ApplicationCreateObject');
 const pkg = require('../package.json');
 const nock = require('nock');
 const fs = require('fs-extra');
-const testMockPath = './mockTest';
+const testMockPath = './mockTest.js';
 
 describe('The LUIS cli tool', () => {
 
@@ -37,7 +37,7 @@ describe('The LUIS cli tool', () => {
             });
 
             it('and all other args', done =>{
-                let mockFile = 'testData.json';
+                let mockFile = './testData/withAllOtherArgs.mockData.json';
                 exec(`node ${testMockPath} ${mockFile} ${luis} --authoringKey dummy-key --region westeurope query --q "message to send" --appId dummy-app`, (error, stdout, stderr) => {
                     assert.equal(stdout, '');
                     assert(stderr.includes('401'));
@@ -88,7 +88,7 @@ describe('The LUIS cli tool', () => {
             });
 
             it('with ApplicationCreateObject', done =>{
-                let mockFile = 'testData.json';
+                let mockFile = './testdata/withapplicationcreateobject.mockdata.json';
                 exec(`node ${testMockPath} ${mockFile} ${luis} add app --in ${AppObject} --authoringKey dummyKey --region westus`, (error, stdout, stderr) => {
                     assert.equal(stdout, '');
                     assert(stderr.includes('Access denied due to invalid subscription key.'));
