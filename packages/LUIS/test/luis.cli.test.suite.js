@@ -1,6 +1,8 @@
 const assert = require('assert');
 const { exec } = require('child_process');
 const luis = require.resolve('../bin/luis');
+const runTests = require('./utils.js').runTests;
+const fs = require('fs');
 
 describe('The LUIS cli tool', () => {
 
@@ -41,4 +43,6 @@ describe('The LUIS cli tool', () => {
         });
         
     });
+
+    runTests(`${__dirname}/TestHub.json`);
 });
