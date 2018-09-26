@@ -1,6 +1,6 @@
 {
-	"GroupName": "with 'add' verb",
-	"TestCollection": [{
+	"describe": "with 'add' verb",
+	"tests": [{
 			"title": "and 'application'",
 			"args": "add app --in %s --authoringKey dummyKey --region westus",
 			"stdout": "",

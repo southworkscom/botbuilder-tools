@@ -1,15 +1,9 @@
 const assert = require('assert');
 const { exec } = require('child_process');
 const luis = require.resolve('../bin/luis');
-const runTests = require('./utils.js').runTests;
-const fs = require('fs');
-
-const hubFile = 'SuiteHub.json';
 
 describe('The LUIS cli tool', () => {
-
     describe('should perform the correct action and display the contents', () => {
-
         it('when using the "luis" arg', done =>{
             exec(`node ${luis} luis list apps`, (error, stdout, stderr) => {
                 assert.equal(stdout, '');
@@ -43,8 +37,5 @@ describe('The LUIS cli tool', () => {
                 });
             });
         });
-        
     });
-
-    runTests(`${__dirname}/${hubFile}`);
 });

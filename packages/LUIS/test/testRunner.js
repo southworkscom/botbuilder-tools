@@ -4,33 +4,24 @@ const util = require( "util" );
 const {exec} = require('child_process');
 const luis = require.resolve('../bin/luis');
 const fs = require('fs');
-const extension = '.spec.json';
+const specsExtension = '.spec.json';
 
-function runTests(file) {
-    if (validatePath(file, 'hub file')) {
-        const HubFile = JSON.parse(fs.readFileSync(file, 'utf8'));
+function runTests(specsDirectory) {
+    if (fs.existsSync(specsDirectory)) {
+        fs.readdirSync(specsDirectory).filter(specsFile => specsFile.endsWith(specsExtension)).forEach(file => {
+            const testGroup = JSON.parse(fs.readFileSync(`${specsDirectory}/${file}`, 'utf8'));
 
-        HubFile.forEach(suite => {
-            describe(suite.SuiteName, () => {
-                getTestGroup(__dirname + suite.SuitePath);
-            });        
-        });
-    }
-}
-
-function getTestGroup(directory) {
-    if (validatePath(directory, 'suite directory')) {
-        fs.readdirSync(directory).filter(file => file.endsWith(extension)).forEach(file => {
-            const testGroup = JSON.parse(fs.readFileSync(`${directory}/${file}`, 'utf8'));
-
-            describe(testGroup.GroupName, () => {
-                executeGroup(testGroup.TestCollection);
+            describe(testGroup.describe, () => {
+                executeTestGroup(testGroup.tests);
             });
         })
     }
+    else {
+        throw Error(`Specs directory '${specsDirectory} does not exists.`);
+    }
 }
 
-function executeGroup (tests) {
+function executeTestGroup (tests) {
     tests.forEach((test) => {
         let command = `node ${luis}  ${test.args}`;
 
@@ -44,10 +35,13 @@ function executeGroup (tests) {
 function getResources (test, command) {
     test.resource.forEach(resource => {
         const resourcePath = `../examples/${resource}`;
-        if (validatePath(resourcePath, 'resource')) {
+        if (fs.existsSync(resourcePath, 'resource')) {
             const AppObject = require.resolve(resourcePath);
             command = util.format(command, AppObject)
         }
+        else {
+            throw Error(`Resource file '${resourcePath} does not exists.`);
+        }    
     });
 
     return command;
@@ -56,20 +50,13 @@ function getResources (test, command) {
 function executeTest (test, command) {
     it(test.title, done => {                
         exec(command, (error, stdout, stderr) => {
+            if(!test.stdout) assert(!stdout);
+            if (!test.stderr) assert(!stderr);
             assert(stdout.includes(test.stdout));
             assert(stderr.includes(test.stderr));
             done();
         });
     }); 
-}
-
-function validatePath (file, desc) {
-    if (fs.existsSync(file)) {
-        return true;
-    } else {
-        console.warn(`WARNING: The especified ${desc} does not exist: ${file}`);
-        return false;
-    }
 }
 
 exports.runTests = runTests;
