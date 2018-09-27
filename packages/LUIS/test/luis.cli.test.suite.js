@@ -54,7 +54,7 @@ describe('The LUIS cli tool', () => {
             });
 
             it('and all other args', done =>{
-                let mockFile = './testdata/withallotherargs.mockdata.json';
+                let mockFile = './testdata/andallotherargs.mockdata.json';
                 exec(`node ${testMockPath} ${mockFile} ${luis} --authoringKey dummy-key --region westeurope query --q "message to send" --appId dummy-app`, (error, stdout, stderr) => {
                     assert.equal(stdout, '');
                     assert(stderr.includes('401'));
