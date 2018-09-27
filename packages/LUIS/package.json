@@ -51,6 +51,7 @@
     "minimist": "^1.2.0",
     "ms-rest-js": "1.0.455",
     "node-fetch": "^2.1.2",
+    "nock": "^10.0.0",
     "perf_hooks": "0.0.1",
     "read-text-file": "^1.1.0",
     "readline-sync": "^1.4.9",
