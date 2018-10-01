@@ -1,0 +1,28 @@
+{
+	"describe": "with 'export' verb",
+	"tests": [{
+			"title": "with no target",
+			"args": "export --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "resource is missing"
+		},
+		{
+			"title": "with target 'version'",
+			"args": "get version --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined."
+		},
+		{
+			"title": "with target 'closedlist'",
+			"args": "get closedlist --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined."
+		},
+		{
+			"title": "with target 'closedlistentityrole'",
+			"args": "get closedlistentityrole --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined."
+		}
+	]
+}
