@@ -1,0 +1,176 @@
+{
+	"describe": "with 'update' verb",
+	"tests": [{
+			"title": "only",
+			"args": "list --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "resource is missing"
+		},
+		{
+			"title": "and target 'app'",
+			"args": "update app --in %s --authoringKey dummyKey",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined.",
+			"resource": ["ApplicationUpdateObject.json"]
+		},
+		{
+			"title": "and target 'closedlist'",
+			"args": "update closedlist --in %s --authoringKey dummyKey",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined.",
+			"resource": ["ClosedListModelPatchObject.json"]
+		},
+		{
+			"title": "and target 'closedlistentityrole'",
+			"args": "update closedlistentityrole --in %s --authoringKey dummyKey",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined.",
+			"resource": ["EntityRoleUpdateObject.json"]
+		},
+		{
+			"title": "and target 'compositeentity'",
+			"args": "update compositeentity --in %s --authoringKey dummyKey",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined.",
+			"resource": ["CompositeEntityModel.json"]
+		},
+		{
+			"title": "and target 'compositeentityrole'",
+			"args": "update compositeentityrole --in %s --authoringKey dummyKey",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined.",
+			"resource": ["EntityRoleUpdateObject.json"]
+		},
+		{
+			"title": "and target 'customprebuiltentityrole'",
+			"args": "update customprebuiltentityrole --in %s --authoringKey dummyKey",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined.",
+			"resource": ["EntityRoleUpdateObject.json"]
+		},
+		{
+			"title": "and target 'entity'",
+			"args": "update entity --in %s --authoringKey dummyKey",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined.",
+			"resource": ["ModelUpdateObject.json"]
+		},
+		{
+			"title": "and target 'entityrole'",
+			"args": "update entityrole --in %s --authoringKey dummyKey",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined.",
+			"resource": ["EntityRoleUpdateObject.json"]
+		},
+		{
+			"title": "and target 'explicitlistitem'",
+			"args": "update explicitlistitem --in %s --authoringKey dummyKey",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined.",
+			"resource": ["ExplicitListItemUpdateObject.json"]
+		},
+		{
+			"title": "and target 'hierarchicalentity'",
+			"args": "update hierarchicalentity --in %s --authoringKey dummyKey",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined.",
+			"resource": ["HierarchicalEntityModel.json"]
+		},
+		{
+			"title": "and target 'hierarchicalentitychild'",
+			"args": "update hierarchicalentitychild --in %s --authoringKey dummyKey",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined.",
+			"resource": ["hierarchicalChildModelUpdateObject.json"]
+		},
+		{
+			"title": "and target 'hierarchicalentityrole'",
+			"args": "update hierarchicalentityrole --in %s --authoringKey dummyKey",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined.",
+			"resource": ["EntityRoleUpdateObject.json"]
+		},
+		{
+			"title": "and target 'intent'",
+			"args": "update intent --in %s --authoringKey dummyKey",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined.",
+			"resource": ["ModelUpdateObject.json"]
+		},
+		{
+			"title": "and target 'pattern'",
+			"args": "update pattern --in %s --authoringKey dummyKey",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined.",
+			"resource": ["PatternAnyModelUpdateObject.json"]
+		},
+		{
+			"title": "and target 'patternentityrole'",
+			"args": "update patternentityrole --in %s --authoringKey dummyKey",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined.",
+			"resource": ["EntityRoleUpdateObject.json"]
+		},
+		{
+			"title": "and target 'patterns'",
+			"args": "update patterns --in %s --authoringKey dummyKey",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined.",
+			"resource": ["BatchPatternRuleObject.json"]
+		},
+		{
+			"title": "and target 'permissions'",
+			"args": "update permissions --in %s --authoringKey dummyKey",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined.",
+			"resource": ["CollaboratorsArray.json"]
+		},
+		{
+			"title": "and target 'phraselist'",
+			"args": "update phraselist --in %s --authoringKey dummyKey",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined.",
+			"resource": ["PhraselistUpdateObject.json"]
+		},
+		{
+			"title": "and target 'prebuiltentityrole'",
+			"args": "update prebuiltentityrole --in %s --authoringKey dummyKey",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined.",
+			"resource": ["EntityRoleUpdateObject.json"]
+		},
+		{
+			"title": "and target 'regexentity'",
+			"args": "update regexentity --in %s --authoringKey dummyKey",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined.",
+			"resource": ["RegexModelUpdateObject.json"]
+		},
+		{
+			"title": "and target 'regexentityrole'",
+			"args": "update regexentityrole --in %s --authoringKey dummyKey",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined.",
+			"resource": ["EntityRoleUpdateObject.json"]
+		},
+		{
+			"title": "and target 'settings'",
+			"args": "update settings --authoringKey dummyKey",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined."
+		},
+		{
+			"title": "and target 'sublist'",
+			"args": "update sublist --in %s --authoringKey dummyKey",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined.",
+			"resource": ["WordListBaseUpdateObject.json"]
+		},
+		{
+			"title": "and target 'version'",
+			"args": "update version --in %s --authoringKey dummyKey",
+			"stdout": "",
+			"stderr": "'version' is not a valid resource"
+		}
+	]
+}
