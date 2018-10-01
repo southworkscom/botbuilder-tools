@@ -1,0 +1,124 @@
+{
+	"describe": "with 'list' verb",
+	"tests": [{
+			"title": "only",
+			"args": "list --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "resource is missing"
+		},
+		{
+			"title": "with target 'apps'",
+			"args": "list apps --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "Access denied due to invalid subscription key. Make sure to provide a valid key for an active subscription."
+		},
+		{
+			"title": "with target 'credentials'",
+			"args": "list credentials --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "'credentials' is not a valid resource"
+		},
+		{
+			"title": "with target 'examples'",
+			"args": "list examples --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined."
+		},
+		{
+			"title": "with target 'features'",
+			"args": "list features --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined."
+		},
+		{
+			"title": "with target 'patterns'",
+			"args": "list patterns --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "client.pattern.list is not a function"
+		},
+		{
+			"title": "with target 'permissions'",
+			"args": "list permissions --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined."
+		},
+		{
+			"title": "with target 'train'",
+			"args": "list train --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "'train' is not a valid resource"
+		},
+		{
+			"title": "with target 'versions'",
+			"args": "list versions --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined."
+		},
+		{
+			"title": "with target 'closedlists'",
+			"args": "list closedlists --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined."
+		},
+		{
+			"title": "with target 'compositeentities'",
+			"args": "list compositeentities --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined."
+		},
+		{
+			"title": "with target 'customprebuiltentities'",
+			"args": "list customprebuiltentities --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined."
+		},
+		{
+			"title": "with target 'customprebuiltintents'",
+			"args": "list customprebuiltintents --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined."
+		},
+		{
+			"title": "with target 'customprebuiltmodels'",
+			"args": "list customprebuiltmodels --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined."
+		},
+		{
+			"title": "with target 'entities'",
+			"args": "list entities --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined."
+		},
+		{
+			"title": "with target 'hierarchicalentities'",
+			"args": "list hierarchicalentities --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined."
+		},
+		{
+			"title": "with target 'intents'",
+			"args": "list intents --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined."
+		},
+		{
+			"title": "with target 'models'",
+			"args": "list models --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined."
+		},
+		{
+			"title": "with target 'prebuiltentities'",
+			"args": "list prebuiltentities --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined."
+		},
+		{
+			"title": "with target 'prebuilts'",
+			"args": "list prebuilts --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined."
+		}
+	]
+}
