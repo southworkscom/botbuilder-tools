@@ -1,0 +1,22 @@
+{
+	"describe": "with 'delete' verb",
+	"tests": [{
+			"title": "and no target",
+			"args": "delete --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "resource is missing"
+		},
+		{
+			"title": "with target 'app'",
+			"args": "delete app --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined."
+		},
+		{
+			"title": "with target 'version'",
+			"args": "get version --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined."
+		}
+	]
+}
