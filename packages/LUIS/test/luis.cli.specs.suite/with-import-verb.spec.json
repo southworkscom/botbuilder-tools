@@ -1,0 +1,23 @@
+{
+	"describe": "with 'import' verb",
+	"tests": [{
+			"title": "and no target",
+			"args": "import --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "resource is missing"
+		},
+		{
+			"title": "with target 'app'",
+			"args": "import app --in %s --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "Access denied due to invalid subscription key. Make sure to provide a valid key for an active subscription.",
+			"resource": ["LuisApp.json"]
+		},
+		{
+			"title": "with target 'version'",
+			"args": "import version --authoringKey dummyKey --region westus",
+			"stdout": "",
+			"stderr": "appId cannot be null or undefined."
+		}
+	]
+}
