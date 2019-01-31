@@ -1,0 +1,36 @@
+{
+    "manifestVersion": 1,
+    "id": "dispatch-chatdown-init",
+    "name": "Dispatch Init Tool",
+    "version": "0.0.1",
+    "publisher": "Southworks-pipelines-test",
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],    
+    "description": "Dispatch is a tool to create and evaluate LUIS models used to dispatch intent across multiple bot modules such as LUIS models, QnA knowledge bases and others (added to dispatch as a file type).",
+    "categories": [
+        "Azure Pipelines"
+    ],
+    "icons": {
+        "default": "images/extension-icon.png"        
+    },
+    "files": [
+        {
+            "path": "source"
+        }
+    ],
+    "contributions": [
+        {
+            "id": "custom-build-release-task",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "source"
+            }
+        }
+    ]
+}
