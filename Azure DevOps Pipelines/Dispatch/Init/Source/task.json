@@ -1,0 +1,136 @@
+{
+    "id": "{{taskguid}}",
+    "name": "dispatcher-init",
+    "friendlyName": "Dispatcher Init",
+    "description": "This commands then creates {dispatchName}.dispatch file.",
+    "helpMarkDown": "",
+    "category": "Utility",
+    "author": "Southworks-pipelines-test",
+    "version": {
+        "Major": 0,
+        "Minor": 1,
+        "Patch": 0
+    },
+    "instanceNameFormat": "Echo $(samplestring)",
+    "inputs": [
+        {
+            "name": "Name",
+            "type": "string",
+            "label": "Name of the dispatch",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "Name of the dispatch"
+        },
+        {
+            "name": "LuisAuthoringKey",
+            "type": "string",
+            "label": "LUIS authoring key",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "LUIS authoring key"
+        },
+        {
+            "name": "LuisAuthoringRegion",
+            "type": "pickList",
+            "label": "LUIS authoring region",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "LUIS authoring region",
+            "options": {
+                "westus": "WestUS",
+                "westeurope": "WestEurope",
+                "australiaeast": "AustraliaEast"
+            }
+        },
+        {
+            "name": "dataFolder",
+            "type": "filePath",
+            "label": "Dispatch working directory",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "Dispatch working directory."
+        },
+        {
+            "name": "bot",
+            "type": "filePath",
+            "label": ".bot file path",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": ".bot file path"
+        },
+        {
+            "name": "secret",
+            "type": "string",
+            "label": ".bot file secret",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": ".bot file secret"
+        },
+        {
+            "name": "culture",
+            "type": "string",
+            "label": "Culture",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Used to set LUIS app culture for dispatch. Required if none of dispatch source(s) is LUIS app."
+        },
+        {
+            "name": "hierarchical",
+            "type": "boolean",
+            "label": "Hierarchical",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Default to true. If false, existing intents from source LUIS model(s) will be available as the dispatch intents."
+        },
+        {
+            "name": "LuisSubscriptionKey",
+            "type": "string",
+            "label": "Luis Subscription Key",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "",
+            "groupName": "Advanced"
+        },
+        {
+            "name": "LuisSubscriptionRegion",
+            "type": "string",
+            "label": "Luis Subscription Region",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "",
+            "groupName": "Advanced"
+        },
+        {
+            "name": "UseAllTrainingData",
+            "type": "boolean",
+            "label": "Use All Training Data",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "",
+            "groupName": "Advanced"
+        },
+        {
+            "name": "DontReviseUtterance",
+            "type": "boolean",
+            "label": "Dont Revise Utterance",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "",
+            "groupName": "Advanced"
+        },
+        {
+            "name": "PublishToStaging",
+            "type": "boolean",
+            "label": "Publish To Staging",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "",
+            "groupName": "Advanced"
+        }
+    ],
+    "execution": {
+        "Node": {
+            "target": "botbuilder-tool.js"
+        }
+    }
+}
