@@ -277,7 +277,6 @@ __pycache__/
 #bot stuff
 **/.luisrc
 **/.qnamakerrc
-*.bot
 /MSBot/bin/Microsoft.NodejsTools.WebRole.dll
 /LUISGen/.vscode/launch.json
 
