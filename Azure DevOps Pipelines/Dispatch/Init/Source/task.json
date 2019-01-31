@@ -1,5 +1,5 @@
 {
-    "id": "{{taskguid}}",
+    "id": "8de8e4db-fc16-4f4b-a614-706cfc4bf16c",
     "name": "dispatcher-init",
     "friendlyName": "Dispatcher Init",
     "description": "This commands then creates {dispatchName}.dispatch file.",
@@ -11,7 +11,14 @@
         "Minor": 1,
         "Patch": 0
     },
-    "instanceNameFormat": "Echo $(samplestring)",
+    "instanceNameFormat": "Dispatch Init",
+    "groups": [
+        {
+            "name": "Advanced",
+            "displayName": "Advancd",
+            "isExpanded": false
+        }
+    ],
     "inputs": [
         {
             "name": "Name",
