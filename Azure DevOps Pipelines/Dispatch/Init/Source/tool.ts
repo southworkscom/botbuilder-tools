@@ -30,6 +30,34 @@ export module Tool {
             return false;
         }
     }
+    
+    export function GetInitInputs(): string[] {
+        var args = [
+            "Name",
+            "LuisAuthoringKey",
+            "LuisAuthoringRegion",
+            "dataFolder",
+            "bot",
+            "secret",
+            "culture",
+            "hierarchical",
+            "LuisSubscriptionKey",
+            "LuisSubscriptionRegion",
+            "UseAllTrainingData",
+            "DontReviseUtterance",
+            "PublishToStaging"
+        ];
+
+        var inputs = [];
+        for (var arg in args) {
+            var tempInput = tl.getInput(arg);
+            if (tempInput != null) {
+                inputs.push(arg);
+            }
+        }
+
+        return inputs;
+    }
 
     function LogError(message: string): void {
         tl.setResult(tl.TaskResult.Failed, message);

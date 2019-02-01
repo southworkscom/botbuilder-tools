@@ -32,6 +32,32 @@ var Tool;
         }
     }
     Tool.Run = Run;
+    function GetInitInputs() {
+        var args = [
+            "Name",
+            "LuisAuthoringKey",
+            "LuisAuthoringRegion",
+            "dataFolder",
+            "bot",
+            "secret",
+            "culture",
+            "hierarchical",
+            "LuisSubscriptionKey",
+            "LuisSubscriptionRegion",
+            "UseAllTrainingData",
+            "DontReviseUtterance",
+            "PublishToStaging"
+        ];
+        var inputs = [];
+        for (var arg in args) {
+            var tempInput = tl.getInput(arg);
+            if (tempInput != null) {
+                inputs.push(arg);
+            }
+        }
+        return inputs;
+    }
+    Tool.GetInitInputs = GetInitInputs;
     function LogError(message) {
         tl.setResult(tl.TaskResult.Failed, message);
     }
