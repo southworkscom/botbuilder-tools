@@ -1,4 +1,4 @@
-const shell = require('shelljs');
+import shell = require('shelljs');
 import tl = require("azure-pipelines-task-lib");
 
 export module Tool {
@@ -12,9 +12,13 @@ export module Tool {
         ];
 
         if (tl.osType() == "Linux") {
-            Run("npm", args, "sudo");
+            var prefix = "sudo";
         } else {
-            Run("npm", args, "");
+            var prefix = "";
+        }
+
+        if (!Run("npm", args, prefix)) {
+            LogError(`There was a problem installing ${toolname}`);
         }
     }
 
@@ -25,5 +29,9 @@ export module Tool {
         } else {
             return false;
         }
+    }
+
+    function LogError(message: string): void {
+        tl.setResult(tl.TaskResult.Failed, message);
     }
 }

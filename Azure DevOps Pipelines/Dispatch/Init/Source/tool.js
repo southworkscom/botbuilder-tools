@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var shell = require('shelljs');
+var shell = require("shelljs");
 var tl = require("azure-pipelines-task-lib");
 var Tool;
 (function (Tool) {
@@ -12,10 +12,13 @@ var Tool;
             toolname
         ];
         if (tl.osType() == "Linux") {
-            Run("npm", args, "sudo");
+            var prefix = "sudo";
         }
         else {
-            Run("npm", args, "");
+            var prefix = "";
+        }
+        if (!Run("npm", args, prefix)) {
+            LogError("There was a problem installing " + toolname);
         }
     }
     Tool.Install = Install;
@@ -29,4 +32,7 @@ var Tool;
         }
     }
     Tool.Run = Run;
+    function LogError(message) {
+        tl.setResult(tl.TaskResult.Failed, message);
+    }
 })(Tool = exports.Tool || (exports.Tool = {}));
