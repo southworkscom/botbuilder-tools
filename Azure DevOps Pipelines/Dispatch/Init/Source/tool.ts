@@ -1,9 +1,9 @@
 const shell = require('shelljs');
 import tl = require("azure-pipelines-task-lib");
 
-export module Core {
+export module Tool {
 
-    export function InstallTool(toolname: string): void {
+    export function Install(toolname: string): void {
         var args = [
             "install",
             "--loglevel error",
@@ -12,13 +12,13 @@ export module Core {
         ];
 
         if (tl.osType() == "Linux") {
-            RunTool("npm", args, "sudo");
+            Run("npm", args, "sudo");
         } else {
-            RunTool("npm", args, "");
+            Run("npm", args, "");
         }
     }
 
-    export function RunTool(tool: string, args: string[], prefix: string): boolean{
+    export function Run(tool: string, args: string[], prefix: string): boolean{
         var str = args.join(" "); 
         if (shell.exec(`${prefix} ${tool} ${args}`).code == 0){
             return true;

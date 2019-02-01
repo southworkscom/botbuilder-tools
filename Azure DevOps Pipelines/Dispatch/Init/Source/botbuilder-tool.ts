@@ -1,4 +1,4 @@
-import { Core } from "./core";
+import { Tool } from "./tool";
 
 
-Core.InstallTool("dispatch");
+Tool.Install("dispatch");

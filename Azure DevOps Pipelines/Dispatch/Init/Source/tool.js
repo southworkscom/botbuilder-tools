@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var shell = require('shelljs');
 var tl = require("azure-pipelines-task-lib");
-var Core;
-(function (Core) {
-    function InstallTool(toolname) {
+var Tool;
+(function (Tool) {
+    function Install(toolname) {
         var args = [
             "install",
             "--loglevel error",
@@ -12,14 +12,14 @@ var Core;
             toolname
         ];
         if (tl.osType() == "Linux") {
-            RunTool("npm", args, "sudo");
+            Run("npm", args, "sudo");
         }
         else {
-            RunTool("npm", args, "");
+            Run("npm", args, "");
         }
     }
-    Core.InstallTool = InstallTool;
-    function RunTool(tool, args, prefix) {
+    Tool.Install = Install;
+    function Run(tool, args, prefix) {
         var str = args.join(" ");
         if (shell.exec(prefix + " " + tool + " " + args).code == 0) {
             return true;
@@ -28,5 +28,5 @@ var Core;
             return false;
         }
     }
-    Core.RunTool = RunTool;
-})(Core = exports.Core || (exports.Core = {}));
+    Tool.Run = Run;
+})(Tool = exports.Tool || (exports.Tool = {}));
