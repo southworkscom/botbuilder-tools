@@ -1,6 +1,6 @@
 var shell = require('shelljs');
-import tl = require("azure-pipelines-task-lib");
 var execSh = require("exec-sh");
+import tl = require("azure-pipelines-task-lib");
 export module Tool {
     
     export function Install(toolname: string): void {
@@ -15,59 +15,18 @@ export module Tool {
             GetPublicToolName(toolname),
         ];
 
-        if (tl.osType() == "Linux") {
-            var prefix = "sudo ";
-        } else {
-            var prefix = "";
-        }
-
-        /*if (!Run("npm", args, prefix)) {
-            LogError(`There was a problem installing ${toolname}`);
-        }*/
+        var prefix: string = tl.osType() == "Linux" ? "sudo" : "";
         Run("npm", args, prefix);
     }
 
     export function Run(tool: string, args: string[], prefix: string): void{
-        var command = args.join(" ");
-        /*shell.echo(`${prefix}${tool} ${str}`)
-        if (shell.exec(`${prefix}${tool} ${str}`).code == 0){
-            return true;
-        } else {
-            return false;
-        }*/
-        
-        //shell.echo(command);
-
-        execSh(`${prefix}${tool} ${command}`);
-    }
-    
-    export function GetInitInputs(): string[] {
-        var args: string[] = [
-            "Name",
-            "LuisAuthoringKey",
-            "LuisAuthoringRegion",
-            "dataFolder",
-            "bot",
-            "secret",
-            "culture",
-            "hierarchical",
-            "LuisSubscriptionKey",
-            "LuisSubscriptionRegion",
-            "UseAllTrainingData",
-            "DontReviseUtterance",
-            "PublishToStaging"
-        ];
-
-        var inputs: string[] = [];
-        args.forEach(function (arg) {
-            var input = tl.getInput(arg);
-            shell.echo(input);
-            if (input != null) {
-                inputs.push(`--${arg} ${input}`);
+        var command = `${prefix}${tool} ${args.join(" ")}`;
+        execSh(command, function(err: any){
+            if (err) {
+                LogError(`The command: "${command}" could not be run.`);
+                console.log("Exit code: ", err.code);
             }
-        });
-
-        return inputs;
+          });
     }
 
     function LogError(message: string): void {
@@ -75,14 +34,18 @@ export module Tool {
     }
 
     function isInstalled(toolName: string): boolean{
+        console.log(`Validating ${toolName} version.`);
         if (shell.exec(`${toolName} --version`, {silent:true}).code == 0){
+            console.log(`${toolName} is installed.`);
             return true;
         }else{
+            console.log(`${toolName} is not installed.`);
             return false;
         }
     }
 
     export function validateNodeJsVersion(): boolean{
+        console.log(`Validating NodeJS version.`);
         var result = shell.exec(`node --version`);
         var version: number[] = getNumericVersion(result.stdout);
         if(version[0] < 8 || (version[0] == 8 && version[1] < 5)){
