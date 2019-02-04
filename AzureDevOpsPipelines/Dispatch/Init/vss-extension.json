@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "dispatch-chatdown-init",
     "name": "Dispatch Init Tool",
-    "version": "0.0.1",
+    "version": "0.0.33",
     "publisher": "Southworks-pipelines-test",
     "targets": [
         {

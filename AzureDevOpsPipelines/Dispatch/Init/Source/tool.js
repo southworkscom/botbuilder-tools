@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var shell = require('shelljs');
 var tl = require("azure-pipelines-task-lib");
+var execSh = require("exec-sh");
 var Tool;
 (function (Tool) {
     function Install(toolname) {
@@ -20,20 +21,22 @@ var Tool;
         else {
             var prefix = "";
         }
-        if (!Run("npm", args, prefix)) {
-            LogError("There was a problem installing " + toolname);
-        }
+        /*if (!Run("npm", args, prefix)) {
+            LogError(`There was a problem installing ${toolname}`);
+        }*/
+        Run("npm", args, prefix);
     }
     Tool.Install = Install;
     function Run(tool, args, prefix) {
-        var str = args.join(" ");
-        shell.echo("" + prefix + tool + " " + str);
-        if (shell.exec("" + prefix + tool + " " + str).code == 0) {
+        var command = args.join(" ");
+        /*shell.echo(`${prefix}${tool} ${str}`)
+        if (shell.exec(`${prefix}${tool} ${str}`).code == 0){
             return true;
-        }
-        else {
+        } else {
             return false;
-        }
+        }*/
+        //shell.echo(command);
+        execSh("" + prefix + tool + " " + command);
     }
     Tool.Run = Run;
     function GetInitInputs() {
@@ -52,30 +55,14 @@ var Tool;
             "DontReviseUtterance",
             "PublishToStaging"
         ];
-        /*
-        var LANGUAGE = {
-            Name: "-n",
-            LuisAuthoringKey: "--luisAuthoringKey",
-            LuisAuthoringRegion: "--luisAuthoringRegion",
-            dataFolder:,
-            bot:,
-            secret:,
-            culture:,
-            hierarchical:,
-            LuisSubscriptionKey:,
-            LuisSubscriptionRegion:,
-            UseAllTrainingData:,
-            DontReviseUtterance:,
-            PublishToStaging
-        }
-        */
         var inputs = [];
-        for (var arg in args) {
-            var tempInput = tl.getInput(arg);
-            if (tempInput != null) {
-                inputs.push("--" + arg + " " + tempInput);
+        args.forEach(function (arg) {
+            var input = tl.getInput(arg);
+            shell.echo(input);
+            if (input != null) {
+                inputs.push("--" + arg + " " + input);
             }
-        }
+        });
         return inputs;
     }
     Tool.GetInitInputs = GetInitInputs;
