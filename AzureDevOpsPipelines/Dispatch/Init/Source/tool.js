@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var shell = require('shelljs');
-var tl = require("azure-pipelines-task-lib");
 var execSh = require("exec-sh");
+var tl = require("azure-pipelines-task-lib");
 var Tool;
 (function (Tool) {
     function Install(toolname) {
@@ -15,69 +15,36 @@ var Tool;
             "-g",
             GetPublicToolName(toolname),
         ];
-        if (tl.osType() == "Linux") {
-            var prefix = "sudo ";
-        }
-        else {
-            var prefix = "";
-        }
-        /*if (!Run("npm", args, prefix)) {
-            LogError(`There was a problem installing ${toolname}`);
-        }*/
+        var prefix = tl.osType() == "Linux" ? "sudo" : "";
         Run("npm", args, prefix);
     }
     Tool.Install = Install;
     function Run(tool, args, prefix) {
-        var command = args.join(" ");
-        /*shell.echo(`${prefix}${tool} ${str}`)
-        if (shell.exec(`${prefix}${tool} ${str}`).code == 0){
-            return true;
-        } else {
-            return false;
-        }*/
-        //shell.echo(command);
-        execSh("" + prefix + tool + " " + command);
-    }
-    Tool.Run = Run;
-    function GetInitInputs() {
-        var args = [
-            "Name",
-            "LuisAuthoringKey",
-            "LuisAuthoringRegion",
-            "dataFolder",
-            "bot",
-            "secret",
-            "culture",
-            "hierarchical",
-            "LuisSubscriptionKey",
-            "LuisSubscriptionRegion",
-            "UseAllTrainingData",
-            "DontReviseUtterance",
-            "PublishToStaging"
-        ];
-        var inputs = [];
-        args.forEach(function (arg) {
-            var input = tl.getInput(arg);
-            shell.echo(input);
-            if (input != null) {
-                inputs.push("--" + arg + " " + input);
+        var command = "" + prefix + tool + " " + args.join(" ");
+        execSh(command, function (err) {
+            if (err) {
+                LogError("The command: \"" + command + "\" could not be run.");
+                console.log("Exit code: ", err.code);
             }
         });
-        return inputs;
     }
-    Tool.GetInitInputs = GetInitInputs;
+    Tool.Run = Run;
     function LogError(message) {
         tl.setResult(tl.TaskResult.Failed, message);
     }
     function isInstalled(toolName) {
+        console.log("Validating " + toolName + " version.");
         if (shell.exec(toolName + " --version", { silent: true }).code == 0) {
+            console.log(toolName + " is installed.");
             return true;
         }
         else {
+            console.log(toolName + " is not installed.");
             return false;
         }
     }
     function validateNodeJsVersion() {
+        console.log("Validating NodeJS version.");
         var result = shell.exec("node --version");
         var version = getNumericVersion(result.stdout);
         if (version[0] < 8 || (version[0] == 8 && version[1] < 5)) {
