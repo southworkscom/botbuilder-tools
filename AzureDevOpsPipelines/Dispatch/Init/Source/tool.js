@@ -7,7 +7,7 @@ var Tool;
 (function (Tool) {
     function Install(toolname) {
         if (isInstalled(toolname)) {
-            return;
+            return false;
         }
         var args = [
             "install",
@@ -16,15 +16,21 @@ var Tool;
             GetPublicToolName(toolname),
         ];
         var prefix = tl.osType() == "Linux" ? "sudo" : "";
-        Run("npm", args, prefix);
+        return Run("npm", args, prefix);
     }
     Tool.Install = Install;
     function Run(tool, args, prefix) {
         var command = "" + prefix + tool + " " + args.join(" ");
-        execSh(command, function (err) {
+        shell.echo(command);
+        return execSh(command, function (err) {
             if (err) {
                 LogError("The command: \"" + command + "\" could not be run.");
                 console.log("Exit code: ", err.code);
+                return false;
+            }
+            else {
+                shell.echo("true");
+                return true;
             }
         });
     }
@@ -33,18 +39,18 @@ var Tool;
         tl.setResult(tl.TaskResult.Failed, message);
     }
     function isInstalled(toolName) {
-        console.log("Validating " + toolName + " version.");
+        shell.echo("Validating " + toolName + " version.");
         if (shell.exec(toolName + " --version", { silent: true }).code == 0) {
-            console.log(toolName + " is installed.");
+            shell.echo(toolName + " is installed.");
             return true;
         }
         else {
-            console.log(toolName + " is not installed.");
+            shell.echo(toolName + " is not installed.");
             return false;
         }
     }
     function validateNodeJsVersion() {
-        console.log("Validating NodeJS version.");
+        shell.echo("Validating NodeJS version.");
         var result = shell.exec("node --version");
         var version = getNumericVersion(result.stdout);
         if (version[0] < 8 || (version[0] == 8 && version[1] < 5)) {

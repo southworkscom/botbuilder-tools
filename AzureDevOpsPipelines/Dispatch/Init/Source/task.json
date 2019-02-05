@@ -85,7 +85,7 @@
             "name": "hierarchical",
             "type": "boolean",
             "label": "Hierarchical",
-            "defaultValue": "",
+            "defaultValue": true,
             "required": false,
             "helpMarkDown": "Default to true. If false, existing intents from source LUIS model(s) will be available as the dispatch intents."
         },

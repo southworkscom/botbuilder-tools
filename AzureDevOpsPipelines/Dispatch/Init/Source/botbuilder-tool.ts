@@ -1,12 +1,17 @@
 import { Tool } from "./tool";
 import tl = require("azure-pipelines-task-lib");
 
-var inputs = ["init"];
-inputs = inputs.concat(GetInitInputs());
-if (Tool.validateNodeJsVersion()) {
-    Tool.Install("dispatch");
-    console.log("echo");
-    Tool.Run("dispatch", inputs, "");
+Run();
+
+function Run() {
+    var inputs = ["init"];
+    inputs = inputs.concat(GetInitInputs());
+    if (Tool.validateNodeJsVersion()) {
+        if (Tool.Install("dispatch")) {
+            Tool.Run("dispatch", inputs, "");
+        }
+    }
+    return true;
 }
 
 function GetInitInputs(): string[] {
@@ -20,7 +25,7 @@ function GetInitInputs(): string[] {
         "culture",
         "hierarchical",
         "LuisSubscriptionKey",
-        "LuisSubscriptionRegion",
+        "LuisSubscriptme queda ionRegion",
         "UseAllTrainingData",
         "DontReviseUtterance",
         "PublishToStaging"

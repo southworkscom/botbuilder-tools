@@ -3,9 +3,9 @@ var execSh = require("exec-sh");
 import tl = require("azure-pipelines-task-lib");
 export module Tool {
     
-    export function Install(toolname: string): void {
+    export function Install(toolname: string): boolean {
         if (isInstalled(toolname)) {
-            return;
+            return false;
         }
         
         var args = [
@@ -16,15 +16,20 @@ export module Tool {
         ];
 
         var prefix: string = tl.osType() == "Linux" ? "sudo" : "";
-        Run("npm", args, prefix);
-    }
+        return Run("npm", args, prefix);
+    } 
 
-    export function Run(tool: string, args: string[], prefix: string): void{
+    export function Run(tool: string, args: string[], prefix: string): boolean{
         var command = `${prefix}${tool} ${args.join(" ")}`;
-        execSh(command, function(err: any){
+        shell.echo(command);
+        return execSh(command, function(err: any){
             if (err) {
                 LogError(`The command: "${command}" could not be run.`);
                 console.log("Exit code: ", err.code);
+                return false;
+            } else {
+                shell.echo("true");
+                return true;
             }
           });
     }
@@ -34,18 +39,18 @@ export module Tool {
     }
 
     function isInstalled(toolName: string): boolean{
-        console.log(`Validating ${toolName} version.`);
+        shell.echo(`Validating ${toolName} version.`);
         if (shell.exec(`${toolName} --version`, {silent:true}).code == 0){
-            console.log(`${toolName} is installed.`);
+            shell.echo(`${toolName} is installed.`);
             return true;
         }else{
-            console.log(`${toolName} is not installed.`);
+            shell.echo(`${toolName} is not installed.`);
             return false;
         }
     }
 
     export function validateNodeJsVersion(): boolean{
-        console.log(`Validating NodeJS version.`);
+        shell.echo(`Validating NodeJS version.`);
         var result = shell.exec(`node --version`);
         var version: number[] = getNumericVersion(result.stdout);
         if(version[0] < 8 || (version[0] == 8 && version[1] < 5)){
