@@ -1,0 +1,46 @@
+{
+    "id": "5ccd62db-d167-44d2-94e8-4c3027aa7534",
+    "name": "chatdown-task",
+    "friendlyName": "Chatdown",
+    "description": "Chatdown is a transcript generator which consumes a .chat file to generate mock transcripts.",
+    "helpMarkDown": "",
+    "category": "Utility",
+    "author": "vgrycuk",
+    "version": {
+        "Major": 0,
+        "Minor": 2,
+        "Patch": 0
+    },
+    "instanceNameFormat": "Commandline Script",
+    "inputs": [
+        {
+            "name": "filename",
+            "type": "filePath",
+            "label": "Chat FilePath",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "The path of the chat file to be parsed."
+        },
+        {
+            "name": "exportdirectory",
+            "type": "filePath",
+            "label": "Export Directory",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "Folder where to export the transcripted chat"
+        },
+        {
+            "name": "static",
+            "type": "boolean",
+            "label": "Static Timestamp",
+            "defaultValue": "false",
+			"required": false,
+            "helpMarkDown": "Use static timestamps when generating timestamps on activities."
+        }
+    ],
+    "execution": {
+        "Node": {
+            "target": "index.js"
+        }
+    }
+}
