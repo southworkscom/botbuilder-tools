@@ -4,6 +4,7 @@ const path = require('path');
 const txtfile = require('read-text-file');
 const { spawn } = require('child_process');
 const luis = require.resolve('../bin/luis');
+const pkg = require('../package.json');
 
 describe('The LUIS cli init argument', () => {
     const rcPath = path.resolve('.luisrc');

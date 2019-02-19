@@ -1,6 +1,7 @@
 const assert = require('assert');
 const { exec } = require('child_process');
 const luis = require.resolve('../bin/luis');
+const testMockPath =  require.resolve('./mockTest.js');
 const pkg = require('../package.json');
 
 describe('The LUIS cli tool', () => {
@@ -54,13 +55,13 @@ describe('The LUIS cli tool', () => {
             });
 
             it('and all other args', done =>{
-                exec(`node ${luis} --authoringKey dummy-key --region westeurope query --q "message to send" --appId dummy-app`, (error, stdout, stderr) => {
+                let mockFile = './testdata/andallotherargs.mockdata.json';
+                exec(`node ${testMockPath} ${mockFile} ${luis} --authoringKey dummy-key --region westeurope query --q "message to send" --appId dummy-app`, (error, stdout, stderr) => {
                     assert.equal(stdout, '');
-                    assert(stderr.includes('401'), stderr);
+                    assert(stderr.includes('401'));
                     done();
                 });
             });
         });
-
     });
 });
