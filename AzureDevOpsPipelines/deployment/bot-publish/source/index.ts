@@ -1,9 +1,9 @@
-import { Core } from "./Core";
+import { botPublish } from "./bot-publish";
 
 run();
 
 function run(): void {
-    var core = new Core();
-
-    core.botPublish();
+    var publish = new botPublish();
+    
+    publish.botPublish();
 }

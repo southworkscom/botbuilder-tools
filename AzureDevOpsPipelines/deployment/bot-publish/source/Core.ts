@@ -1,24 +1,17 @@
+import tl = require("azure-pipelines-task-lib");
 import { IExecSyncResult, IExecOptions } from 'azure-pipelines-task-lib/toolrunner';
 import { execSync } from "child_process";
-import tl = require("azure-pipelines-task-lib");
 import path = require("path");
 import fs = require("fs");
 
-export class Core {
+export class core {
     private isLoggedIn: boolean = false;
     private cliPasswordPath: string = "";
     private servicePrincipalId: string = "";
     private servicePrincipalKey: string = "";
-    private subscriptionID: string = "";
-
     private prefix: string = "";
-    private parametersPublish = {
-        'resource-group': 'resource-group',
-        'name': 'name',
-        'proj-name': 'proj-name',
-        'code-dir': 'code-dir',
-        'version': 'version'
-    };
+    
+    public subscriptionID: string = "";
 
     constructor() {
         this.getPrefix();
@@ -29,52 +22,7 @@ export class Core {
             tl.setVariable('subscriptionID', this.subscriptionID);
         }
     }
-    
-    public botPublish(): void {
-        var inputs: string = this.GetParameters(this.parametersPublish);
-        
-        this.run(`az bot publish ` +
-            `--subscription ${this.subscriptionID} ` +
-            `${inputs} ` +
-            `--verbose`);
-    }
 
-    private getCWD(cwd: string): IExecOptions {
-
-        return <IExecOptions> { cwd: tl.getInput(cwd) };
-    }
-
-    private GetParameters(parameters: any): string {
-        var inputs: string[] = [];
-        for (var key in parameters) {
-            var input = tl.getInput(key);
-            if (input != null) {
-                inputs.push(`--${key} ${input}`);
-            }
-        }
-        
-        return inputs.join(' ');
-    }
-
-    private run(command: string, options?: IExecOptions): void{
-        var command = `${this.prefix} ${command}`;
-        console.log(`Running command: ${command}.`);
-        try {
-            console.log(execSync(command, options).toString());
-        }
-        catch (error) {
-            this.LogError(`A problem ocurred: ${error.message}`);
-        }
-    }
-
-    private LogError(message: string): void {
-        tl.setResult(tl.TaskResult.Failed, message);
-    }
-
-    private getPrefix(): void {
-        this.prefix = tl.osType() == "Linux" ? "sudo" : "";
-    }
-    
     private loginAzureRM(connectedService: string): void {
         var authScheme: string = tl.getEndpointAuthorizationScheme(connectedService, true);
         this.subscriptionID = tl.getEndpointDataParameter(connectedService, "SubscriptionID", true);
@@ -122,5 +70,41 @@ export class Core {
             }
             throw resultOfToolExecution;
         }
+    }
+
+    private getCWD(cwd: string): IExecOptions {
+
+        return <IExecOptions> { cwd: tl.getInput(cwd) };
+    }
+
+    public GetParameters(parameters: any): string {
+        var inputs: string[] = [];
+        for (var key in parameters) {
+            var input = tl.getInput(key);
+            if (input != null) {
+                inputs.push(`--${key} ${input}`);
+            }
+        }
+        
+        return inputs.join(' ');
+    }
+
+    public run(command: string, options?: IExecOptions): void{
+        var command = `${this.prefix} ${command}`;
+        console.log(`Running command: ${command}.`);
+        try {
+            console.log(execSync(command, options).toString());
+        }
+        catch (error) {
+            this.LogError(`A problem ocurred: ${error.message}`);
+        }
+    }
+    
+    private getPrefix(): void {
+        this.prefix = tl.osType() == "Linux" ? "sudo" : "";
+    }
+
+    private LogError(message: string): void {
+        tl.setResult(tl.TaskResult.Failed, message);
     }
 }

@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Core_1 = require("./Core");
+const bot_publish_1 = require("./bot-publish");
 run();
 function run() {
-    var core = new Core_1.Core();
-    core.botPublish();
+    var publish = new bot_publish_1.botPublish();
+    publish.botPublish();
 }
