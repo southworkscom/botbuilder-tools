@@ -13,7 +13,7 @@ export class botPublish {
     private core: core = new core;
     
     public botPublish(): void {
-        var inputs: string = this.core.GetParameters(this.parametersPublish);
+        const inputs: string = this.core.GetParameters(this.parametersPublish);
         
         this.core.run(`az bot publish ` +
             `--subscription ${this.core.subscriptionID} ` +
