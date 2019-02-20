@@ -1,66 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const child_process_1 = require("child_process");
 const tl = require("azure-pipelines-task-lib");
+const child_process_1 = require("child_process");
 const path = require("path");
 const fs = require("fs");
-class Core {
+class core {
     constructor() {
         this.isLoggedIn = false;
         this.cliPasswordPath = "";
         this.servicePrincipalId = "";
         this.servicePrincipalKey = "";
-        this.subscriptionID = "";
         this.prefix = "";
-        this.parametersPublish = {
-            'resource-group': 'resource-group',
-            'name': 'name',
-            'proj-name': 'proj-name',
-            'code-dir': 'code-dir',
-            'version': 'version'
-        };
+        this.subscriptionID = "";
         this.getPrefix();
         this.subscriptionID = tl.getVariable('subscriptionID');
         if (this.subscriptionID == null) {
             this.loginAzureRM(tl.getInput("connectedServiceNameARM", true));
             tl.setVariable('subscriptionID', this.subscriptionID);
         }
-    }
-    botPublish() {
-        var inputs = this.GetParameters(this.parametersPublish);
-        this.run(`az bot publish ` +
-            `--subscription ${this.subscriptionID} ` +
-            `${inputs} ` +
-            `--verbose`);
-    }
-    getCWD(cwd) {
-        return { cwd: tl.getInput(cwd) };
-    }
-    GetParameters(parameters) {
-        var inputs = [];
-        for (var key in parameters) {
-            var input = tl.getInput(key);
-            if (input != null) {
-                inputs.push(`--${key} ${input}`);
-            }
-        }
-        return inputs.join(' ');
-    }
-    run(command, options) {
-        var command = `${this.prefix} ${command}`;
-        console.log(`Running command: ${command}.`);
-        try {
-            console.log(child_process_1.execSync(command, options).toString());
-        }
-        catch (error) {
-            this.LogError(`A problem ocurred: ${error.message}`);
-        }
-    }
-    LogError(message) {
-        tl.setResult(tl.TaskResult.Failed, message);
-    }
-    getPrefix() {
-        this.prefix = tl.osType() == "Linux" ? "sudo" : "";
     }
     loginAzureRM(connectedService) {
         var authScheme = tl.getEndpointAuthorizationScheme(connectedService, true);
@@ -106,5 +63,34 @@ class Core {
             throw resultOfToolExecution;
         }
     }
+    getCWD(cwd) {
+        return { cwd: tl.getInput(cwd) };
+    }
+    GetParameters(parameters) {
+        var inputs = [];
+        for (var key in parameters) {
+            var input = tl.getInput(key);
+            if (input != null) {
+                inputs.push(`--${key} ${input}`);
+            }
+        }
+        return inputs.join(' ');
+    }
+    run(command, options) {
+        var command = `${this.prefix} ${command}`;
+        console.log(`Running command: ${command}.`);
+        try {
+            console.log(child_process_1.execSync(command, options).toString());
+        }
+        catch (error) {
+            this.LogError(`A problem ocurred: ${error.message}`);
+        }
+    }
+    getPrefix() {
+        this.prefix = tl.osType() == "Linux" ? "sudo" : "";
+    }
+    LogError(message) {
+        tl.setResult(tl.TaskResult.Failed, message);
+    }
 }
-exports.Core = Core;
+exports.core = core;
