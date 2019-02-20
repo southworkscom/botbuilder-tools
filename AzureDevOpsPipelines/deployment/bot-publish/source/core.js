@@ -20,12 +20,12 @@ class core {
         }
     }
     loginAzureRM(connectedService) {
-        var authScheme = tl.getEndpointAuthorizationScheme(connectedService, true);
+        const authScheme = tl.getEndpointAuthorizationScheme(connectedService, true);
         this.subscriptionID = tl.getEndpointDataParameter(connectedService, "SubscriptionID", true);
         if (authScheme.toLowerCase() == "serviceprincipal") {
-            let authType = tl.getEndpointAuthorizationParameter(connectedService, 'authenticationType', true);
+            const authType = tl.getEndpointAuthorizationParameter(connectedService, 'authenticationType', true);
             let cliPassword;
-            var servicePrincipalId = tl.getEndpointAuthorizationParameter(connectedService, "serviceprincipalid", false);
+            let servicePrincipalId = tl.getEndpointAuthorizationParameter(connectedService, "serviceprincipalid", false);
             if (authType == "spnCertificate") {
                 tl.debug('certificate based endpoint');
                 let certificateContent = tl.getEndpointAuthorizationParameter(connectedService, "servicePrincipalCertificate", false);
@@ -67,9 +67,9 @@ class core {
         return { cwd: tl.getInput(cwd) };
     }
     GetParameters(parameters) {
-        var inputs = [];
+        let inputs = [];
         for (var key in parameters) {
-            var input = tl.getInput(key);
+            let input = tl.getInput(key);
             if (input != null) {
                 inputs.push(`--${key} ${input}`);
             }
@@ -77,10 +77,10 @@ class core {
         return inputs.join(' ');
     }
     run(command, options) {
-        var command = `${this.prefix} ${command}`;
-        console.log(`Running command: ${command}.`);
+        const cmd = `${this.prefix} ${command}`;
+        console.log(`Running command: ${cmd}.`);
         try {
-            console.log(child_process_1.execSync(command, options).toString());
+            console.log(child_process_1.execSync(cmd, options).toString());
         }
         catch (error) {
             this.LogError(`A problem ocurred: ${error.message}`);

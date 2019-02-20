@@ -24,36 +24,35 @@ export class core {
     }
 
     private loginAzureRM(connectedService: string): void {
-        var authScheme: string = tl.getEndpointAuthorizationScheme(connectedService, true);
+
+        const authScheme: string = tl.getEndpointAuthorizationScheme(connectedService, true);
         this.subscriptionID = tl.getEndpointDataParameter(connectedService, "SubscriptionID", true);
+
         if(authScheme.toLowerCase() == "serviceprincipal") {
-            let authType: string = tl.getEndpointAuthorizationParameter(connectedService, 'authenticationType', true);
+            const authType: string = tl.getEndpointAuthorizationParameter(connectedService, 'authenticationType', true);
             let cliPassword: string;
-            var servicePrincipalId: string = tl.getEndpointAuthorizationParameter(connectedService, "serviceprincipalid", false);
+            let servicePrincipalId: string = tl.getEndpointAuthorizationParameter(connectedService, "serviceprincipalid", false);
+
             if (authType == "spnCertificate") {
                 tl.debug('certificate based endpoint');
                 let certificateContent: string = tl.getEndpointAuthorizationParameter(connectedService, "servicePrincipalCertificate", false);
                 cliPassword = path.join(tl.getVariable('Agent.TempDirectory') || tl.getVariable('system.DefaultWorkingDirectory'), 'spnCert.pem');
                 fs.writeFileSync(cliPassword, certificateContent);
                 this.cliPasswordPath = cliPassword;
-
-            }
-            else {
+            } else {
                 tl.debug('key based endpoint');
                 cliPassword = tl.getEndpointAuthorizationParameter(connectedService, "serviceprincipalkey", false);
                 this.servicePrincipalId = servicePrincipalId;
                 this.servicePrincipalKey = cliPassword;
             }
+            
             var tenantId: string = tl.getEndpointAuthorizationParameter(connectedService, "tenantid", false);
-
             //login using svn
             this.throwIfError(tl.execSync("az", `login --service-principal -u "${servicePrincipalId}" -p "${cliPassword}" --tenant "${tenantId}"`), "Azure Login Failed!");
-        }
-        else if(authScheme.toLowerCase() == "managedserviceidentity") {
+        } else if(authScheme.toLowerCase() == "managedserviceidentity") {
             //login using msi
             this.throwIfError(tl.execSync("az", "login --identity"), "Managed Service Identity Failed!");
-        }
-        else{
+        } else {
             throw console.error("Auth Scheme %s is not supported", authScheme);
         }
 
@@ -65,22 +64,25 @@ export class core {
     private throwIfError(resultOfToolExecution: IExecSyncResult, errormsg?: string): void {
         if (resultOfToolExecution.code != 0) {
             tl.error("Error Code: [" + resultOfToolExecution.code + "]");
+
             if (errormsg) {
                 tl.error("Error: " + errormsg);
             }
+
             throw resultOfToolExecution;
         }
     }
 
     private getCWD(cwd: string): IExecOptions {
-
         return <IExecOptions> { cwd: tl.getInput(cwd) };
     }
 
     public GetParameters(parameters: any): string {
-        var inputs: string[] = [];
+        let inputs: string[] = [];
+
         for (var key in parameters) {
-            var input = tl.getInput(key);
+            let input = tl.getInput(key);
+
             if (input != null) {
                 inputs.push(`--${key} ${input}`);
             }
@@ -90,10 +92,10 @@ export class core {
     }
 
     public run(command: string, options?: IExecOptions): void{
-        var command = `${this.prefix} ${command}`;
-        console.log(`Running command: ${command}.`);
+        const cmd = `${this.prefix} ${command}`;
+        console.log(`Running command: ${cmd}.`);
         try {
-            console.log(execSync(command, options).toString());
+            console.log(execSync(cmd, options).toString());
         }
         catch (error) {
             this.LogError(`A problem ocurred: ${error.message}`);

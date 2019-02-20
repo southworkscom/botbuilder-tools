@@ -13,7 +13,7 @@ class botPublish {
         this.core = new core_1.core;
     }
     botPublish() {
-        var inputs = this.core.GetParameters(this.parametersPublish);
+        const inputs = this.core.GetParameters(this.parametersPublish);
         this.core.run(`az bot publish ` +
             `--subscription ${this.core.subscriptionID} ` +
             `${inputs} ` +
