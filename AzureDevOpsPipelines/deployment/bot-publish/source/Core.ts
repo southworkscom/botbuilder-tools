@@ -35,7 +35,7 @@ export class core {
 
             if (authType == "spnCertificate") {
                 tl.debug('certificate based endpoint');
-                let certificateContent: string = tl.getEndpointAuthorizationParameter(connectedService, "servicePrincipalCertificate", false);
+                const certificateContent: string = tl.getEndpointAuthorizationParameter(connectedService, "servicePrincipalCertificate", false);
                 cliPassword = path.join(tl.getVariable('Agent.TempDirectory') || tl.getVariable('system.DefaultWorkingDirectory'), 'spnCert.pem');
                 fs.writeFileSync(cliPassword, certificateContent);
                 this.cliPasswordPath = cliPassword;
@@ -46,7 +46,7 @@ export class core {
                 this.servicePrincipalKey = cliPassword;
             }
             
-            var tenantId: string = tl.getEndpointAuthorizationParameter(connectedService, "tenantid", false);
+            const tenantId: string = tl.getEndpointAuthorizationParameter(connectedService, "tenantid", false);
             //login using svn
             this.throwIfError(tl.execSync("az", `login --service-principal -u "${servicePrincipalId}" -p "${cliPassword}" --tenant "${tenantId}"`), "Azure Login Failed!");
         } else if(authScheme.toLowerCase() == "managedserviceidentity") {
