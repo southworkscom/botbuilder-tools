@@ -1,0 +1,121 @@
+{
+    "id": "59f83b54-5c4f-46b3-8c3c-03ba8879222d",
+    "name": "clone-and-publish",
+    "friendlyName": "clone-and-publish",
+    "description": "Clone and Publish",
+    "helpMarkDown": "",
+    "category": "Utility",
+    "author": "Southworks-pipelines-test",
+    "version": {
+        "Major": 0,
+        "Minor": 1,
+        "Patch": 0
+    },
+    "instanceNameFormat": "Bot Publish $(name)",
+    "inputs": [
+        {
+            "name": "connectedServiceNameARM",
+            "aliases": [
+                "azureSubscription"
+            ],
+            "type": "connectedService:AzureRM",
+            "label": "Azure subscription",
+            "required": true,
+            "helpMarkDown": "Select an Azure resource manager subscription for the deployment"
+        },
+        {
+            "name": "resource-group",
+            "type": "text",
+            "label": "Resource Group",
+            "required": true,
+            "helpMarkDown": ""
+        },
+        {
+            "name": "proj-name",
+            "type": "text",
+            "label": "Project File Name",
+            "required": true,
+            "helpMarkDown": ""
+        },
+        {
+            "name": "code-dir",
+            "type": "filepath",
+            "label": "Root Folder",
+            "required": true,
+            "helpMarkDown": ""
+        },
+        {
+            "name": "name",
+            "type": "text",
+            "label": "Name of the Bot",
+            "required": true,
+            "helpMarkDown": ""
+        },
+        {
+            "name": "version",
+            "type": "picklist",
+            "label": "Version of the Bot",
+            "required": true,
+            "defaultValue": "v4",
+            "helpMarkDown": "",
+            "options": {
+                "v3": "v3",
+                "v4": "v4"
+            }
+        },
+		{
+            "name": "location",
+            "type": "picklist",
+            "label": "Location",
+            "required": true,
+            "helpMarkDown": "",
+            "options": {
+                "westus": "Westus"
+            }
+        },
+        {
+            "name": "sdkLanguage",
+            "type": "picklist",
+            "label": "SDK Language",
+            "required": true,
+            "helpMarkDown": "",
+            "options": {
+                "Csharp": "C#",
+                "Node": "NodeJS"
+            }
+        },
+        {
+            "name": "folder",
+            "type": "filepath",
+            "label": "Folder",
+            "required": true,
+            "helpMarkDown": ""
+        },
+        {
+            "name": "appId",
+            "type": "text",
+            "label": "App ID",
+            "required": true,
+            "helpMarkDown": ""
+        },
+        {
+            "name": "appSecret",
+            "type": "text",
+            "label": "App Secret",
+            "required": true,
+            "helpMarkDown": ""
+        },
+        {
+            "name": "luisAuthoringKey",
+            "type": "text",
+            "label": "LUIS Key",
+            "required": false,
+            "helpMarkDown": ""
+        }
+    ],
+    "execution": {
+        "Node": {
+            "target": "index.js"
+        }
+    }
+}
