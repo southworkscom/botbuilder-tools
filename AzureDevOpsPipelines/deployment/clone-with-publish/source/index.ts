@@ -10,8 +10,8 @@ function run(): void {
     const publish = new botPublish();
     const clone = new msbotClone();
     
-    console.log(`Checking if ${tl.getInput('name')} already exist in ${tl.getInput('group')}`);
-    if (cores.ValidateBot(tl.getInput('name'), tl.getInput('group'))) {
+    console.log(`Checking if ${tl.getInput('name')} already exist in ${tl.getInput('resource-group')}`);
+    if (cores.ValidateBot(tl.getInput('name'), tl.getInput('resource-group'))) {
         console.log('It does, creating publish...');
         publish.botPublish();
     } else {
