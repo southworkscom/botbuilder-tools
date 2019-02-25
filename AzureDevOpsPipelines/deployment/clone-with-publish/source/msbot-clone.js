@@ -5,6 +5,7 @@ class msbotClone {
     constructor() {
         this.parametersClone = {
             'name': 'name',
+            'resource-group': 'resource-group',
             'proj-name': 'proj-name',
             'code-dir': 'code-dir',
             'location': 'location',
@@ -21,7 +22,7 @@ class msbotClone {
         var inputs = this.core.GetParameters(this.parametersClone);
         this.core.run(`msbot clone services ` +
             `--subscriptionId ${this.core.subscriptionID} ` +
-            ` ${inputs.replace('proj-name', 'proj-file')} ` +
+            ` ${inputs.replace('proj-name', 'proj-file').replace('resource-group', 'groupName')} ` +
             `--force ` +
             `--verbose`, this.core.getCWD('code-dir'));
     }
