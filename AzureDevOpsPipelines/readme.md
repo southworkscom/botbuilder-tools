@@ -43,7 +43,7 @@
    - **Root Folder:** Root folder of the project
    - **Name of the Bot:** Name of the bot to create or update
    - **Version of the Bot:** SDK version of the bot
-   - **Location: **Select the server location of the service
+   - **Location:** Select the server location of the service
    - **SDK Languaje:** Either `C#` or `NodeJS`. **Note:** Currently only `C#` is supported
    - **Folder:** Path to the msbot clone deployment script
    - **App ID:** App ID of the bot
