@@ -1,15 +1,15 @@
 {
      "manifestVersion": 1,
-    "id": "chatdown-task",
-    "name": "Chatdown",
-    "version": "0.0.62",
+    "id": "extension-updater",
+    "name": "extension-updater",
+    "version": "0.0.7",
     "publisher": "vgrycuk-testing",
     "targets": [
         {
             "id": "Microsoft.VisualStudio.Services"
         }
     ],    
-    "description": "Chatdown is a transcript generator which consumes a .chat file to generate mock transcripts.",
+    "description": "Task that updates a task",
     "categories": [
         "Azure Pipelines"
     ],

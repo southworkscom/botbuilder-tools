@@ -1,0 +1,76 @@
+{
+    "id": "d4bab7e0-3f90-48c5-bf87-07553de91876",
+    "name": "extension-updater",
+    "friendlyName": "extension-updater",
+    "description": "Publish an extension to Marketplace",
+    "helpMarkDown": "",
+    "category": "Utility",
+    "author": "vgrycuk-testing",
+    "version": {
+        "Major": 0,
+        "Minor": 1,
+        "Patch": 0
+    },
+    "instanceNameFormat": "Update Task",
+	"inputs": [
+        {
+            "name": "manifest-globs",
+            "type": "filepath",
+            "label": "File Path to the 'vss-extension' file",
+            "required": true,
+            "helpMarkDown": ""
+        },
+        {
+            "name": "versioning",
+            "type": "picklist",
+            "label": "Versioning",
+            "required": true,
+            "helpMarkDown": "",
+            "options": {
+                "automatic": "Automatic",
+                "manual": "Manual"
+            }
+        },
+        {
+            "name": "version",
+            "type": "text",
+            "label": "Version",
+            "required": true,
+            "visibleRule": "versioning = manual",
+            "helpMarkDown": "Version to use on the Extension Task"
+        },
+        {
+            "name": "token",
+            "type": "text",
+            "label": "Token",
+            "required": true,
+            "helpMarkDown": "Token for deployment"
+        },
+		{
+            "name": "share-with",
+            "type": "multiline",
+            "label": "Organizations to share with",
+            "required": true,
+            "helpMarkDown": "List of organizations to share the created task, separated by a space"
+        },
+        {
+            "name": "extensionid",
+            "type": "text",
+            "label": "Extension ID",
+            "required": true,
+            "helpMarkDown": ""
+        },
+        {
+            "name": "publisher",
+            "type": "text",
+            "label": "Publisher",
+            "required": true,
+            "helpMarkDown": ""
+        }
+    ],
+    "execution": {
+        "Node": {
+            "target": "index.js"
+        }
+    }
+}

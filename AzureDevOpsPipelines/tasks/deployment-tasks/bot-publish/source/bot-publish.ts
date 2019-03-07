@@ -3,11 +3,11 @@ import { core } from "./core";
 export class botPublish {
 
     private parametersPublish = {
-        'resource-group': 'resource-group',
+        'code-dir': 'code-dir',
         'name': 'name',
         'proj-name': 'proj-name',
-        'code-dir': 'code-dir',
-        'version': 'version'
+        'resource-group': 'resource-group',
+        'version': 'version',
     };
 
     private core: core = new core;

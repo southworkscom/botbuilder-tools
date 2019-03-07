@@ -1,11 +1,11 @@
 import { IExecSyncResult, IExecOptions } from 'azure-pipelines-task-lib/toolrunner';
 import { execSync } from "child_process";
-import tl = require("azure-pipelines-task-lib");
-import path = require('path');
+import tl from 'azure-pipelines-task-lib';
+import path from 'path';
 
 export class Core {
     // This will contain either 'sudo' or nothing depending on the OS
-    private prefix: string = "";
+    private prefix: string = '';
 
     constructor() {
         this.getPrefix();
@@ -28,14 +28,14 @@ export class Core {
     }
 
     public getOutputFileName(): string {
-        var fileName: string = `${path.basename(this.getInputFileName(), '.chat')}.transcript`;
-        var directory: string = this.getExportDirectory();
+        const fileName = `${path.basename(this.getInputFileName(), '.chat')}.transcript`;
+        const directory: string = this.getExportDirectory();
         
         return path.join(directory, fileName);
     }
 
     private getStaticDate(): string {
-        var input = tl.getInput('static');
+        const input = tl.getInput('static');
 
         return input != null && input == "true" ? '--static' : '';
     }
@@ -46,9 +46,9 @@ export class Core {
     }
 
     private GetParameters(parameters: any): string {
-        var inputs: string[] = [];
-        for (var key in parameters) {
-            var input = tl.getInput(key);
+        const inputs: string[] = [];
+        for (const key in parameters) {
+            const input = tl.getInput(key);
             if (input != null) {
                 inputs.push(`--${key} ${input}`);
             }
@@ -57,8 +57,8 @@ export class Core {
         return inputs.join(' ');
     }
 
-    private run(command: string, options?: IExecOptions): void{
-        var command = `${this.prefix} ${command}`;
+    private run(input: string, options?: IExecOptions): void{
+        const command = `${this.prefix} ${input}`;
         console.log(`Running command: ${command}.`);
         try {
             console.log(execSync(command, options).toString());
