@@ -1,10 +1,11 @@
-﻿using Microsoft.Azure.Management.ResourceManager;
+using Microsoft.Azure.Management.ResourceManager;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent.Authentication;
 using Microsoft.Azure.Management.ResourceManager.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using ResourceManagementClient = Microsoft.Azure.Management.ResourceManager.ResourceManagementClient;
@@ -37,6 +38,9 @@ namespace RelayDeployer.DeploymentHelper
             // Read the template and parameter file contents
             JObject templateFileContents = GetJsonFileContents("TestRelay.template.json");
             JObject parameterFileContents = GetJsonFileContents("TestRelay.parameters.json");
+
+            // Assign the deplyment name specified by the user
+            parameterFileContents["parameters"]["namespaces_relay_name"]["value"] = config.DeploymentName;
 
             // Create the resource manager client
             ResourceManagementClient resourceManagementClient = new ResourceManagementClient(serviceCreds)
@@ -105,6 +109,7 @@ namespace RelayDeployer.DeploymentHelper
         private static void DeployTemplate(ResourceManagementClient resourceManagementClient, string resourceGroupName, string deploymentName, JObject templateFileContents, JObject parameterFileContents)
         {
             Console.WriteLine(string.Format("Starting template deployment '{0}' in resource group '{1}'", deploymentName, resourceGroupName));
+
             var deployment = new Deployment
             {
                 Properties = new DeploymentProperties
