@@ -1,4 +1,4 @@
-﻿using RelayDeployer.DeploymentHelper;
+using RelayDeployer.DeploymentHelper;
 using System;
 
 namespace TestRelay
@@ -7,6 +7,12 @@ namespace TestRelay
     {
         static void Main()
         {
+            Console.WriteLine(
+                " ****************************************************\n" +
+                " * This program will deploy an Azure Relay service  *\n" +
+                " *      with pre-configured Hybrid Connection       *\n" +
+                " ****************************************************\n");
+
             var deploymentConfiguration = new DeploymentConfiguration
             {
                 SubscriptionId = GetInput("Provide Subscription ID: "),
@@ -18,8 +24,10 @@ namespace TestRelay
                 ResourceGroupName = GetInput("Provide Resource Group Name: ")
             };
 
-            DeploymentHelper deploymentHelper = new DeploymentHelper(deploymentConfiguration);
-            deploymentHelper.Run();
+            var deploymentHelper = new RelayDeployer.DeploymentHelper.RelayDeployer(deploymentConfiguration);
+            deploymentHelper.DeployTemplate();
+
+            Console.ReadKey();
         }
 
         private static string GetInput(string message)
