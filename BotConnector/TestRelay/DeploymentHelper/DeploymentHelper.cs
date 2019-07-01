@@ -1,3 +1,4 @@
+using Microsoft.Azure.Management.Relay;
 using Microsoft.Azure.Management.ResourceManager;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent.Authentication;
@@ -5,9 +6,10 @@ using Microsoft.Azure.Management.ResourceManager.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
+using TestRelay.DeploymentHelper;
 using ResourceManagementClient = Microsoft.Azure.Management.ResourceManager.ResourceManagementClient;
 
 namespace RelayDeployer.DeploymentHelper
@@ -16,25 +18,25 @@ namespace RelayDeployer.DeploymentHelper
     /// This is a helper class for deploying an Azure Resource Manager template
     /// More info about template deployments can be found here https://go.microsoft.com/fwLink/?LinkID=733371
     /// </summary>
-    public class DeploymentHelper
+    public class RelayDeployer
     {
         private readonly DeploymentConfiguration config;
+        private readonly AzureCredentials credentials;
 
-        public DeploymentHelper(DeploymentConfiguration config)
+        public RelayDeployer(DeploymentConfiguration config)
         {
             this.config = config;
+
+            // Try to obtain the service credentials
+            credentials = new AzureCredentialsFactory().FromServicePrincipal(
+                            config.ClientId,
+                            config.ClientSecret,
+                            config.TenantId,
+                            AzureEnvironment.AzureGlobalCloud);
         }
 
-        public void Run()
+        public void DeployTemplate()
         {
-            // Try to obtain the service credentials
-            var credentialFactory = new AzureCredentialsFactory();
-            var serviceCreds = credentialFactory.FromServicePrincipal(
-                                config.ClientId,
-                                config.ClientSecret,
-                                config.TenantId,
-                                AzureEnvironment.AzureGlobalCloud);
-
             // Read the template and parameter file contents
             JObject templateFileContents = GetJsonFileContents("TestRelay.template.json");
             JObject parameterFileContents = GetJsonFileContents("TestRelay.parameters.json");
@@ -43,7 +45,7 @@ namespace RelayDeployer.DeploymentHelper
             parameterFileContents["parameters"]["namespaces_relay_name"]["value"] = config.DeploymentName;
 
             // Create the resource manager client
-            ResourceManagementClient resourceManagementClient = new ResourceManagementClient(serviceCreds)
+            ResourceManagementClient resourceManagementClient = new ResourceManagementClient(credentials)
             {
                 SubscriptionId = config.SubscriptionId
             };
@@ -54,6 +56,8 @@ namespace RelayDeployer.DeploymentHelper
             // Start a deployment
             DeployTemplate(resourceManagementClient, config.ResourceGroupName, config.DeploymentName, templateFileContents, parameterFileContents);
         }
+
+
 
         /// <summary>
         /// Reads a JSON file from the specified path
@@ -122,6 +126,14 @@ namespace RelayDeployer.DeploymentHelper
 
             var deploymentResult = resourceManagementClient.Deployments.CreateOrUpdate(resourceGroupName, deploymentName, deployment);
             Console.WriteLine(string.Format("Deployment status: {0}", deploymentResult.Properties.ProvisioningState));
+        }
+
+        public async Task<AuthorizationRule> GetAuthorizationRule(string ruleName)
+        {
+            RelayManagementClient relayMC = new RelayManagementClient(credentials) { SubscriptionId = config.SubscriptionId };
+
+            var response = await relayMC.Namespaces.ListKeysWithHttpMessagesAsync(config.ResourceGroupName, config.DeploymentName, ruleName).Result.Response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<AuthorizationRule>(response);
         }
     }
 }
