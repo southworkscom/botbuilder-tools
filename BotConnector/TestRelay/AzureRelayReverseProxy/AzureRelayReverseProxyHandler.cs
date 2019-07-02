@@ -7,17 +7,26 @@ using System.Threading.Tasks;
 
 namespace TestRelay.AzureRelayReverseProxy
 {
-    class AzureRelayReverseProxy
+    class AzureRelayReverseProxyHandler
     {
         public string connectionString { get; set; }
         public Uri targetUri { get; set; }
 
-        async Task RunAsync(string connectionString, Uri targetUri)
-        {
-            var hybridProxy = new HybridConnectionReverseProxy(connectionString, targetUri);
-            await hybridProxy.OpenAsync(CancellationToken.None);
+        private HybridConnectionReverseProxy hybridProxy;
 
-            Console.ReadLine();
+        public async Task OpenAsync()
+        {
+            hybridProxy = new HybridConnectionReverseProxy(connectionString, targetUri);
+            
+            await hybridProxy.OpenAsync(CancellationToken.None);
+        }
+
+        public async Task CloseAsync()
+        {
+            if (hybridProxy == null)
+            {
+                return;
+            }
 
             await hybridProxy.CloseAsync(CancellationToken.None);
         }
