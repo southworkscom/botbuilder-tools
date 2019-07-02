@@ -8,7 +8,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Reflection;
-using System.Threading.Tasks;
 using TestRelay.DeploymentHelper;
 using ResourceManagementClient = Microsoft.Azure.Management.ResourceManager.ResourceManagementClient;
 
@@ -56,8 +55,6 @@ namespace RelayDeployer.DeploymentHelper
             // Start a deployment
             DeployTemplate(resourceManagementClient, config.ResourceGroupName, config.DeploymentName, templateFileContents, parameterFileContents);
         }
-
-
 
         /// <summary>
         /// Reads a JSON file from the specified path
@@ -128,11 +125,11 @@ namespace RelayDeployer.DeploymentHelper
             Console.WriteLine(string.Format("Deployment status: {0}", deploymentResult.Properties.ProvisioningState));
         }
 
-        public async Task<AuthorizationRule> GetAuthorizationRule(string ruleName)
+        public AuthorizationRule GetAuthorizationRule(string ruleName)
         {
             RelayManagementClient relayMC = new RelayManagementClient(credentials) { SubscriptionId = config.SubscriptionId };
 
-            var response = await relayMC.Namespaces.ListKeysWithHttpMessagesAsync(config.ResourceGroupName, config.DeploymentName, ruleName).Result.Response.Content.ReadAsStringAsync();
+            var response = relayMC.Namespaces.ListKeysWithHttpMessagesAsync(config.ResourceGroupName, config.DeploymentName, ruleName).Result.Response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             return JsonConvert.DeserializeObject<AuthorizationRule>(response);
         }
     }
