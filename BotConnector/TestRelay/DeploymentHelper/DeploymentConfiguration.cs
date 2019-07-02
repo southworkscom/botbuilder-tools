@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RelayDeployer.DeploymentHelper
 {
-    public struct DeploymentConfiguration
+    public struct DeploymentConfiguration : IDeploymentConfiguration
     {
         public string SubscriptionId { get; set; }
         public string ClientId { get; set; }

@@ -20,10 +20,10 @@ namespace RelayDeployer.DeploymentHelper
     /// </summary>
     public class RelayDeployer
     {
-        private readonly DeploymentConfiguration config;
+        private readonly IDeploymentConfiguration config;
         private readonly AzureCredentials credentials;
 
-        public RelayDeployer(DeploymentConfiguration config)
+        public RelayDeployer(IDeploymentConfiguration config)
         {
             this.config = config;
 
