@@ -20,6 +20,6 @@ namespace AzureReverseProxy
         /// </summary>
         public string ResourceGroupLocation { get; set; }
         public string TenantId { get; set; }
-        public int Port { get; set; }
+        public string Port { get; set; }
     }
 }
