@@ -14,6 +14,7 @@ namespace AzureReverseProxyCMD
         private static AzureReverseTool AZProxy;
         private static bool DeleteResource = false;
         private static bool Run = true;
+        private static string Port;
         static void Main(string[] args)
         {
             AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnProcessExit);
@@ -25,12 +26,15 @@ namespace AzureReverseProxyCMD
                 AZProxy.CloseListener().GetAwaiter().GetResult();
             };
 
+            GetParams(args);
             MainAsync().Wait();
         }
 
         private static async Task MainAsync()
         {
             var config = GetConfiguration();
+            config.Port = Port;
+
             AZProxy = new AzureReverseTool(config);
 
             Console.WriteLine($"Check existence of '{ config.DeploymentName }' in '{ config.ResourceGroupName }' group...");
@@ -51,6 +55,21 @@ namespace AzureReverseProxyCMD
             while (Run)
             {
                 await Task.Delay(100);
+            }
+        }
+
+        private static void GetParams(string[] args)
+        {
+            for (int i = 0; i < args.Length; i++)
+            {
+                switch (args[i])
+                {
+                    case "-port":
+                        Port = args[i + 1];
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
